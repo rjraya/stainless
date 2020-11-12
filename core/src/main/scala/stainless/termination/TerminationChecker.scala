@@ -73,17 +73,11 @@ trait TerminationChecker { self =>
     def get = cache
   }
 
-  val integerOrdering: StructuralSize with SolverProvider {
-    val checker: self.type
-  }
+  val integerOrdering: StructuralSize with SolverProvider
 
-  val lexicographicOrdering: StructuralSize with SolverProvider {
-    val checker: self.type
-  }
+  val lexicographicOrdering: StructuralSize with SolverProvider
 
-  val bvOrdering: StructuralSize with SolverProvider {
-    val checker: self.type
-  }
+  val bvOrdering: StructuralSize with SolverProvider
 
   def get = {
     integerOrdering.functions ++

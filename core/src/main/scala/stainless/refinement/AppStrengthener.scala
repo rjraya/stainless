@@ -1,15 +1,10 @@
-/* Copyright 2009-2019 EPFL, Lausanne */
-
 package stainless
-package termination
+package refinement
 
 import scala.collection.mutable.{Set => MutableSet, Map => MutableMap}
 import scala.language.existentials
 
-object optIgnorePosts extends inox.FlagOptionDef("ignore-posts", false)
-
-trait Strengthener { self: OrderingRelation =>
-
+trait AppStrengthener { self: OrderingRelation => 
   val checker: ProcessingPipeline
   import checker._
   import checker.context._
@@ -17,88 +12,6 @@ trait Strengthener { self: OrderingRelation =>
   import checker.program.trees._
   import checker.program.symbols._
   import CallGraphOrderings._
-
-  private val strengthenedPost: MutableMap[Identifier, Option[Lambda]] = MutableMap.empty
-
-  private lazy val ignorePosts = options.findOptionOrDefault(optIgnorePosts)
-
-  private object postStrengthener extends IdentitySymbolTransformer {
-    override def transform(syms: Symbols): Symbols =
-      syms.withFunctions(syms.functions.toSeq.map {
-        case (id, fd) =>
-          strengthenedPost.get(id) match {
-            case Some(post @ Some(_)) => fd.copy(fullBody = exprOps.withPostcondition(fd.fullBody, post))
-            case _                    => fd
-          }
-      })
-  }
-
-  registerTransformer(postStrengthener)
-
-  def strengthenPostconditions(funDefs: Set[FunDef])(implicit dbg: inox.DebugSection): Unit = {
-    reporter.debug("- Strengthening postconditions")
-
-    // Strengthen postconditions on all accessible functions by adding size constraints
-    val callees: Set[FunDef] = funDefs.flatMap(fd => transitiveCallees(fd))
-    val sortedCallees: Seq[FunDef] = callees.toSeq.sorted
-
-    // Note that we don't try to add postconditions to the entire SCC as the case of
-    // a stronger post existing for a single function within the SCC seems more probable
-    // than having weird inter-dependencies between different functions in the SCC
-    for (fd <- sortedCallees
-         if fd.body.isDefined && !strengthenedPost.isDefinedAt(fd.id) && checker
-           .terminates(fd)
-           .isGuaranteed) {
-
-      strengthenedPost(fd.id) = None
-
-      def strengthen(cmp: (Seq[Expr], Seq[Expr]) => Expr): Boolean = {
-        val postcondition = {
-          val res = ValDef.fresh("res", fd.returnType)
-          val post = fd.postcondition match {
-            case Some(post) if !ignorePosts => application(post, Seq(res.toVariable))
-            case _                          => BooleanLiteral(true)
-          }
-          val sizePost = cmp(Seq(res.toVariable), fd.params.map(_.toVariable))
-          Lambda(Seq(res), and(post, sizePost))
-        }
-
-        val formula = implies(fd.precOrTrue, application(postcondition, Seq(fd.body.get)))
-
-        val strengthener = new IdentitySymbolTransformer {
-          override def transform(syms: Symbols): Symbols = super.transform(syms).withFunctions {
-            Seq(fd.copy(fullBody = exprOps.withPostcondition(fd.fullBody, Some(postcondition))))
-          }
-        }
-
-        val api = getAPI(strengthener)
-
-        // @nv: one must also check that variablesOf(formula) is non-empty as
-        //      we may proceed to invalid strenghtening otherwise
-
-        if (exprOps.variablesOf(formula).nonEmpty &&
-            api.solveVALID(formula).contains(true)) {
-          strengthenedPost(fd.id) = Some(postcondition)
-          true
-        } else {
-          false
-        }
-      }
-
-      // test if size is smaller or equal to input
-      val weakConstraintHolds = strengthen(self.lessEquals)
-
-      val strongConstraintHolds = if (weakConstraintHolds) {
-        // try to improve postcondition with strictly smaller
-        strengthen(self.lessThan)
-      } else {
-        false
-      }
-
-      //if (weakConstraintHolds || strongConstraintHolds) clearSolvers()
-
-    }
-  }
 
   sealed abstract class SizeConstraint
   case object StrongDecreasing extends SizeConstraint
@@ -126,7 +39,7 @@ trait Strengthener { self: OrderingRelation =>
     val transitiveFunDefs = funDefs ++ funDefs.flatMap(transitiveCallees)
     val sortedFunDefs = transitiveFunDefs.toSeq.sorted
     
-    for (fd <- sortedFunDefs if fd.body.isDefined && !strengthenedApp(fd) && checker.terminates(fd).isGuaranteed) {
+    for (fd <- sortedFunDefs if fd.body.isDefined && !strengthenedApp(fd)) {
 
       val applications = collectWithPC(fd.fullBody) {
         case (Application(v: Variable, args), path) => (path, v, args)

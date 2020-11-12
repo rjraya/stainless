@@ -379,4 +379,3 @@ def publishMavenSettings = commonPublishSettings ++ Seq(
 
 // FIXME assembly should be disabled at the top level, but isn't
 // FIXME assembly is not compatible with dotty -- some conflict with scala versions?
-
