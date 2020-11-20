@@ -64,21 +64,29 @@ trait MeasureInference
 
     def inferMeasure(original: FunDef): FunDef = measureCache.get(original) match {
       case Some(measure) =>
+        //println("fd: " + original.id + " measure: " + measure)
         original.copy(fullBody = exprOps.withMeasure(original.fullBody, Some(measure.setPos(original))))
 
       case None => try {
+        //println("fdn: " + original.id)
         val guarantee = timers.evaluators.termination.inference.run {
           reporter.info(s"  - Inferring measure for ${original.id.asString}...")
           pipeline.terminates(original)
         }
 
         val result = guarantee match {
-          case pipeline.Terminates(_, Some(measure)) =>
+          case pipeline.Terminates(_, Some(measure), strengthened) =>
             reporter.info(s" => Found measure for ${original.id.asString}.")
             measureCache ++= pipeline.measureCache.get
-            original.copy(fullBody = exprOps.withMeasure(original.fullBody, Some(measure.setPos(original))))
+            val result = strengthened match {
+              case Some(f) => f
+              case None => original
+            }
+            val annot = result.copy(fullBody = exprOps.withMeasure(result.fullBody, Some(measure.setPos(result))))
+            //println("result2: " + annot.asString)
+            annot
 
-          case pipeline.Terminates(_, None) =>
+          case pipeline.Terminates(_, None, _) =>
             reporter.info(s" => No measure needed for ${original.id.asString}.")
             original
 
@@ -109,7 +117,7 @@ trait MeasureInference
 
     private def status(g: pipeline.TerminationGuarantee): TerminationReport.Status = g match {
       case pipeline.NoGuarantee      => TerminationReport.Unknown
-      case pipeline.Terminates(_, _) => TerminationReport.Terminating
+      case pipeline.Terminates(_, _, _) => TerminationReport.Terminating
       case _                         => TerminationReport.NonTerminating
     }
   }
@@ -125,6 +133,11 @@ trait MeasureInference
   override protected def extractSymbols(context: TransformerContext, symbols: s.Symbols): t.Symbols = {
     val extracted = super.extractSymbols(context, symbols)
     val sizeFunctions = sizes.getFunctions(symbols).map(context.transformer.transform(_))
+    /* println("begin print symbols.................")
+    println(extracted.asString(new t.PrinterOptions(printUniqueIds=true)))
+    println(sizeFunctions.map(asString))
+    println("end print symbols.................") */
+
     registerFunctions(extracted, sizeFunctions)
   }
 }

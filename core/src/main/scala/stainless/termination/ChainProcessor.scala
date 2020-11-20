@@ -91,7 +91,7 @@ trait ChainProcessor extends OrderingProcessor {
         induced match {
           case Some(measure) =>
             measureCache.add(fd -> measure)
-            Cleared(fd, Some(measure))
+            Cleared(fd, Some(measure), None)
           case None =>
             throw FailedMeasureInference(fd,
               s"No measure annotated in function `${fd.id}` which was cleared in chain processor.")

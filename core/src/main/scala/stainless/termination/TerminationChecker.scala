@@ -19,7 +19,7 @@ trait TerminationChecker { self =>
     def isGuaranteed: Boolean
   }
 
-  case class Terminates(reason: String, measure: Option[Expr]) extends TerminationGuarantee {
+  case class Terminates(reason: String, measure: Option[Expr], strengthened: Option[FunDef]) extends TerminationGuarantee {
     override def isGuaranteed: Boolean = true
   }
 

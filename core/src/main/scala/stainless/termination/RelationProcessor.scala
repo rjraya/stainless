@@ -23,9 +23,10 @@ trait RelationProcessor extends OrderingProcessor {
   def run(problem: Problem): Option[Seq[Result]] = timers.termination.processors.relation.run {
     strengthenPostconditions(problem.funSet)
     strengthenApplications(problem.funSet)
+    val annotated = problem.funDefs.map{ f => (f, annotateStrength(f)) }
 
-    val formulas = problem.funDefs.map { funDef =>
-      funDef -> ordering.getRelations(funDef).collect {
+    val formulas = annotated.map { case (funDef, annot) =>
+      funDef -> ordering.getRelations(annot).collect {
         case Relation(_, path, fi @ FunctionInvocation(_, _, args), _) if problem.funSet(fi.tfd.fd) =>
           val args0 = funDef.params.map(_.toVariable)
           def constraint(expr: Expr) = path implies expr
@@ -90,11 +91,12 @@ trait RelationProcessor extends OrderingProcessor {
             val induced = ordering.measure(tf._1.params.map { _.toVariable })
             flatten(induced, Seq(tf._2))
         }
-
+        //println("original: " + tf)
+        //println("modified: " +  annotated.toMap.get(tf._1))
         // We preserve the measure specified by the user
         measureCache.add(tf._1 -> measure)
 
-        Cleared(tf._1, Some(measure))
+        Cleared(tf._1, Some(measure), annotated.toMap.get(tf._1))
       }.toSeq)
     } else {
       None

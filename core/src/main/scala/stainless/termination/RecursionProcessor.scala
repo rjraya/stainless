@@ -46,7 +46,7 @@ trait RecursionProcessor extends OrderingProcessor {
         if (noGuarantees) {
           None
         } else if (recursive.isEmpty) {
-          Some(Cleared(funDef, None) :: Nil)
+          Some(Cleared(funDef, None, None) :: Nil)
         } else {
           val decreases = funDef.params.zipWithIndex.find {
             case (arg, index) =>
@@ -69,7 +69,7 @@ trait RecursionProcessor extends OrderingProcessor {
             case Some(p) =>
               val measure = ordering.measure(Seq(p._1.toVariable))
               measureCache.add(funDef -> measure)
-              Some(Cleared(funDef, Some(measure)) :: Nil)
+              Some(Cleared(funDef, Some(measure), None) :: Nil)
             case None =>
               None
           }

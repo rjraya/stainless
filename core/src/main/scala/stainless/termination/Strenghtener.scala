@@ -212,4 +212,67 @@ trait Strengthener { self: OrderingRelation =>
       strengthenedApp += fd
     }
   }
+
+  val cfa: CICFA { val program: checker.program.type }
+
+  def annotateStrength(funDef: FunDef): FunDef = {
+    val analysis = cfa.analyze(funDef.id)
+
+    object transformer extends transformers.TransformerWithPC with transformers.DefinitionTransformer {
+      val s: self.checker.program.trees.type = self.checker.program.trees
+      val t: self.checker.program.trees.type = self.checker.program.trees
+      val symbols: self.checker.program.symbols.type = self.checker.program.symbols
+
+      type Env = Path
+      val initEnv = Path.empty
+      val pp = Path
+
+      var inLambda: Boolean = false
+      /**
+        * Collects all function invocations in the body of `funDef`.
+        * If a function invocation occurs under a lambda, it is strengthened
+        * with the conditions holding at the application sites.
+        *
+        * @param e expression where invocations are collected
+        * @param path logic condition leading to `e`
+        * @return the tranformed expression
+        */
+      override def transform(e: Expr, path: Path): Expr = {
+        e match {
+          case fi @ FunctionInvocation(_, _, args) =>
+            fi.copy(args = (getFunction(fi.id).params.map(_.id) zip args).map {
+              case (id, l @ Lambda(largs, body)) if analysis.isApplied(l) =>
+                val cnstr = self.applicationConstraint(fi.id, id, largs, args)
+                val old = inLambda
+                inLambda = true
+                val newLArgs = largs.map{ arg => 
+                  val refineArg = ValDef.fresh("z", arg.tpe)
+                  val cnstr1 = exprOps.replace(Map(arg.toVariable -> refineArg.toVariable), cnstr)
+                  val tpe1 = RefinementType(refineArg, cnstr1)
+                  arg.copy(tpe = tpe1)
+                }
+                val res = Lambda(newLArgs, transform(body, path withBounds largs))
+                inLambda = old
+                res
+              case (_, arg) => transform(arg, path)
+            })
+          case l: Lambda =>
+            if (analysis.isApplied(l)) {
+              val old = inLambda
+              inLambda = true
+              val res = super.transform(e, path)
+              inLambda = old
+              res
+            } else {
+              l
+            }
+
+          case _ =>
+            super.transform(e, path)
+        }
+      }
+    }
+
+    transformer.transform(funDef)
+  }
 }
