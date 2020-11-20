@@ -240,20 +240,31 @@ trait Strengthener { self: OrderingRelation =>
       override def transform(e: Expr, path: Path): Expr = {
         e match {
           case fi @ FunctionInvocation(_, _, args) =>
+            println(e)
             fi.copy(args = (getFunction(fi.id).params.map(_.id) zip args).map {
               case (id, l @ Lambda(largs, body)) if analysis.isApplied(l) =>
                 val cnstr = self.applicationConstraint(fi.id, id, largs, args)
                 val old = inLambda
                 inLambda = true
+
                 val newLArgs = largs.map{ arg => 
                   val refineArg = ValDef.fresh("z", arg.tpe)
                   val cnstr1 = exprOps.replace(Map(arg.toVariable -> refineArg.toVariable), cnstr)
                   val tpe1 = RefinementType(refineArg, cnstr1)
                   arg.copy(tpe = tpe1)
                 }
-                val res = Lambda(newLArgs, transform(body, path withBounds largs))
+
+                val recBody = transform(body, path withBounds largs)
+
+                val largsDefs = largs.map(_.toVariable)
+                val newLArgsDefs = newLArgs.map(_.toVariable)
+                val subst = largsDefs.zip(newLArgsDefs).toMap
+                val newBody = exprOps.replaceFromSymbols(subst, recBody)
+
                 inLambda = old
-                res
+                println("New args: " + newLArgs.map(_.asString))
+                println("New body: " + newBody.asString)
+                Lambda(newLArgs, newBody)
               case (_, arg) => transform(arg, path)
             })
           case l: Lambda =>
@@ -268,6 +279,7 @@ trait Strengthener { self: OrderingRelation =>
             }
 
           case _ =>
+            println("super.....")
             super.transform(e, path)
         }
       }

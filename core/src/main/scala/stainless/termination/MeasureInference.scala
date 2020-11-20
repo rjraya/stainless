@@ -83,7 +83,7 @@ trait MeasureInference
               case None => original
             }
             val annot = result.copy(fullBody = exprOps.withMeasure(result.fullBody, Some(measure.setPos(result))))
-            //println("result2: " + annot.asString)
+            println("result2: " + annot.asString)
             annot
 
           case pipeline.Terminates(_, None, _) =>
