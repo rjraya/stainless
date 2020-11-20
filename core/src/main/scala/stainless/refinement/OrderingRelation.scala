@@ -4,8 +4,8 @@ package stainless
 package refinement
 
 trait OrderingRelation extends SolverProvider { self: StructuralSize => 
-  val checker: ProcessingPipeline
-  import checker.program.trees._
+  val strengthener: ProcessingPipeline
+  import strengthener.program.trees._
 
   val description: String
 
@@ -17,8 +17,8 @@ trait OrderingRelation extends SolverProvider { self: StructuralSize =>
 }
 
 trait SumOrdering extends OrderingRelation { self: StructuralSize =>
-  import checker.program.trees._
-  import checker.program.symbols._
+  import strengthener.program.trees._
+  import strengthener.program.symbols._
 
   val description = "comparing sum of argument sizes"
 
@@ -32,8 +32,8 @@ trait SumOrdering extends OrderingRelation { self: StructuralSize =>
 }
 
 trait LexicographicOrdering extends OrderingRelation { self: StructuralSize =>
-  import checker.program.trees._
-  import checker.program.symbols._
+  import strengthener.program.trees._
+  import strengthener.program.symbols._
 
   val description = "comparing argument lists lexicographically"
 
@@ -47,8 +47,8 @@ trait LexicographicOrdering extends OrderingRelation { self: StructuralSize =>
 }
 
 trait BVOrdering extends OrderingRelation { self: StructuralSize =>
-  import checker.program.trees._
-  import checker.program.symbols._
+  import strengthener.program.trees._
+  import strengthener.program.symbols._
 
   val description = "comparing bitvector arguments lexicographically"
 

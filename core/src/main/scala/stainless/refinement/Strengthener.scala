@@ -11,7 +11,7 @@ trait Strengthener { self =>
   import program.trees._
   import program.symbols._
 
-  def strengthen(fds: Set[FunDef]): Set[FunDef]
+  def strengthen(fds: Set[FunDef]): Unit
 
 }
 
@@ -63,6 +63,8 @@ object Strengthener {
       object appSum extends {
         val strengthener: self.type = self
         val ordering: integerOrdering.type = integerOrdering
+        val encoder: self.encoder.type = self.encoder
+        val sizes: sze.type = sze
       } with AppStrengthener with SumOrdering with StructuralSize 
       // different to termination
       // TODO: rewrite to usual form by eliminating Ordering from
@@ -71,12 +73,16 @@ object Strengthener {
       object appLex extends {
         val strengthener: self.type = self
         val ordering: lexicographicOrdering.type = lexicographicOrdering
+        val encoder: self.encoder.type = self.encoder
+        val sizes: sze.type = sze
       } with AppStrengthener with LexicographicOrdering with StructuralSize
 
       object appBv extends {
         val strengthener: self.type = self
         val ordering: lexicographicOrdering.type = lexicographicOrdering
-      } with AppStrengthener with BVOrdering with StructuralSize
+        val encoder: self.encoder.type = self.encoder
+        val sizes: sze.type = sze
+      } with AppStrengthener with BVOrdering with StructuralSize 
 
       val processors = {
         List(

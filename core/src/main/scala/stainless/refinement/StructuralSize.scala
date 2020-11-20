@@ -7,14 +7,14 @@ import scala.collection.mutable.{Map => MutableMap, Set => MutableSet, ListBuffe
 
 trait StructuralSize { self: SolverProvider =>
 
-  val checker: ProcessingPipeline
-  import checker.program.trees._
-  import checker.program.symbols._
+  val strengthener: ProcessingPipeline
+  import strengthener.program.trees._
+  import strengthener.program.symbols._
   import dsl._
 
-  val sizes: SizeFunctions { val trees: checker.program.trees.type }
+  val sizes: SizeFunctions { val trees: strengthener.program.trees.type }
 
-  def functions: Seq[FunDef] = sizes.getFunctions(checker.program.symbols)
+  def functions: Seq[FunDef] = sizes.getFunctions(strengthener.program.symbols)
 
   registerTransformer(new inox.transformers.SymbolTransformer {
     val s: trees.type = trees

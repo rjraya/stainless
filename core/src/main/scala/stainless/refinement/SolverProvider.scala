@@ -10,9 +10,9 @@ import scala.concurrent.duration._
 import scala.language.existentials
 
 trait SolverProvider { self =>
-  val checker: ProcessingPipeline
+  val strengthener: ProcessingPipeline
 
-  import checker._
+  import strengthener._
   import context._
   import program._
   import program.trees._
@@ -45,12 +45,12 @@ trait SolverProvider { self =>
       transformer: SymbolTransformer { val s: trees.type; val t: trees.type }
   ): Unit = transformers = transformers andThen transformer
 
-  private implicit val semanticsProvider: inox.SemanticsProvider { val trees: checker.program.trees.type } =
+  private implicit val semanticsProvider: inox.SemanticsProvider { val trees: strengthener.program.trees.type } =
     encodingSemantics(trees)(encoder)
 
   private def solverFactory(transformer: SymbolTransformer { val s: trees.type; val t: trees.type }) =
     (timers.termination.encoding.run {
-      val transformEncoder = ProgramEncoder(checker.program)(transformer)
+      val transformEncoder = ProgramEncoder(strengthener.program)(transformer)
       val p: transformEncoder.targetProgram.type = transformEncoder.targetProgram
 
       object programEncoder extends {
@@ -85,11 +85,11 @@ trait SolverProvider { self =>
   }
 
   def getAPI: inox.solvers.SimpleSolverAPI {
-    val program: inox.Program { val trees: checker.program.trees.type }
+    val program: inox.Program { val trees: strengthener.program.trees.type }
   } = solverAPI(transformers)
 
   def getAPI(t: SymbolTransformer { val s: trees.type; val t: trees.type }): inox.solvers.SimpleSolverAPI {
-    val program: inox.Program { val trees: checker.program.trees.type }
+    val program: inox.Program { val trees: strengthener.program.trees.type }
   } = solverAPI(transformers andThen t)
 
   def apiTransform(s: Symbols) = transformers.transform(s)

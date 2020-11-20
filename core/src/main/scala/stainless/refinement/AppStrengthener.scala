@@ -4,13 +4,17 @@ package refinement
 import scala.collection.mutable.{Set => MutableSet, Map => MutableMap}
 import scala.language.existentials
 
-trait AppStrengthener { self: OrderingRelation => 
-  val checker: ProcessingPipeline
-  import checker._
-  import checker.context._
-  import checker.program._
-  import checker.program.trees._
-  import checker.program.symbols._
+trait AppStrengthener extends OrderingProcessor { self => 
+  val ordering: OrderingRelation {
+    val strengthener: AppStrengthener.this.strengthener.type
+  }
+
+  val strengthener: ProcessingPipeline
+  import strengthener._
+  import strengthener.context._
+  import strengthener.program._
+  import strengthener.program.trees._
+  import strengthener.program.symbols._
   import CallGraphOrderings._
 
   sealed abstract class SizeConstraint
@@ -22,19 +26,18 @@ trait AppStrengthener { self: OrderingRelation =>
 
   protected def strengthened(fd: FunDef): Boolean = strengthenedApp(fd)
 
-  private val appConstraint: MutableMap[(Identifier, Identifier), SizeConstraint] = MutableMap.empty
+  type ConstraintMap = MutableMap[(Identifier, Identifier), SizeConstraint]
+  private val appConstraint: ConstraintMap = MutableMap.empty
 
   def applicationConstraint(fid: Identifier, id: Identifier, largs: Seq[ValDef], args: Seq[Expr]): Expr =
     appConstraint.get(fid -> id) match {
-      case Some(StrongDecreasing) => self.lessThan(largs.map(_.toVariable), args)
-      case Some(WeakDecreasing)   => self.lessEquals(largs.map(_.toVariable), args)
+      case Some(StrongDecreasing) => ordering.lessThan(largs.map(_.toVariable), args)
+      case Some(WeakDecreasing)   => ordering.lessEquals(largs.map(_.toVariable), args)
       case _                      => BooleanLiteral(true)
     }
 
-  def strengthenApplications(funDefs: Set[FunDef])(implicit dbg: inox.DebugSection): Unit = {
-    reporter.debug("- Strengthening applications")
-
-    val api = getAPI
+  def strengthenApplications(funDefs: Set[FunDef]): Unit = {
+    val api = ordering.getAPI
 
     val transitiveFunDefs = funDefs ++ funDefs.flatMap(transitiveCallees)
     val sortedFunDefs = transitiveFunDefs.toSeq.sorted
@@ -48,8 +51,8 @@ trait AppStrengthener { self: OrderingRelation =>
       val fdArgs = fd.params.map(_.toVariable)
 
       val allFormulas = for ((path, v, appArgs) <- applications) yield {
-        val soft = path implies self.lessEquals(appArgs, fdArgs)
-        val hard = path implies self.lessThan(appArgs, fdArgs)
+        val soft = path implies ordering.lessEquals(appArgs, fdArgs)
+        val hard = path implies ordering.lessThan(appArgs, fdArgs)
         v -> ((soft, hard))
       }
 
@@ -91,8 +94,8 @@ trait AppStrengthener { self: OrderingRelation =>
         else
           passings.foldLeft[SizeConstraint](constraints.getOrElse(v, StrongDecreasing)) {
             case (constraint, (key, path, args)) =>
-              lazy val strongFormula = path implies self.lessThan(args, fdArgs)
-              lazy val weakFormula = path implies self.lessEquals(args, fdArgs)
+              lazy val strongFormula = path implies ordering.lessThan(args, fdArgs)
+              lazy val weakFormula = path implies ordering.lessEquals(args, fdArgs)
 
               (constraint, appConstraint.get(key)) match {
                 case (_, Some(NoConstraint)) => scala.sys.error("Whaaaat!?!? This shouldn't happen...")
@@ -125,4 +128,8 @@ trait AppStrengthener { self: OrderingRelation =>
       strengthenedApp += fd
     }
   }
+
+  def run(funDefs: Set[FunDef]): Unit = strengthenApplications(funDefs)
+
+
 }
