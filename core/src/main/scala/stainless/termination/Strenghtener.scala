@@ -213,6 +213,16 @@ trait Strengthener { self: OrderingRelation =>
     }
   }
 
+  // With annotation
+
+  object refinementCache {
+    // Cache holds function identifier and parameter identifier
+    private val cache: MutableMap[(Identifier, Identifier), Type] = MutableMap.empty
+
+    def add(p: ((Identifier, Identifier), Type)) = cache += p
+    def get = cache
+  }
+
   val cfa: CICFA { val program: checker.program.type }
 
   def annotateStrength(funDef: FunDef): FunDef = {
@@ -228,19 +238,10 @@ trait Strengthener { self: OrderingRelation =>
       val pp = Path
 
       var inLambda: Boolean = false
-      /**
-        * Collects all function invocations in the body of `funDef`.
-        * If a function invocation occurs under a lambda, it is strengthened
-        * with the conditions holding at the application sites.
-        *
-        * @param e expression where invocations are collected
-        * @param path logic condition leading to `e`
-        * @return the tranformed expression
-        */
+
       override def transform(e: Expr, path: Path): Expr = {
         e match {
-          case fi @ FunctionInvocation(_, _, args) =>
-            println(e)
+          case fi @ FunctionInvocation(fid, _, args) =>
             fi.copy(args = (getFunction(fi.id).params.map(_.id) zip args).map {
               case (id, l @ Lambda(largs, body)) if analysis.isApplied(l) =>
                 val cnstr = self.applicationConstraint(fi.id, id, largs, args)
@@ -259,11 +260,17 @@ trait Strengthener { self: OrderingRelation =>
                 val largsDefs = largs.map(_.toVariable)
                 val newLArgsDefs = newLArgs.map(_.toVariable)
                 val subst = largsDefs.zip(newLArgsDefs).toMap
-                val newBody = exprOps.replaceFromSymbols(subst, recBody)
+                val newBody = exprOps.replaceFromSymbols(subst, recBody) 
+
+                // compute the constraint for the invoked function
+                val freshTuple = largs.map{ arg => ValDef.fresh("z", arg.tpe) }
+                val cnstr1 = self.applicationConstraint(
+                  fi.id, id, freshTuple, fi.tfd.params.map(_.toVariable))
+                val tpe = RefinementType(freshTuple, constr1)
+
+                refinementCache.add(((fid,id),tpe))
 
                 inLambda = old
-                println("New args: " + newLArgs.map(_.asString))
-                println("New body: " + newBody.asString)
                 Lambda(newLArgs, newBody)
               case (_, arg) => transform(arg, path)
             })
@@ -279,7 +286,6 @@ trait Strengthener { self: OrderingRelation =>
             }
 
           case _ =>
-            println("super.....")
             super.transform(e, path)
         }
       }

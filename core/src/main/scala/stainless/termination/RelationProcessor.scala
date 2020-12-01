@@ -91,12 +91,11 @@ trait RelationProcessor extends OrderingProcessor {
             val induced = ordering.measure(tf._1.params.map { _.toVariable })
             flatten(induced, Seq(tf._2))
         }
-        //println("original: " + tf)
-        //println("modified: " +  annotated.toMap.get(tf._1))
+
         // We preserve the measure specified by the user
         measureCache.add(tf._1 -> measure)
 
-        Cleared(tf._1, Some(measure), annotated.toMap.get(tf._1))
+        Cleared(tf._1, Some(measure), annotated.toMap.get(tf._1), Some(ordering.refinementCache.get))
       }.toSeq)
     } else {
       None

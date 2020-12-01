@@ -36,7 +36,7 @@ trait DecreasesProcessor extends OrderingProcessor { self =>
     if (fds.exists { _.measure.isDefined }) {
       checkMeasures(problem)
       annotateGraph(problem) // should fail internally if not all can be annotated
-      Some(fds.map(fd => Cleared(fd, MeasureRegister.getMeasure(fd), None)))
+      Some(fds.map(fd => Cleared(fd, MeasureRegister.getMeasure(fd), None, None)))
     } else {
       None
     }

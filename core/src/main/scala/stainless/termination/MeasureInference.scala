@@ -27,13 +27,11 @@ trait MeasureInference
     val trees: s.type = self.s
   } with SizeFunctions
 
-  override protected def getContext(symbols: s.Symbols) = TransformerContext(symbols, MutableMap.empty)
+  override protected def getContext(symbols: s.Symbols) = TransformerContext(symbols, MutableMap.empty, MutableMap.empty)
 
-  protected case class TransformerContext(symbols: Symbols, measureCache: MutableMap[FunDef, Expr]) {
-    val program = inox.Program(s)(symbols)
-
-    val pipeline = TerminationChecker(program, self.context)(sizes)
-
+  protected case class TransformerContext(symbols: Symbols, 
+                                          measureCache: MutableMap[FunDef, Expr],
+                                          refinementCache: MutableMap[(Identifier, Identifier), Type]) {
     final object transformer extends inox.transformers.TreeTransformer {
       override val s: self.s.type = self.s
       override val t: self.t.type = self.t
@@ -59,9 +57,13 @@ trait MeasureInference
       }
     }
 
+    val program = inox.Program(s)(symbols)
+
+    val pipeline = TerminationChecker(program, self.context)(sizes)
+
     def needsMeasure(fd: FunDef): Boolean =
       symbols.isRecursive(fd.id) && fd.measure(symbols).isEmpty
-
+    
     def inferMeasure(original: FunDef): FunDef = measureCache.get(original) match {
       case Some(measure) =>
         //println("fd: " + original.id + " measure: " + measure)
@@ -75,18 +77,20 @@ trait MeasureInference
         }
 
         val result = guarantee match {
-          case pipeline.Terminates(_, Some(measure), strengthened) =>
+          case pipeline.Terminates(_, Some(measure), strengthened, toRefine) =>
             reporter.info(s" => Found measure for ${original.id.asString}.")
             measureCache ++= pipeline.measureCache.get
             val result = strengthened match {
               case Some(f) => f
               case None => original
             }
-            val annot = result.copy(fullBody = exprOps.withMeasure(result.fullBody, Some(measure.setPos(result))))
-            println("result2: " + annot.asString)
-            annot
+            toRefine match {
+              case Some(cache) => cache.map(refinementCache += _)
+              case None => ()
+            }            
+            result.copy(fullBody = exprOps.withMeasure(result.fullBody, Some(measure.setPos(result))))
 
-          case pipeline.Terminates(_, None, _) =>
+          case pipeline.Terminates(_, None, _, _) =>
             reporter.info(s" => No measure needed for ${original.id.asString}.")
             original
 
@@ -117,28 +121,70 @@ trait MeasureInference
 
     private def status(g: pipeline.TerminationGuarantee): TerminationReport.Status = g match {
       case pipeline.NoGuarantee      => TerminationReport.Unknown
-      case pipeline.Terminates(_, _, _) => TerminationReport.Terminating
+      case pipeline.Terminates(_, _, _, _) => TerminationReport.Terminating
       case _                         => TerminationReport.NonTerminating
     }
+
+    def refineSignature(funDefs: Seq[FunDef]): Seq[FunDef] = {
+      def refineSignatureRec(fd: FunDef): FunDef = {
+        fd.copy(params = (fd.params.map(_.tpe) zip fd.params).map {
+          case (FunctionType(from,to),param) => 
+            val constr: Type = refinementCache.getOrElse((fd.id, param.id), )
+            val fullConstr = andJoin(constr)
+
+            val refineArg = ValDef.fresh("z", tupleTypeWrap(from))
+            val cnstr1 = exprOps.replace(Map(param.toVariable -> refineArg.toVariable), fullConstr)
+            println("constraint: " + constr.map{ _.asString(new PrinterOptions(printUniqueIds = true)) })
+            println("modified constraint: " + cnstr1.asString(new PrinterOptions(printUniqueIds = true)))
+            val tpe1 = RefinementType(refineArg, cnstr1)
+            param.copy(tpe = tpe1)
+
+          case (_,param) => param
+        })
+      }     
+
+      //println(funDefs)
+      funDefs.map{ modified => refineSignatureRec(modified) }
+    }
   }
+      
 
   override protected def extractFunction(context: TransformerContext, fd: s.FunDef): t.FunDef = {
-    if (options.findOptionOrDefault(optInferMeasures) && context.needsMeasure(fd)) {
-      context.transformer.transform(context.inferMeasure(fd))
-    } else {
-      context.transformer.transform(fd)
-    }
+    context.transformer.transform(fd)
   }
 
   override protected def extractSymbols(context: TransformerContext, symbols: s.Symbols): t.Symbols = {
-    val extracted = super.extractSymbols(context, symbols)
-    val sizeFunctions = sizes.getFunctions(symbols).map(context.transformer.transform(_))
-    /* println("begin print symbols.................")
-    println(extracted.asString(new t.PrinterOptions(printUniqueIds=true)))
-    println(sizeFunctions.map(asString))
-    println("end print symbols.................") */
+    val measured = symbols.functions.values.map{ fd => 
+      if (options.findOptionOrDefault(optInferMeasures) && context.needsMeasure(fd)) {
+        context.inferMeasure(fd)
+      } else {
+        fd
+      }  
+    }
+    val refined = context.refineSignature(measured.toSeq)
+    val updated: s.Symbols = 
+      NoSymbols.withSorts(symbols.sorts.values.toSeq) 
+               .withFunctions(refined)
+    val extracted = super.extractSymbols(context, updated)
+    println("...print types...")
+    extracted.functions.values.map{ rf => 
+      println(rf.asString(
+        new t.PrinterOptions(printTypes = true, symbols = Some(extracted)))
+      ) 
+    }
+    println("...print types...") 
 
-    registerFunctions(extracted, sizeFunctions)
+    val sizeFunctions = sizes.getFunctions(symbols).map(context.transformer.transform(_))
+    val result = registerFunctions(extracted, sizeFunctions)     
+
+    println("...print types...")
+    result.functions.values.map{ rf => 
+      println(rf.asString(
+        new t.PrinterOptions(printTypes = true, symbols = Some(result)))
+      ) 
+    }
+    println("...print types...") 
+    result
   }
 }
 
