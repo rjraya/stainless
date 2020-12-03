@@ -217,9 +217,12 @@ trait Strengthener { self: OrderingRelation =>
 
   object refinementCache {
     // Cache holds function identifier and parameter identifier
-    private val cache: MutableMap[(Identifier, Identifier), Type] = MutableMap.empty
+    private val cache: MutableMap[(Identifier, Identifier), Seq[Type]] = MutableMap.empty
 
-    def add(p: ((Identifier, Identifier), Type)) = cache += p
+    def add(p: ((Identifier, Identifier), Seq[Type])) = {
+      val oldTypes = cache.getOrElse(p._1)
+      cache.update(p._1, oldTypes ++ p._2)
+    }
     def get = cache
   }
 
@@ -268,7 +271,7 @@ trait Strengthener { self: OrderingRelation =>
                   fi.id, id, freshTuple, fi.tfd.params.map(_.toVariable))
                 val tpe = RefinementType(freshTuple, constr1)
 
-                refinementCache.add(((fid,id),tpe))
+                refinementCache.add(((fid,id),Seq(tpe)))
 
                 inLambda = old
                 Lambda(newLArgs, newBody)

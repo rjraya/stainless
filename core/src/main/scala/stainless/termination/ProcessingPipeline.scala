@@ -50,7 +50,7 @@ trait ProcessingPipeline extends TerminationChecker with inox.utils.Interruptibl
   case class Cleared(funDef: FunDef, 
                      measure: Option[Expr], 
                      strengthened: Option[FunDef],
-                     refinementCache: Option[MutableMap[(Identifier, Identifier), Type]]) extends Result(funDef)
+                     refinementCache: Option[MutableMap[(Identifier, Identifier), Seq[Type]]]) extends Result(funDef)
   case class Broken(funDef: FunDef, reason: NonTerminating) extends Result(funDef)
 
   protected val processors: List[Processor { val checker: self.type }]

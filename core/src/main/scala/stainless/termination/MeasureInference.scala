@@ -31,7 +31,7 @@ trait MeasureInference
 
   protected case class TransformerContext(symbols: Symbols, 
                                           measureCache: MutableMap[FunDef, Expr],
-                                          refinementCache: MutableMap[(Identifier, Identifier), Type]) {
+                                          refinementCache: MutableMap[(Identifier, Identifier), Seq[Type]]) {
     final object transformer extends inox.transformers.TreeTransformer {
       override val s: self.s.type = self.s
       override val t: self.t.type = self.t
@@ -129,8 +129,8 @@ trait MeasureInference
       def refineSignatureRec(fd: FunDef): FunDef = {
         fd.copy(params = (fd.params.map(_.tpe) zip fd.params).map {
           case (FunctionType(from,to),param) => 
-            val constr: Type = refinementCache.getOrElse((fd.id, param.id), )
-            val fullConstr = andJoin(constr)
+            val constr: Seq[Type] = refinementCache.getOrElse((fd.id, param.id), Seq(tupleTypeWrap(from)))
+            //val fullConstr = andJoin(constr)
 
             val refineArg = ValDef.fresh("z", tupleTypeWrap(from))
             val cnstr1 = exprOps.replace(Map(param.toVariable -> refineArg.toVariable), fullConstr)
