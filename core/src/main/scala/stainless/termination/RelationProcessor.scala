@@ -95,7 +95,7 @@ trait RelationProcessor extends OrderingProcessor {
         // We preserve the measure specified by the user
         measureCache.add(tf._1 -> measure)
 
-        Cleared(tf._1, Some(measure), annotated.toMap.get(tf._1), Some(ordering.refinementCache.get))
+        Cleared(tf._1, Some(measure), annotated.toMap.get(tf._1), ordering.refinementCache.get)
       }.toSeq)
     } else {
       None

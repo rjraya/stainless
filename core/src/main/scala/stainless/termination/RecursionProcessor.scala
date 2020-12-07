@@ -5,6 +5,9 @@ package termination
 
 import scala.annotation.tailrec
 
+// TODO: convert MutableMap to Map 
+import scala.collection.mutable.{Map => MutableMap}
+
 trait RecursionProcessor extends OrderingProcessor {
   val ordering: OrderingRelation with Strengthener with RelationBuilder {
     val checker: RecursionProcessor.this.checker.type
@@ -46,7 +49,7 @@ trait RecursionProcessor extends OrderingProcessor {
         if (noGuarantees) {
           None
         } else if (recursive.isEmpty) {
-          Some(Cleared(funDef, None, None, None) :: Nil)
+          Some(Cleared(funDef, None, None, MutableMap()) :: Nil)
         } else {
           val decreases = funDef.params.zipWithIndex.find {
             case (arg, index) =>
@@ -69,7 +72,7 @@ trait RecursionProcessor extends OrderingProcessor {
             case Some(p) =>
               val measure = ordering.measure(Seq(p._1.toVariable))
               measureCache.add(funDef -> measure)
-              Some(Cleared(funDef, Some(measure), None, None) :: Nil)
+              Some(Cleared(funDef, Some(measure), None, MutableMap()) :: Nil)
             case None =>
               None
           }

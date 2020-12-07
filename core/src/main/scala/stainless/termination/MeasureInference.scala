@@ -85,8 +85,8 @@ trait MeasureInference
               case None => original
             }
             toRefine match {
-              case Some(cache) => cache.map(refinementCache += _)
-              case None => ()
+              case cache if !toRefine.isEmpty => cache.map(refinementCache += _)
+              case _ => ()
             }            
             result.copy(fullBody = exprOps.withMeasure(result.fullBody, Some(measure.setPos(result))))
 
@@ -129,15 +129,12 @@ trait MeasureInference
       def refineSignatureRec(fd: FunDef): FunDef = {
         fd.copy(params = (fd.params.map(_.tpe) zip fd.params).map {
           case (FunctionType(from,to),param) => 
-            val constr: Seq[Type] = refinementCache.getOrElse((fd.id, param.id), Seq(tupleTypeWrap(from)))
-            //val fullConstr = andJoin(constr)
-
+            val cnstr: Type = tupleTypeWrap(refinementCache.getOrElse((fd.id, param.id), Seq(tupleTypeWrap(from))))
             val refineArg = ValDef.fresh("z", tupleTypeWrap(from))
-            val cnstr1 = exprOps.replace(Map(param.toVariable -> refineArg.toVariable), fullConstr)
-            println("constraint: " + constr.map{ _.asString(new PrinterOptions(printUniqueIds = true)) })
-            println("modified constraint: " + cnstr1.asString(new PrinterOptions(printUniqueIds = true)))
-            val tpe1 = RefinementType(refineArg, cnstr1)
-            param.copy(tpe = tpe1)
+            //val cnstr1 = exprOps.replace(Map(param.toVariable -> refineArg.toVariable), fullConstr)
+            println("constraint: " + cnstr.asString(new PrinterOptions(printUniqueIds = true)))
+            //val tpe1 = RefinementType(refineArg, cnstr)
+            param.copy(tpe = FunctionType(Seq(cnstr), to))
 
           case (_,param) => param
         })
@@ -166,13 +163,13 @@ trait MeasureInference
       NoSymbols.withSorts(symbols.sorts.values.toSeq) 
                .withFunctions(refined)
     val extracted = super.extractSymbols(context, updated)
-    println("...print types...")
+    /* println("...print types...")
     extracted.functions.values.map{ rf => 
       println(rf.asString(
         new t.PrinterOptions(printTypes = true, symbols = Some(extracted)))
       ) 
     }
-    println("...print types...") 
+    println("...print types...") */ 
 
     val sizeFunctions = sizes.getFunctions(symbols).map(context.transformer.transform(_))
     val result = registerFunctions(extracted, sizeFunctions)     
@@ -180,7 +177,7 @@ trait MeasureInference
     println("...print types...")
     result.functions.values.map{ rf => 
       println(rf.asString(
-        new t.PrinterOptions(printTypes = true, symbols = Some(result)))
+        new t.PrinterOptions(printUniqueIds=true, printTypes = true, symbols = Some(result)))
       ) 
     }
     println("...print types...") 

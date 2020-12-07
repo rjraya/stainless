@@ -50,7 +50,7 @@ trait ProcessingPipeline extends TerminationChecker with inox.utils.Interruptibl
   case class Cleared(funDef: FunDef, 
                      measure: Option[Expr], 
                      strengthened: Option[FunDef],
-                     refinementCache: Option[MutableMap[(Identifier, Identifier), Seq[Type]]]) extends Result(funDef)
+                     refinementCache: MutableMap[(Identifier, Identifier), Seq[Type]]) extends Result(funDef)
   case class Broken(funDef: FunDef, reason: NonTerminating) extends Result(funDef)
 
   protected val processors: List[Processor { val checker: self.type }]
@@ -98,7 +98,7 @@ trait ProcessingPipeline extends TerminationChecker with inox.utils.Interruptibl
                             (String, 
                              Option[Expr], 
                              Option[FunDef],
-                             Option[MutableMap[(Identifier, Identifier), Type]]
+                             MutableMap[(Identifier, Identifier), Seq[Type]]
                             )] = MutableMap.empty
   private val brokenMap: MutableMap[FunDef, (String, NonTerminating)] = MutableMap.empty
 
@@ -157,7 +157,7 @@ trait ProcessingPipeline extends TerminationChecker with inox.utils.Interruptibl
       } else if (isProblem(fd)) {
         NoGuarantee
       } else if (clearedMap contains fd) {
-        Terminates(clearedMap(fd)._1, clearedMap(fd)._2, clearedMap(fd)._3,clearedMap(fd)._4)
+        Terminates(clearedMap(fd)._1, clearedMap(fd)._2, clearedMap(fd)._3, clearedMap(fd)._4)
       } else if (interrupted) {
         NoGuarantee
       } else if (running) {
@@ -207,7 +207,7 @@ trait ProcessingPipeline extends TerminationChecker with inox.utils.Interruptibl
     }
 
     for (fd <- funDefs -- notWellFormed -- problemComponents.flatten) {
-      processResult(Cleared(fd, None, None, None), "Non-recursive")
+      processResult(Cleared(fd, None, None, MutableMap()), "Non-recursive")
     }
 
     val newProblems = problemComponents.filter(fds =>
@@ -219,7 +219,7 @@ trait ProcessingPipeline extends TerminationChecker with inox.utils.Interruptibl
     // Consider @unchecked functions as terminating.
     val (uncheckedProblems, toCheck) = newProblems.partition(_.forall(_.flags contains Unchecked))
     for (fd <- uncheckedProblems.toSet.flatten) {
-      processResult(Cleared(fd, None, None, None), "Unchecked")
+      processResult(Cleared(fd, None, None, MutableMap()), "Unchecked")
     }
 
     toCheck.map(fds => Problem(fds.toSeq))

@@ -22,7 +22,8 @@ trait TerminationChecker { self =>
   case class Terminates(reason: String, 
                         measure: Option[Expr], 
                         strengthened: Option[FunDef],
-                        refinementCache: Option[MutableMap[(Identifier, Identifier), Seq[Type]]]) extends TerminationGuarantee {
+                        refinementCache: MutableMap[(Identifier, Identifier), Seq[Type]]
+                        ) extends TerminationGuarantee {
     override def isGuaranteed: Boolean = true
   }
 

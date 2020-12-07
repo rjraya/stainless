@@ -219,9 +219,9 @@ trait Strengthener { self: OrderingRelation =>
     // Cache holds function identifier and parameter identifier
     private val cache: MutableMap[(Identifier, Identifier), Seq[Type]] = MutableMap.empty
 
-    def add(p: ((Identifier, Identifier), Seq[Type])) = {
-      val oldTypes = cache.getOrElse(p._1)
-      cache.update(p._1, oldTypes ++ p._2)
+    def add(p: (Identifier, Identifier), tpes: Seq[Type]) = {
+      val oldTypes = cache.getOrElse(p, Seq())
+      cache.update(p, oldTypes ++ tpes)
     }
     def get = cache
   }
@@ -266,12 +266,12 @@ trait Strengthener { self: OrderingRelation =>
                 val newBody = exprOps.replaceFromSymbols(subst, recBody) 
 
                 // compute the constraint for the invoked function
-                val freshTuple = largs.map{ arg => ValDef.fresh("z", arg.tpe) }
+                val freshTuple = ValDef.fresh("z", tupleTypeWrap(largs.map{ _.tpe }))
                 val cnstr1 = self.applicationConstraint(
-                  fi.id, id, freshTuple, fi.tfd.params.map(_.toVariable))
-                val tpe = RefinementType(freshTuple, constr1)
+                  fi.id, id, Seq(freshTuple), fi.tfd.params.map(_.toVariable))
+                val tpe: Type = RefinementType(freshTuple, cnstr1) 
 
-                refinementCache.add(((fid,id),Seq(tpe)))
+                refinementCache.add((fid,id),Seq(tpe))
 
                 inLambda = old
                 Lambda(newLArgs, newBody)
