@@ -1,0 +1,1767 @@
+{
+    "version": "1.4.0",
+    "project": {
+        "name": "stainless-scalac-it",
+        "directory": "/localhome/raya/Desktop/lara/stainless/frontends/scalac",
+        "workspaceDir": "/localhome/raya/Desktop/lara/stainless",
+        "sources": [
+            "/localhome/raya/Desktop/lara/stainless/frontends/scalac/src/it/scala-2.12",
+            "/localhome/raya/Desktop/lara/stainless/frontends/scalac/src/it/scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/scalac/src/it/java",
+            "/localhome/raya/Desktop/lara/stainless/./frontends/common/src/it/scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/scalac/target/scala-2.12/src_managed/it"
+        ],
+        "dependencies": [
+            "stainless-core",
+            "root-it",
+            "stainless-scalac",
+            "stainless-scalac-test"
+        ],
+        "classpath": [
+            "/localhome/raya/Desktop/lara/stainless/.bloop/stainless-scalac/scala-2.12/classes",
+            "/localhome/raya/Desktop/lara/stainless/.bloop/stainless-scalac/scala-2.12/test-classes",
+            "/localhome/raya/Desktop/lara/stainless/.bloop/stainless-core/scala-2.12/classes",
+            "/localhome/raya/Desktop/lara/stainless/.bloop/root/scala-2.12/classes",
+            "/localhome/raya/Desktop/lara/stainless/.bloop/root/scala-2.12/test-classes",
+            "/localhome/raya/Desktop/lara/stainless/.bloop/root/scala-2.12/it-classes",
+            "/localhome/raya/Desktop/lara/inox/unmanaged/scalaz3-unix-64-2.12.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/lara/cafebabe_2.12/1.2/cafebabe_2.12-1.2.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/macro-compat_2.12/1.1.1/macro-compat_2.12-1.1.1.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.9/scala-reflect-2.12.9.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalatest/scalatest_2.12/3.0.8/scalatest_2.12-3.0.8.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.9/scala-compiler-2.12.9.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/spire-math/jawn-parser_2.12/0.13.0/jawn-parser_2.12-0.13.0.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-jawn_2.12/0.10.0-M2/circe-jawn_2.12-0.10.0-M2.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier_2.12/2.0.0-RC4-1/coursier_2.12-2.0.0-RC4-1.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.2.0/cats-core_2.12-1.2.0.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.9/scala-library-2.12.9.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-kernel_2.12/1.2.0/cats-kernel_2.12-1.2.0.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-core_2.12/2.0.0-RC4-1/coursier-core_2.12-2.0.0-RC4-1.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-generic_2.12/0.10.0-M2/circe-generic_2.12-0.10.0-M2.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/net/sf/squirrel-sql/thirdparty-non-maven/java-cup/0.11a/java-cup-0.11a.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-cache_2.12/2.0.0-RC4-1/coursier-cache_2.12-2.0.0-RC4-1.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/regblanc/scala-smtlib_2.12/0.2.2-7-g00a9686/scala-smtlib_2.12-0.2.2-7-g00a9686.jar",
+            "/localhome/raya/.cache/coursier/v1/http/logicrunch.research.it.uu.se/maven/uuverifiers/princess-parser_2.12/2018-02-26/princess-parser_2.12-2018-02-26.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-core_2.12/0.10.0-M2/circe-core_2.12-0.10.0-M2.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/chuusai/shapeless_2.12/2.3.3/shapeless_2.12-2.3.3.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-macros_2.12/1.2.0/cats-macros_2.12-1.2.0.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.8/scalactic_2.12-3.0.8.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.2.0/scala-xml_2.12-1.2.0.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-parser_2.12/0.10.0-M2/circe-parser_2.12-0.10.0-M2.jar",
+            "/localhome/raya/.cache/coursier/v1/http/logicrunch.research.it.uu.se/maven/uuverifiers/princess_2.12/2018-02-26/princess_2.12-2018-02-26.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.4/scala-parser-combinators_2.12-1.0.4.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-util_2.12/2.0.0-RC4-1/coursier-util_2.12-2.0.0-RC4-1.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/typesafe/config/1.3.4/config-1.3.4.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/machinist_2.12/0.6.4/machinist_2.12-0.6.4.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/argonaut/argonaut_2.12/6.2.3/argonaut_2.12-6.2.3.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-numbers_2.12/0.10.0-M2/circe-numbers_2.12-0.10.0-M2.jar",
+            "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/alexarchambault/argonaut-shapeless_6.2_2.12/1.2.0-M11/argonaut-shapeless_6.2_2.12-1.2.0-M11.jar",
+            "/localhome/raya/.cache/coursier/v1/http/logicrunch.research.it.uu.se/maven/uuverifiers/princess-smt-parser_2.12/2018-02-26/princess-smt-parser_2.12-2018-02-26.jar"
+        ],
+        "out": "/localhome/raya/Desktop/lara/stainless/.bloop/stainless-scalac",
+        "classesDir": "/localhome/raya/Desktop/lara/stainless/.bloop/stainless-scalac/scala-2.12/it-classes",
+        "resources": [
+            "/localhome/raya/Desktop/lara/stainless/frontends/scalac/src/it/resources",
+            "./frontends/benchmarks",
+            "/localhome/raya/Desktop/lara/stainless/frontends/scalac/target/scala-2.12/resource_managed/it",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/Not.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/Fix.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/MyTuple6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/MyTuple3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/Let.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/PreInSpecs.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/AddingPositiveNumbers.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/Arith.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/DivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/ListExample.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/MyTuple1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/MyTuple5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/Acc.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/AdvArith.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/OpaqueTypes1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/ConstructorRefinement.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/IdentityRefinement.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/PositiveInt.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/PositiveIntAlias.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/RefinedTypeMember.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/SortedListHead.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/ExtensionMethods1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/valid/DependentFunTypes.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/unchecked/Enums1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/unchecked/ErasedTerms2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/unchecked/ExternTypeDef.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/unchecked/Enums2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/unchecked/GhostMatch.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/unchecked/GhostCaseClasses.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/unchecked/ErasedTerms1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/typechecker/Streams.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/dotty-specific/invalid/ErasedTerms3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MutableMapUpdated.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams10.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/IfExpr4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/GuessNumber.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/TraitVar3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/FunInvocEvaluationOrder3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/TraitVar2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MultiArray4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams13.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/FunctionCaching.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/FunInvocEvaluationOrder2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Lambda1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedVar.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MutableMapInit.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MutateMapElement.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/WhileAsFun1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/VarUpdate.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternMatchingAliasingMutation2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MultiArray7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Snapshot2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams16.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MutateNestedMapElement.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState11.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Assert3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Assert2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/While3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Tutorial.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedOld2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/IfExpr3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams15.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ExpressionOrder1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState10.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MultiArray3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ExpressionOrder2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams17.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams14.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/WhileAsFun2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternGuards1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedOld1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ShortCircuit.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternMatchingAliasingMutation1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/IfExpr1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MutateMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation10.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/While2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/IfExpr2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Lambda2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayNested1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/While1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/AccessorMutation2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Snapshot.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Arithmetic.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternMatchingAliasingMutation5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/TraitVar1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/WhileConditionSubexpression.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/OldThis3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunParamsMutation3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ADTWithArray1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MultiArray5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/OldThis1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ADTWithArray2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ADTWithArray3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternMatchingAliasingMutation3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation11.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Assert1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternMatchingAliasingMutation4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/LoopInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MultiArray6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Array4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/StdIn1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/OldThis4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams12.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams11.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/FunInvocEvaluationOrder1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternMatchingAliasingMutation6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Assign1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Blocks1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectHierarchyMutation2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ObjectParamMutation8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/PatternGuards2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MultiArray1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/OldThis2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Sequencing8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunState9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/MultiArray2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/AccessorMutation1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunParamsMutation1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/HigherOrderFunctionsMutableParams18.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ImmutableOld.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayParamMutation8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NoMutation.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/NestedFunParamsMutation2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/Assert4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/valid/ArrayNested2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/Array2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/FunctionCaching.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/StdIn4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/Array3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/StdIn2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/Assert2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/LoopInv2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/NestedFunState1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/AnyMut.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/IfExpr1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/IfExpr2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/Randomness.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/StdIn3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/Asserts2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/Assert1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/Array1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/MutableTrait.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/StdIn1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/SimpleImperative.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/HiddenEffect.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/NestedFunState2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/ImpureMethods.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/imperative/invalid/LoopInv1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/valid/Wrapping1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/valid/Overflow1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/valid/StrictArithmetic1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/valid/Wrapping2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/StrictArithmetic4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/StrictArithmetic3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow13.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow12.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Wrapping1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow11.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/StrictArithmetic2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/StrictArithmetic1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Wrapping2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/strictarithmetic/invalid/Overflow10.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClasses3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Variance.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ConstructorArgsBoxing2.bak",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/RefinedInnerImperative.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostFlow2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostEffect2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostCheckerNoneGet.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClassTypeMember.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ImplicitInlining.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Typedefs1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ExternFallback1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/CaseObject2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeMembers5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/MethodInCaseObject.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeParams1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClasses1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Arrays.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostEffect3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ConstSemigroup.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeMembers4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TupleSelect.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeMembers2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeParams2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClasses2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Typedefs2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Extraction1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ToString.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/PairBound.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Extraction2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostAssert.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/HighLow.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ExternFallback2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ConstructorArgsBoxing3.bak",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostFlow1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/LazyVal.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/MethodsCasts.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/PreInferrence.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ImportStatements.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostEffect1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClassesScope2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClasses4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/AnonymousClasses3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/AccessorFlags.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeMembers1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostFlow3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Extraction4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/StaticDefaultGetter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ImplicitArguments.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeParams3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/CaseObject.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Copy.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostCaseClass.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/MutableTypeParameter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeMembers0.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/SuperCalls.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClassLocalFun.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/OldInPost.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ConstructorArgsBoxing1.bak",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/ClassBody.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/MapAliasing.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/AnonymousClasses1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/SuperCall.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/BlockInPost.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/LongList.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostLet.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/DefaultParam.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/GhostMethods.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/CaseObjectSuper.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/UnitIfExpr.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/NonGhostUpdate.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/InnerClassesScope1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/CaseObjectTypeMember.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/TypeMembers3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/Extraction3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/valid/AnonymousClasses2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/MutateOld.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/MutableMapUpdated.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadPre4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/List4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/ImpureLazy2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Initialization5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/GhostEffect2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/LambdaMutation.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/TraitVarDefault.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Println.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/GhostPatmat.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/MissingAbstractOverride.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadPre2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadOverride3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/GhostEffect3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/ObjectParent1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/ObjectParent2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/List3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Purity1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Initialization3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Purity2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/CtorParams.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/NonMutableFunTypeParameter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadOverride1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/GhostDafny.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/GhostEffect1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/EffectfulVal.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/ImpureLazy.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/MultipleInheritance.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/SuperAbstract.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/NonMutableTypeParameter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Initialization2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/InnerClass.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/AnonymousClassRefine.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/TraitVar1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadAliasing.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Initialization1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadPre5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/InnerClassFunClosure.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/FieldInheritance2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/OldInMeasure.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadPre6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/CopyMut.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Initialization4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadPre7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadPre3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/IntToBigInt2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/Require.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadOverride2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/OldInBody.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/ExtendNonMutable.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/InnerClassCloseMut.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/ClassBody.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/List1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/MapAliasing.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/MutableField.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/IntToBigInt.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/OldInPre.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/BadPre1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/List2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/extraction/invalid/InnerClassEquality.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/MyTuple2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/BooleanOps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/MyTuple4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/Sets2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/Anonymous.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/SetTest.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/Matching.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/coq/wip/ADTInvariants1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ArraySlice.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InnerClasses3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lists4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Closures2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Array2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested15.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTInvariants3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTInvariants4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ValueClasses.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested18.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/LiteralMaps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SetIsEmpty.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/StaticChecks2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ContMonad.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Copy2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Asserts1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MyTuple2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Existentials.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Client.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/RedBlackTree.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/HOInvocations.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MergeSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BasicReal.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Formulas.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lists5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AdtSpecializationUnapply.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InnerClassTypeMember.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Array5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ImmutableTrait.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/TestPartialFunction3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FunctionMapsObj.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Subtyping1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/IntSetProp.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MyTuple6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FoolProofAdder.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/IntSet.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BigIntMonoidLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lists1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Array3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BinarySearch.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InnerClasses1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/QuickSortFilter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BinarySearchTreeQuant.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Justify.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Overrides.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SuperCall6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTWithArray4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/NatMonoidLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested10.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Laws2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BinarySearchTreeQuant2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BVDivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/LambdaEquality.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ContainerTest.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/PositiveMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InnerClasses2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/EffectfulPost.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Sets1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Opaque.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BitsTricks.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BitsTricksSlow.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/PositiveMap2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Unit2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ArrayUpdated.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Monoid.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Predicate.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MyTuple3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Heaps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Reverse.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/GoodInitialization.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/TestPartialFunction2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ChooseWithWitness.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SuperCall1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/LastDynAssert.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lists2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/RealDivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MsgQueue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Trees1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ConcTree.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/PureMethods.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Mean.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FunctionMaps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Monotonic.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Unapply.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Monads3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lambdas.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/HOInvocations2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ExternFieldPure.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/QuickSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BooleanOps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Composition.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Subtyping2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Generics1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested16.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Monads1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AssociativeList.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/StableSorter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/PreInSpecs.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MyTuple4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Zero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Passes1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Countable.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FieldInheritance.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ConcRope.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lambdas2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lists3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Sets2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SuperCall4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InnerClasses4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Peano.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AnonymousClasses3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AddingPositiveNumbers.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BVMaxInterpret.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/CopyInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/StateMachine.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Equations.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BVDivisionByZero2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Generics.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/EitherLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Extern2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Field1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/NaturalBuiltin.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Longs.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InnerClasses5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Extern1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Iterables.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Passes2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Field2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/TestPartialFunction.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ForallAssoc.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BigIntRing.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MatchExh.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Havoc.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTWithArray1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested12.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Insert.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MergeSort2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/CovariantList.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Methods.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested11.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTWithArray2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MyMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/PartialKVTrace.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/NotEquals.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SuperCall3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Copy.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Factorial.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Countable2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FiniteSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FinalMethod.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Array1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/LawTypeArgsElim.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTWithArray5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AdtSpecializationUnapply2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ListOperations.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Count.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/PartialCompiler.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Unit1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FlatMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Anonymous.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/FoldAssociative.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Filter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AbstractRefinementMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ChooseLIA.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AssociativityProperties.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/DivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Array4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Lists6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/IntSetInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/CaseObject1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Laws0.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ForallWithBlock.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MySet.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MyTuple1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/CallByName1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/StaticChecks1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MapGetOrElse2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ValueClassesInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Laws1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested14.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Monads2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ListMonoidLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested17.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/LetAliasing.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Monotonicity.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ExternField.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InsertionSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SuperCall5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AnonymousClasses1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MapGetPlus.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/IntSetUnit.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SearchLinkedList.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MyTuple5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Shorts.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/TransitiveQuantification.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ParBalance.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/README",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SuperCall2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Acc.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BestRealTypes.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ConcreteClass.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Closures.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Actors.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/BVDivSemantics.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MatchGuard.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ManyInvariants.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Postcondition.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ArrayLiterals.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/QuantifierUnification.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InstanceOf1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/InnerClasses0.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/PropositionalLogic.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Bytes.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/MapDiff.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTWithArray6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Size.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AmortizedQueue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Nested13.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AnonymousClasses2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTInvariants2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/Sorted.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/AbstractClasses.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/ADTInvariants1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/valid/SimpleQuantification.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/RedBlackTree.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/InductTacticTest.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/SimpleQuantification3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/Monotonic.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/HOInvocations2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/Unapply2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/AbstractRefinementMap2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/Postcondition.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/unchecked/SimpleQuantification.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/SimpleQuantification2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Array2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/LambdaPrecondition.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Nested15.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/SpecWithExtern.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ParentInvariant.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AddNaturals1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ExternFun.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/PartialSplit.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ADTInvariants.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/StaticChecks2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Asserts1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Generics2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/MyTuple2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Existentials.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ADTInvariantCheck.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/HOInvocations.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BVDivision2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/LambdaEquality2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Array5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/RedBlackTree2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AddNaturals2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/IntSet.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BigIntMonoidLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Array3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BadConcRope.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Unapply1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BinarySearchTreeQuant.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Overrides.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/StaticChecks3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BVDivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ContainerTest.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/PositiveMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BinarySearch1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AddingNegativeNumbers.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/PositiveMap2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/MyTuple3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Choose2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Lists.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/RealDivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Mean.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/PreInSpecs.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Array6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Passes1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/FieldInheritance.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AddNaturals3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Equations3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Array7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AddingPositiveNumbers.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/CopyInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Generics.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Choose1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/PreInPre.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Passes2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/SuperInvariants.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ForallAssoc.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/MatchExh.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ADTWithArray1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ExternMut.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BinarySearch2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ADTWithArray2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ExternFallbackMut.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/RealNonDiscrete.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/FiniteSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BVRemainderByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/DisrespectfulOverride.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Array1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/TestLazinessOfAnd.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ListOperations.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BraunTree.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Unit1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Equations1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AbstractRefinementMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AssociativityProperties.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/DivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Array4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ModuloByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/MyTuple1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BinarySearch3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Equations2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/CallByName1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/EnsuringBoolean.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/StaticChecks1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/ValueClassesInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Laws1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BigArray.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/InsertionSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/IntSetUnit.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/README",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Acc.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/BodyEnsuring.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/RemainderByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/DisrespectfulOverride2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/PropositionalLogic.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/Bytes.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/HiddenOverride.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/CharCompare.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/verification/invalid/AddNaturals4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BalancedParentheses.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/ToChurch.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Fibonacci.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/LiteralMaps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Deque.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Client.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PostConditionInTuple.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/ListWithSize.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Foldr.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/RedBlackTree.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/HOInvocations.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MergeSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/LazyNumericalRep.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BasicReal.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Formulas.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/OddEvenMoreComplex.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/InnerClassTypeMember.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/IntSetProp.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/FoolProofAdder.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/IntSet.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BigIntMonoidLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/AliasPartial.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/List.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BinarySearch.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/QuickSortFilter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Justify.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Overrides.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/NatMonoidLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/McCarthy91.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PositiveMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/EffectfulPost.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BitsTricks.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/HammingMemoized.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Monoid.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/IndirectHO.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Heaps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/ListMonad.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/OddEven.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/FiniteStreams.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Trees1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Termination_passing1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Mean.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Viterbi.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/QuickSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BooleanOps.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/NNF.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/AssociativeList.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/StableSorter.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PreInSpecs.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/AnyDown.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Countable.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MergeSortTermination.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Patterns.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/LazySelectionSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Peano.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/NNFSimple.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BinomialHeap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/EitherLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Ackermann.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/NaturalBuiltin.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Longs.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/RealTimeQueue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Queue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/OptionMonad.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/ChurchNum.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PartitionExample.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/UpDown.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MergeSort2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Methods.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/AbstractPost.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PartialKVTrace.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/NotEquals.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Factorial.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/FiniteSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/OddEvenComplex.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PartialCompiler.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/LoopInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/FlatMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/AbstractRefinementMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/DivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/SimpInterpret.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/CountTowardsZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/XPlus2N.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Map.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MySet.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PackratParsing.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MapGetOrElse2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BottomUpMergeSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/AssociativeFold.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/ListMonoidLaws.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/InsertionSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MapGetPlus.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/IntSetUnit.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/SearchLinkedList.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Numeric1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Shorts.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/ParBalance.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Knapsack.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Acc.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/BestRealTypes.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/IndexOfInjective.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/PropositionalLogic.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/ExternPost.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/Bytes.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/AmortizedQueue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/GodelNumbering.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/ToChurch.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Fibonacci.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Deque.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Streams.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/ListWithSize.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Foldr.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/RedBlackTree.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/LazyNumericalRep.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/NestedLoop.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/OddEvenMoreComplex.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/HOTest.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/OddEvenSimple.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/AliasPartial.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Loop2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/CyclicFibStream.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/McCarthy91.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/HammingMemoized.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/IndirectIntro.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/IndirectHO.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/FiniteStreams.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Termination_passing1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Viterbi.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/QuickSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Partial.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/NNF.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/AnyDown.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/MergeSortTermination.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Patterns.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/LazySelectionSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/NNFSimple.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/BinomialHeap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Ackermann.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Indirect.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/RealTimeQueue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/ConstantPropagation.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Queue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/CyclicHammingStream.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Consistent.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/ChurchNum.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/UpDown.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/LazyTree.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/OddEvenComplex.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/HOTermination.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/SimpInterpret.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/CountTowardsZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/XPlus2N.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Map.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/PackratParsing.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/BottomUpMergeSort.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Numeric1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/valid/Knapsack.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Term.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Numeric2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Zeros2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/WrongFibonacci.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/OddEven.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/NonStrictPositiveTypes.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Zeros.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/UniversalEquality.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Inconsistency2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/NonStrictPositiveTypesIR.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Inconsistency5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Queue.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/LambdaCalculus.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Inconsistency.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Numeric3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Numeric1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Zeros3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/Termination_failling1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/termination/looping/NegativeDatatype.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lists4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Closures2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Array2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested15.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTInvariants3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTInvariants4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested18.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/SetIsEmpty.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/StaticChecks2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Asserts1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MyTuple2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/NestedLoop.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lists5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Array5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ImmutableTrait.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/TestPartialFunction3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Subtyping1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MyTuple6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lists1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Array3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/SuperCall6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/IgnoredField.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTWithArray4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested10.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Laws2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Loop2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/BVDivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested9.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/LambdaEquality.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Sets1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Opaque.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Unit2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ArrayUpdated.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MyTuple3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/TestPartialFunction2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/SuperCall1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lists2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/RealDivisionByZero.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/PureMethods.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Unapply.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Monads3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lambdas.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Subtyping2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Generics1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested16.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Monads1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MyTuple4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/FieldInheritance.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lambdas2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lists3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Sets2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/SuperCall4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/AddingPositiveNumbers.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/CopyInv.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/BVDivisionByZero2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Generics.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Extern2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Field1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Extern1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested7.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested8.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Field2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/TestPartialFunction.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MatchExh.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTWithArray1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested12.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested11.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTWithArray2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MyMap.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/SuperCall3.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Copy.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Issue803.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/FinalMethod.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Array1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTWithArray5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Unit1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Anonymous.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Array4.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Lists6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/CaseObject1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Laws0.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MyTuple1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/CallByName1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/StaticChecks1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Laws1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested14.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested17.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/SuperCall5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MyTuple5.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/SuperCall2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ConcreteClass.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Closures.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/BVDivSemantics.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/MatchGuard.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ArrayLiterals.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/InstanceOf1.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTWithArray6.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/Nested13.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTInvariants2.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/AbstractClasses.scala",
+            "/localhome/raya/Desktop/lara/stainless/frontends/benchmarks/typechecker/valid/MicroTests/ADTInvariants1.scala"
+        ],
+        "scala": {
+            "organization": "org.scala-lang",
+            "name": "scala-compiler",
+            "version": "2.12.9",
+            "options": [
+                "-deprecation",
+                "-unchecked",
+                "-feature"
+            ],
+            "jars": [
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.9/scala-reflect-2.12.9.jar",
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.9/scala-compiler-2.12.9.jar",
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.9/scala-library-2.12.9.jar",
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/jline/jline/2.14.6/jline-2.14.6.jar",
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.9/scala-compiler-2.12.9.jar",
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/fusesource/jansi/jansi/1.12/jansi-1.12.jar",
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.0.6/scala-xml_2.12-1.0.6.jar",
+                "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.9/scala-library-2.12.9.jar"
+            ],
+            "analysis": "/localhome/raya/Desktop/lara/stainless/frontends/scalac/target/streams/it/bloopAnalysisOut/_global/streams/inc_compile_2.12.zip",
+            "setup": {
+                "order": "mixed",
+                "addLibraryToBootClasspath": true,
+                "addCompilerToClasspath": false,
+                "addExtraJarsToClasspath": false,
+                "manageBootClasspath": true,
+                "filterLibraryFromClasspath": true
+            }
+        },
+        "java": {
+            "options": [
+                
+            ]
+        },
+        "test": {
+            "frameworks": [
+                {
+                    "names": [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                }
+            ],
+            "options": {
+                "excludes": [
+                    
+                ],
+                "arguments": [
+                    {
+                        "args": [
+                            "-oDF"
+                        ]
+                    }
+                ]
+            }
+        },
+        "platform": {
+            "name": "jvm",
+            "config": {
+                "home": "/usr/lib/jvm/java-8-oracle/jre",
+                "options": [
+                    "-Duser.dir=/localhome/raya/Desktop/lara/stainless/frontends/scalac",
+                    "-Xss256M",
+                    "-Xms1024M",
+                    "-XX:MaxMetaspaceSize=512M",
+                    "-XX:+UseCodeCacheFlushing",
+                    "-XX:ReservedCodeCacheSize=256M"
+                ]
+            },
+            "mainClass": [
+                
+            ]
+        },
+        "resolution": {
+            "modules": [
+                {
+                    "organization": "ch.epfl.lara",
+                    "name": "cafebabe_2.12",
+                    "version": "1.2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "cafebabe_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/lara/cafebabe_2.12/1.2/cafebabe_2.12-1.2.jar"
+                        },
+                        {
+                            "name": "cafebabe_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/ch/epfl/lara/cafebabe_2.12/1.2/cafebabe_2.12-1.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.typelevel",
+                    "name": "macro-compat_2.12",
+                    "version": "1.1.1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "macro-compat_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/macro-compat_2.12/1.1.1/macro-compat_2.12-1.1.1.jar"
+                        },
+                        {
+                            "name": "macro-compat_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/macro-compat_2.12/1.1.1/macro-compat_2.12-1.1.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-reflect",
+                    "version": "2.12.9",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-reflect",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.9/scala-reflect-2.12.9.jar"
+                        },
+                        {
+                            "name": "scala-reflect",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.12.9/scala-reflect-2.12.9-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scalatest",
+                    "name": "scalatest_2.12",
+                    "version": "3.0.8",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scalatest_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalatest/scalatest_2.12/3.0.8/scalatest_2.12-3.0.8.jar"
+                        },
+                        {
+                            "name": "scalatest_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalatest/scalatest_2.12/3.0.8/scalatest_2.12-3.0.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-compiler",
+                    "version": "2.12.9",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-compiler",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.9/scala-compiler-2.12.9.jar"
+                        },
+                        {
+                            "name": "scala-compiler",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.9/scala-compiler-2.12.9-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.spire-math",
+                    "name": "jawn-parser_2.12",
+                    "version": "0.13.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "jawn-parser_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/spire-math/jawn-parser_2.12/0.13.0/jawn-parser_2.12-0.13.0.jar"
+                        },
+                        {
+                            "name": "jawn-parser_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/spire-math/jawn-parser_2.12/0.13.0/jawn-parser_2.12-0.13.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.circe",
+                    "name": "circe-jawn_2.12",
+                    "version": "0.10.0-M2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "circe-jawn_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-jawn_2.12/0.10.0-M2/circe-jawn_2.12-0.10.0-M2.jar"
+                        },
+                        {
+                            "name": "circe-jawn_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-jawn_2.12/0.10.0-M2/circe-jawn_2.12-0.10.0-M2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.get-coursier",
+                    "name": "coursier_2.12",
+                    "version": "2.0.0-RC4-1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "coursier_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier_2.12/2.0.0-RC4-1/coursier_2.12-2.0.0-RC4-1.jar"
+                        },
+                        {
+                            "name": "coursier_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier_2.12/2.0.0-RC4-1/coursier_2.12-2.0.0-RC4-1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.typelevel",
+                    "name": "cats-core_2.12",
+                    "version": "1.2.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "cats-core_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.2.0/cats-core_2.12-1.2.0.jar"
+                        },
+                        {
+                            "name": "cats-core_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-core_2.12/1.2.0/cats-core_2.12-1.2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.12.9",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.9/scala-library-2.12.9.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.9/scala-library-2.12.9-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.typelevel",
+                    "name": "cats-kernel_2.12",
+                    "version": "1.2.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "cats-kernel_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-kernel_2.12/1.2.0/cats-kernel_2.12-1.2.0.jar"
+                        },
+                        {
+                            "name": "cats-kernel_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-kernel_2.12/1.2.0/cats-kernel_2.12-1.2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.get-coursier",
+                    "name": "coursier-core_2.12",
+                    "version": "2.0.0-RC4-1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "coursier-core_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-core_2.12/2.0.0-RC4-1/coursier-core_2.12-2.0.0-RC4-1.jar"
+                        },
+                        {
+                            "name": "coursier-core_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-core_2.12/2.0.0-RC4-1/coursier-core_2.12-2.0.0-RC4-1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.commons",
+                    "name": "commons-lang3",
+                    "version": "3.4",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "commons-lang3",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar"
+                        },
+                        {
+                            "name": "commons-lang3",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.circe",
+                    "name": "circe-generic_2.12",
+                    "version": "0.10.0-M2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "circe-generic_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-generic_2.12/0.10.0-M2/circe-generic_2.12-0.10.0-M2.jar"
+                        },
+                        {
+                            "name": "circe-generic_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-generic_2.12/0.10.0-M2/circe-generic_2.12-0.10.0-M2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "net.sf.squirrel-sql.thirdparty-non-maven",
+                    "name": "java-cup",
+                    "version": "0.11a",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "java-cup",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/net/sf/squirrel-sql/thirdparty-non-maven/java-cup/0.11a/java-cup-0.11a.jar"
+                        },
+                        {
+                            "name": "java-cup",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/net/sf/squirrel-sql/thirdparty-non-maven/java-cup/0.11a/java-cup-0.11a-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.get-coursier",
+                    "name": "coursier-cache_2.12",
+                    "version": "2.0.0-RC4-1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "coursier-cache_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-cache_2.12/2.0.0-RC4-1/coursier-cache_2.12-2.0.0-RC4-1.jar"
+                        },
+                        {
+                            "name": "coursier-cache_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-cache_2.12/2.0.0-RC4-1/coursier-cache_2.12-2.0.0-RC4-1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.regblanc",
+                    "name": "scala-smtlib_2.12",
+                    "version": "0.2.2-7-g00a9686",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-smtlib_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/regblanc/scala-smtlib_2.12/0.2.2-7-g00a9686/scala-smtlib_2.12-0.2.2-7-g00a9686.jar"
+                        },
+                        {
+                            "name": "scala-smtlib_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/regblanc/scala-smtlib_2.12/0.2.2-7-g00a9686/scala-smtlib_2.12-0.2.2-7-g00a9686-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "uuverifiers",
+                    "name": "princess-parser_2.12",
+                    "version": "2018-02-26",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "princess-parser_2.12",
+                            "checksum": {
+                                "type": "sha1",
+                                "digest": "eeac8f21562fc1a503a0e3477bbd061de8435ba5"
+                            },
+                            "path": "/localhome/raya/.cache/coursier/v1/http/logicrunch.research.it.uu.se/maven/uuverifiers/princess-parser_2.12/2018-02-26/princess-parser_2.12-2018-02-26.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.circe",
+                    "name": "circe-core_2.12",
+                    "version": "0.10.0-M2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "circe-core_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-core_2.12/0.10.0-M2/circe-core_2.12-0.10.0-M2.jar"
+                        },
+                        {
+                            "name": "circe-core_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-core_2.12/0.10.0-M2/circe-core_2.12-0.10.0-M2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.chuusai",
+                    "name": "shapeless_2.12",
+                    "version": "2.3.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "shapeless_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/chuusai/shapeless_2.12/2.3.3/shapeless_2.12-2.3.3.jar"
+                        },
+                        {
+                            "name": "shapeless_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/chuusai/shapeless_2.12/2.3.3/shapeless_2.12-2.3.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.typelevel",
+                    "name": "cats-macros_2.12",
+                    "version": "1.2.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "cats-macros_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-macros_2.12/1.2.0/cats-macros_2.12-1.2.0.jar"
+                        },
+                        {
+                            "name": "cats-macros_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/cats-macros_2.12/1.2.0/cats-macros_2.12-1.2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scalactic",
+                    "name": "scalactic_2.12",
+                    "version": "3.0.8",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scalactic_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.8/scalactic_2.12-3.0.8.jar"
+                        },
+                        {
+                            "name": "scalactic_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scalactic/scalactic_2.12/3.0.8/scalactic_2.12-3.0.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-xml_2.12",
+                    "version": "1.2.0",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-xml_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.2.0/scala-xml_2.12-1.2.0.jar"
+                        },
+                        {
+                            "name": "scala-xml_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-xml_2.12/1.2.0/scala-xml_2.12-1.2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.circe",
+                    "name": "circe-parser_2.12",
+                    "version": "0.10.0-M2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "circe-parser_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-parser_2.12/0.10.0-M2/circe-parser_2.12-0.10.0-M2.jar"
+                        },
+                        {
+                            "name": "circe-parser_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-parser_2.12/0.10.0-M2/circe-parser_2.12-0.10.0-M2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "uuverifiers",
+                    "name": "princess_2.12",
+                    "version": "2018-02-26",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "princess_2.12",
+                            "checksum": {
+                                "type": "sha1",
+                                "digest": "7a5ac6a2bb29f01cd30257514fa80ab3e38c280e"
+                            },
+                            "path": "/localhome/raya/.cache/coursier/v1/http/logicrunch.research.it.uu.se/maven/uuverifiers/princess_2.12/2018-02-26/princess_2.12-2018-02-26.jar"
+                        },
+                        {
+                            "name": "princess_2.12",
+                            "classifier": "sources",
+                            "checksum": {
+                                "type": "sha1",
+                                "digest": "e50bbdfe24eed5d5a58bc6ed2ff9aa68b0e6e22b"
+                            },
+                            "path": "/localhome/raya/.cache/coursier/v1/http/logicrunch.research.it.uu.se/maven/uuverifiers/princess_2.12/2018-02-26/princess_2.12-2018-02-26-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-parser-combinators_2.12",
+                    "version": "1.0.4",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "scala-parser-combinators_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.4/scala-parser-combinators_2.12-1.0.4.jar"
+                        },
+                        {
+                            "name": "scala-parser-combinators_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/modules/scala-parser-combinators_2.12/1.0.4/scala-parser-combinators_2.12-1.0.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.get-coursier",
+                    "name": "coursier-util_2.12",
+                    "version": "2.0.0-RC4-1",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "coursier-util_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-util_2.12/2.0.0-RC4-1/coursier-util_2.12-2.0.0-RC4-1.jar"
+                        },
+                        {
+                            "name": "coursier-util_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/get-coursier/coursier-util_2.12/2.0.0-RC4-1/coursier-util_2.12-2.0.0-RC4-1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe",
+                    "name": "config",
+                    "version": "1.3.4",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "config",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/typesafe/config/1.3.4/config-1.3.4.jar"
+                        },
+                        {
+                            "name": "config",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/typesafe/config/1.3.4/config-1.3.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.typelevel",
+                    "name": "machinist_2.12",
+                    "version": "0.6.4",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "machinist_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/machinist_2.12/0.6.4/machinist_2.12-0.6.4.jar"
+                        },
+                        {
+                            "name": "machinist_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/typelevel/machinist_2.12/0.6.4/machinist_2.12-0.6.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.argonaut",
+                    "name": "argonaut_2.12",
+                    "version": "6.2.3",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "argonaut_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/argonaut/argonaut_2.12/6.2.3/argonaut_2.12-6.2.3.jar"
+                        },
+                        {
+                            "name": "argonaut_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/argonaut/argonaut_2.12/6.2.3/argonaut_2.12-6.2.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "io.circe",
+                    "name": "circe-numbers_2.12",
+                    "version": "0.10.0-M2",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "circe-numbers_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-numbers_2.12/0.10.0-M2/circe-numbers_2.12-0.10.0-M2.jar"
+                        },
+                        {
+                            "name": "circe-numbers_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/io/circe/circe-numbers_2.12/0.10.0-M2/circe-numbers_2.12-0.10.0-M2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.github.alexarchambault",
+                    "name": "argonaut-shapeless_6.2_2.12",
+                    "version": "1.2.0-M11",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "argonaut-shapeless_6.2_2.12",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/alexarchambault/argonaut-shapeless_6.2_2.12/1.2.0-M11/argonaut-shapeless_6.2_2.12-1.2.0-M11.jar"
+                        },
+                        {
+                            "name": "argonaut-shapeless_6.2_2.12",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/com/github/alexarchambault/argonaut-shapeless_6.2_2.12/1.2.0-M11/argonaut-shapeless_6.2_2.12-1.2.0-M11-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "uuverifiers",
+                    "name": "princess-smt-parser_2.12",
+                    "version": "2018-02-26",
+                    "configurations": "default",
+                    "artifacts": [
+                        {
+                            "name": "princess-smt-parser_2.12",
+                            "checksum": {
+                                "type": "sha1",
+                                "digest": "cab28a55c7579aee7127ce735b4387683acb451f"
+                            },
+                            "path": "/localhome/raya/.cache/coursier/v1/http/logicrunch.research.it.uu.se/maven/uuverifiers/princess-smt-parser_2.12/2018-02-26/princess-smt-parser_2.12-2018-02-26.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-compiler",
+                    "version": "2.12.9",
+                    "configurations": "optional",
+                    "artifacts": [
+                        {
+                            "name": "scala-compiler",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.9/scala-compiler-2.12.9.jar"
+                        },
+                        {
+                            "name": "scala-compiler",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.12.9/scala-compiler-2.12.9-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.12.9",
+                    "configurations": "optional",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.9/scala-library-2.12.9.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "/localhome/raya/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.9/scala-library-2.12.9-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        },
+        "tags": [
+            "library"
+        ]
+    }
+}
