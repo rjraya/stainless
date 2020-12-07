@@ -125,19 +125,40 @@ trait MeasureInference
       case _                         => TerminationReport.NonTerminating
     }
 
-    def refineSignature(funDefs: Seq[FunDef]): Seq[FunDef] = {
+    def refineSignature(funDefs: Seq[FunDef]): Seq[FunDef] = {    
+      // now we have to order the parameters so that we don't refer to a parameter in a refinement
+      // before this parameter is declared
+      // TODO: do a proper ordering
+      def substOrdered(params: List[ValDef]): List[ValDef] = params match {
+        case Nil => Nil
+        case x :: xs => x.tpe match {
+          case FunctionType(_,_) => substOrdered(xs) ++ List(x)
+          case _ => x :: substOrdered(xs)
+        }
+      }
+
+      // now we need to reorder the parameters in any function invocation
+      def reorderParameters()
+      
       def refineSignatureRec(fd: FunDef): FunDef = {
-        fd.copy(params = (fd.params.map(_.tpe) zip fd.params).map {
+        val subst = (fd.params.map(_.tpe) zip fd.params).map {
           case (FunctionType(from,to),param) => 
             val cnstr: Type = tupleTypeWrap(refinementCache.getOrElse((fd.id, param.id), Seq(tupleTypeWrap(from))))
-            val refineArg = ValDef.fresh("z", tupleTypeWrap(from))
+            //val refineArg = ValDef.fresh("z", tupleTypeWrap(from))
             //val cnstr1 = exprOps.replace(Map(param.toVariable -> refineArg.toVariable), fullConstr)
             println("constraint: " + cnstr.asString(new PrinterOptions(printUniqueIds = true)))
             //val tpe1 = RefinementType(refineArg, cnstr)
-            param.copy(tpe = FunctionType(Seq(cnstr), to))
+            param -> param.copy(tpe = FunctionType(Seq(cnstr), to))
 
-          case (_,param) => param
-        })
+          case (_,param) => param -> param
+        }.toMap
+        println(subst)
+        val substVar = subst.map{ case (k,v) => (k,v.toVariable) }.toMap
+        val orderedSubst = substOrdered(subst.values.toList)
+        
+        
+
+        fd.copy(params = orderedSubst, fullBody = exprOps.replaceFromSymbols(substVar, fd.fullBody))
       }     
 
       //println(funDefs)
