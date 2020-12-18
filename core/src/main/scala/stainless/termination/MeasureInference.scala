@@ -7,7 +7,10 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
   val s: Trees
   val t: Trees
 
-  def extract(symbols: s.Symbols): t.Symbols = ???
+  def extract(symbols: s.Symbols): t.Symbols = {
+    
+    ???
+  }
   def invalidate(id: Identifier): Unit = ???
 }
 

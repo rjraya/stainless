@@ -1,8 +1,17 @@
 package stainless
 package termination
 
-trait AppStrengthener extends TerminationTransformer {
-/*
+import scala.collection.mutable.{Set => MutableSet, Map => MutableMap}
+
+trait AppStrengthener extends TerminationTransformer with inox.transformers.SymbolTransformer { self =>
+  val s: Trees
+  val t: Trees
+  import s._
+    import CallGraphOrderings._
+
+  
+  def transform(syms: s.Symbols): t.Symbols = ???
+
   sealed abstract class SizeConstraint
   case object StrongDecreasing extends SizeConstraint
   case object WeakDecreasing extends SizeConstraint
@@ -29,7 +38,7 @@ trait AppStrengthener extends TerminationTransformer {
     val transitiveFunDefs = funDefs ++ funDefs.flatMap(transitiveCallees)
     val sortedFunDefs = transitiveFunDefs.toSeq.sorted
 
-    for (fd <- sortedFunDefs if fd.body.isDefined && !strengthenedApp(fd) && checker.terminates(fd).isGuaranteed) {
+    for (fd <- sortedFunDefs if fd.body.isDefined && !strengthenedApp(fd)) {
 
       val applications = collectWithPC(fd.fullBody) {
         case (Application(v: Variable, args), path) => (path, v, args)
@@ -115,5 +124,5 @@ trait AppStrengthener extends TerminationTransformer {
       strengthenedApp += fd
     }
   }
-*/
+
 }
