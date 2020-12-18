@@ -25,6 +25,8 @@ trait RelationProcessor extends OrderingProcessor {
     strengthenApplications(problem.funSet)
 
     val formulas = problem.funDefs.map { funDef =>
+          println("Relations " + ordering.getRelations(funDef))
+
       funDef -> ordering.getRelations(funDef).collect {
         case Relation(_, path, fi @ FunctionInvocation(_, _, args), _) if problem.funSet(fi.tfd.fd) =>
           val args0 = funDef.params.map(_.toVariable)
@@ -61,7 +63,7 @@ trait RelationProcessor extends OrderingProcessor {
           }
         fd -> result
     }
-
+    println("Decreasing: " + decreasing)
     val (terminating, nonTerminating) = {
       val ok = decreasing.collect { case (fd, Success) => fd -> IntegerLiteral(0) }
       val nok = decreasing.collect { case (fd, Dep(fds)) => fd -> fds }.toList
