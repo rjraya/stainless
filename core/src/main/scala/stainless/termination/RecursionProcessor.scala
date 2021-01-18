@@ -69,6 +69,8 @@ trait RecursionProcessor extends OrderingProcessor {
             case Some(p) =>
               val measure = ordering.measure(Seq(p._1.toVariable))
               measureCache.add(funDef -> measure)
+              println("Used recursion processor................/n")
+              println(problem.funDefs.head.getPos.fullString)
               Some(Cleared(funDef, Some(measure)) :: Nil)
             case None =>
               None
