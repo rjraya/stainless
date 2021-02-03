@@ -43,9 +43,7 @@ class TerminationSuite extends ComponentTestSuite {
                                                                 // is mutually recursive with the current function looping_1$0
 
     // Relation processor hangs when strengthening applications (https://github.com/epfl-lara/stainless/issues/724)
-    case "verification/valid/LawTypeArgsElim" => Ignore
     case "verification/valid/QuickSortFilter" => Ignore
-    case "verification/valid/StableSorter"    => Ignore
 
     // Invalid measure inferred in RelationProcessor (https://github.com/epfl-lara/stainless/issues/725)
     case "termination/valid/ConstantPropagation" => Ignore
