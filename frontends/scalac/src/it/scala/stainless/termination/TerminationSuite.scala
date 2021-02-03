@@ -42,7 +42,8 @@ class TerminationSuite extends ComponentTestSuite {
     case "termination/looping/Queue"                    => Skip // Call to function looping_2$0 is not allowed here, because it
                                                                 // is mutually recursive with the current function looping_1$0
 
-    // Relation processor hangs when strengthening applications (https://github.com/epfl-lara/stainless/issues/724)
+    // Invalid measure inferred in RelationProcessor, most likely due to ListPrimitiveSize
+    // not having the lemmas for sizes of lists. See QuickSort below.
     case "verification/valid/QuickSortFilter" => Ignore
 
     // Invalid measure inferred in RelationProcessor (https://github.com/epfl-lara/stainless/issues/725)
