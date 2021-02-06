@@ -1,19 +1,13 @@
 package stainless
 package termination
 
-trait SCCProcessor {
+trait SCCProcessor extends extraction.ExtractionPipeline {
+  val s: ast.Trees
+  val t: ast.Trees
 
-  val program: Program { val trees: Trees }
-
-  import program._
-  import program.trees._
-  import program.symbols._
-
-  def run(problems: Seq[Problem]): Seq[Problem] = {
+  def extract(symbols: s.Symbols): Seq[Problem] = {
     val funDefs = problems.flatMap{ problem =>  
-      problem.funDefs.flatMap{ funDef => 
-        transitiveCallees(funDef) + funDef 
-      }
+      transitiveCallees(problem.funDefs) + problem.funDefs
     } 
     val pairs = allCalls.flatMap {
       case (id1, id2) =>
