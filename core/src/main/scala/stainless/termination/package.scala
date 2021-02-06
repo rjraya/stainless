@@ -25,10 +25,4 @@ package object termination {
   case class FailedMeasureInference(fd: inox.ast.Trees#FunDef, msg: String)
     extends Exception(msg)
 
-  // Building the termination pipeline
-
-  def pipeline(implicit ctx: inox.Context): TerminationPipeline = {
-    xlang.extractor        
-  }
-
 }
