@@ -20,3 +20,4 @@ trait TerminationPipeline { self =>
     }
   }
 }
+
