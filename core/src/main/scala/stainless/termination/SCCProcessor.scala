@@ -5,7 +5,8 @@ trait SCCProcessor extends TerminationPipeline {
   val s: ast.Trees
   val t: ast.Trees
 
-  def extract(fds: Seq[s.FunDef], symbols: s.Symbols): (Seq[t.FunDef], t.Symbols) = {
+  override def extract(fids: Seq[Problem], symbols: s.Symbols): (Seq[Problem], t.Symbols) = {
+    val fds = fids.flatMap{p => p.map{id => symbols.getFunction(id)}}
     val funDefs = symbols.transitiveCallees(fds.toSet) ++ fds
     val pairs = symbols.allCalls.flatMap {
       case (id1, id2) =>
@@ -15,10 +16,10 @@ trait SCCProcessor extends TerminationPipeline {
 
     val callGraph = pairs.groupBy(_._1).mapValues(_.map(_._2))
     val allComponents = inox.utils.SCC.scc(callGraph)
+    val componentIds = allComponents.map{ _.map{ _.id } }
 
-    val f: t.Symbols = super.transform(symbols)
-
-    ()
+    val transformer = new IdentitySymbolTransformer
+    (componentIds, transformer.transform(symbols))  
   }
 
 }
