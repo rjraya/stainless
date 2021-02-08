@@ -4,8 +4,8 @@ package termination
 import transformers._
 
 trait TerminationPipeline { self =>
-  val s: ast.Trees
-  val t: ast.Trees
+  val s: Trees
+  val t: Trees
 
   type Problem = Set[Identifier]
 
@@ -26,7 +26,7 @@ trait TerminationPipeline { self =>
 }
 
 object TerminationPipeline {
-  def apply(transformer: inox.transformers.SymbolTransformer { val s: Trees; val t: ast.Trees }): TerminationPipeline {
+  def apply(transformer: TerminationTransformer { val s: Trees; val t: Trees }): TerminationPipeline {
     val s: transformer.s.type
     val t: transformer.t.type
   } = new TerminationPipeline { self =>
@@ -34,8 +34,7 @@ object TerminationPipeline {
     override val t: transformer.t.type = transformer.t
 
     override def extract(fids: Seq[Problem], symbols: s.Symbols): (Seq[Problem], t.Symbols) = {
-      val newSyms = transformer.transform(symbols)
-      (fids, newSyms)
+      transformer.transform(fids, symbols)
     }
   }
 }
