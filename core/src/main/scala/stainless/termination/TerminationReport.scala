@@ -1,5 +1,3 @@
-/* Copyright 2009-2019 EPFL, Lausanne */
-
 package stainless
 package termination
 
