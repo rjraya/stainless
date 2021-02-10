@@ -5,7 +5,7 @@ package termination
 
 import scala.collection.mutable.{Map => MutableMap, ListBuffer}
 
-trait RelationBuilder { self: Strengthener =>
+trait RelationBuilder { self =>
 
   import checker.program.trees._
   import checker.program.symbols._
