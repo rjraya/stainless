@@ -2,7 +2,7 @@
 
 package stainless
 package termination
-
+/*
 import scala.collection.mutable.{Set => MutableSet, Map => MutableMap}
 import scala.language.existentials
 
@@ -213,3 +213,4 @@ trait Strengthener { self: OrderingRelation =>
     }
   }
 }
+*/

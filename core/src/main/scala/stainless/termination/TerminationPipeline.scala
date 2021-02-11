@@ -8,8 +8,11 @@ trait TerminationPipeline { self =>
   val t: Trees
 
   type Problem = Set[Identifier]
+  type Analyzer = RelationBuilder
 
-  def extract(fids: Seq[Problem], symbols: s.Symbols): (Seq[Problem], t.Symbols)
+  def extract(fids: Seq[Problem], 
+              symbols: s.Symbols, 
+              analysis: Analyzer): (Seq[Problem], t.Symbols)
 
   def andThen(that: TerminationPipeline { val s: self.t.type }): TerminationPipeline {
     val s: self.s.type

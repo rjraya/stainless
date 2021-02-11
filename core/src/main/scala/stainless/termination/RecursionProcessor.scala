@@ -4,11 +4,10 @@ package termination
 import scala.annotation.tailrec
 
 trait RecursionProcessor extends TerminationPipeline 
-                            with RelationBuilder 
-                            with MeasureAnnotator {
+                            with MeasureAnnotator { self => 
 
   val s: Trees
-  val t: s.type
+  val t: Trees
 
   private def isSubtreeOf(expr: s.Expr, v: s.Variable): Boolean = {
     @tailrec
@@ -34,25 +33,30 @@ trait RecursionProcessor extends TerminationPipeline
     }
   }
 
-  override def extract(fids: Problem, symbols: s.Symbols): (Problem, t.Symbols) = {
+  private object identity extends inox.transformers.SymbolTransformer {
+    override val s: self.s.type = self.s
+    override val t: self.t.type = self.t
+  }
+
+  override def extract(fids: Problem, 
+                       symbols: s.Symbols, 
+                       analyzer: Analyzer): (Problem, t.Symbols) = {
     if (fids.size > 1) {
-      val transformer = new t.IdentitySymbolTransformer{}
-      (fids, transformer.transform(symbols))  
+      (fids, identity.transform(symbols))  
     } else {
       val funDef = symbols.getFunction(fids.head)
-      val recInvocations = getRelations(funDef).filter { 
+      val recInvocations = analyzer.getRelations(funDef).filter { 
         case Relation(fd, _, fi, _) => fd == fi.tfd.fd
       }
 
       if (recInvocations.isEmpty) {
-        // annotate measure 0
-        ???
+        (fids, identity.transform(symbols))  
       } else {
         val decreasedArgument = funDef.params.zipWithIndex.find {
           case (arg, index) =>
             recInvocations.forall {
               case Relation(_, path, s.FunctionInvocation(_, _, args), _) =>
-                isSubtreePredicate(arg,path, args, index)
+                isSubtreePredicate(arg, path, args, index)
             }
         }
 

@@ -7,10 +7,10 @@ import scala.collection.mutable.{Map => MutableMap, ListBuffer}
 
 trait RelationBuilder { self =>
 
-  import checker.program.trees._
-  import checker.program.symbols._
-
-  val cfa: CICFA { val program: checker.program.type }
+  val program: Program { val trees: Trees }
+  val cfa: CICFA { val trees: program.trees.type }
+  import program.trees._
+  import program.symbols._
 
   case class Relation(fd: FunDef, path: Path, call: FunctionInvocation, inLambda: Boolean) {
     override def toString: String =
@@ -39,67 +39,52 @@ trait RelationBuilder { self =>
     }
   }
 
-  protected type RelationSignature = (FunDef, Expr, Boolean, Set[(FunDef, Boolean)])
+  def getRelations(funDef: FunDef): Set[Relation] = {
+    val analysis = cfa.analyze(funDef.id)
 
-  protected def funDefRelationSignature(fd: FunDef): RelationSignature = {
-    val strengthenedCallees = callees(fd).map(fd => fd -> strengthened(fd))
-    (fd, fd.fullBody, checker.terminates(fd).isGuaranteed, strengthenedCallees)
-  }
+    object collector extends transformers.TransformerWithPC with transformers.DefinitionTransformer {
+      val s: program.trees.type = program.trees
+      val t: program.trees.type = program.trees
+      val symbols: program.symbols.type = program.symbols
 
-  private val relationCache: MutableMap[FunDef, (Set[Relation], RelationSignature)] = MutableMap.empty
+      type Env = Path
+      val initEnv = Path.empty
+      val pp = Path
 
-  def getRelations(funDef: FunDef): Set[Relation] = relationCache.get(funDef) match {
-    case Some((relations, signature)) if signature == funDefRelationSignature(funDef) => relations
-    case _ => {
-      val analysis = cfa.analyze(funDef.id)
+      var inLambda: Boolean = false
+      val relations: ListBuffer[Relation] = new ListBuffer
 
-      object collector extends transformers.TransformerWithPC with transformers.DefinitionTransformer {
-        val s: self.checker.program.trees.type = self.checker.program.trees
-        val t: self.checker.program.trees.type = self.checker.program.trees
-        val symbols: self.checker.program.symbols.type = self.checker.program.symbols
+      override def transform(e: Expr, path: Path): Expr = e match {
+        case fi @ FunctionInvocation(_, _, args) =>
+          relations += Relation(funDef, path, fi, inLambda)
 
-        type Env = Path
-        val initEnv = Path.empty
-        val pp = Path
-
-        var inLambda: Boolean = false
-        val relations: ListBuffer[Relation] = new ListBuffer
-
-        override def transform(e: Expr, path: Path): Expr = e match {
-          case fi @ FunctionInvocation(_, _, args) =>
-            relations += Relation(funDef, path, fi, inLambda)
-
-            fi.copy(args = (getFunction(fi.id).params.map(_.id) zip args).map {
-              case (id, l @ Lambda(largs, body)) if analysis.isApplied(l) =>
-                val cnstr = self.applicationConstraint(fi.id, id, largs, args)
-                val old = inLambda
-                inLambda = true
-                val res = Lambda(largs, transform(body, path withBounds largs withCond cnstr))
-                inLambda = old
-                res
-              case (_, arg) => transform(arg, path)
-            })
-
-          case l: Lambda =>
-            if (analysis.isApplied(l)) {
+          fi.copy(args = (getFunction(fi.id).params.map(_.id) zip args).map {
+            case (id, l @ Lambda(largs, body)) if analysis.isApplied(l) =>
               val old = inLambda
               inLambda = true
-              val res = super.transform(e, path)
+              val res = Lambda(largs, transform(body, path withBounds largs))
               inLambda = old
               res
-            } else {
-              l
-            }
+            case (_, arg) => transform(arg, path)
+          })
 
-          case _ =>
-            super.transform(e, path)
-        }
+        case l: Lambda =>
+          if (analysis.isApplied(l)) {
+            val old = inLambda
+            inLambda = true
+            val res = super.transform(e, path)
+            inLambda = old
+            res
+          } else {
+            l
+          }
+
+        case _ =>
+          super.transform(e, path)
       }
-
-      collector.transform(funDef)
-      val relations = collector.relations.toSet
-      relationCache(funDef) = (relations, funDefRelationSignature(funDef))
-      relations
     }
+
+    collector.transform(funDef)
+    collector.relations.toSet
   }
 }
