@@ -11,15 +11,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
 
   def extract(symbols: s.Symbols): t.Symbols = {
     val program = inox.Program(s)(symbols)
-    object analysis {
-      object cfa extends CICFA {
-        val program = ???
-      }
-      object relationBuilder extends RelationBuilder {
 
-      }
-      object chainBuilder {}
-    }
     ???
   }
   def invalidate(id: Identifier): Unit = ???

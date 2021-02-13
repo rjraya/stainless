@@ -36,17 +36,35 @@ trait RecursionProcessor extends TerminationPipeline
   private object identity extends inox.transformers.SymbolTransformer {
     override val s: self.s.type = self.s
     override val t: self.t.type = self.t
+
+    private object transformer extends transformers.TreeTransformer {
+      val s: self.s.type = self.s
+      val t: self.t.type = self.t
+    }
+
+    override def transform(symbols: s.Symbols): t.Symbols = {
+      t.NoSymbols
+        .withSorts(symbols.sorts.values.toSeq.map(transformer.transform))
+        .withFunctions(symbols.functions.values.toSeq.map(transformer.transform))
+    }
   }
 
   override def extract(fids: Problem, 
-                       symbols: s.Symbols, 
-                       analyzer: Analyzer): (Problem, t.Symbols) = {
-    if (fids.size > 1) {
-      (fids, identity.transform(symbols))  
-    } else {
+                       symbols: s.Symbols): (Problem, t.Symbols) = {
+    if (fids.size > 1) { (fids, identity.transform(symbols)) } 
+    else {
+      object analysis extends RelationBuilder { 
+        val symbolz = symbols
+        val program: inox.Program{
+          val trees: RecursionProcessor.this.s.type; 
+          val symbols: symbolz.type
+        } = inox.Program(s)(symbolz)
+        val context = ???
+      }
+
       val funDef = symbols.getFunction(fids.head)
-      val recInvocations = analyzer.getRelations(funDef).filter { 
-        case Relation(fd, _, fi, _) => fd == fi.tfd.fd
+      val recInvocations = analysis.getRelations(funDef).filter { 
+        case analysis.Relation(fd, _, fi, _) => fd == fi.tfd(symbols).fd
       }
 
       if (recInvocations.isEmpty) {
@@ -55,15 +73,21 @@ trait RecursionProcessor extends TerminationPipeline
         val decreasedArgument = funDef.params.zipWithIndex.find {
           case (arg, index) =>
             recInvocations.forall {
-              case Relation(_, path, s.FunctionInvocation(_, _, args), _) =>
+              case analysis.Relation(_, path, s.FunctionInvocation(_, _, args), _) =>
                 isSubtreePredicate(arg, path, args, index)
             }
         }
 
         decreasedArgument match {
           case Some(p) =>
-            val measure = ordering.measure(Seq(p._1.toVariable))
+            val symbolz = symbols
+            object ordering extends SumOrdering {  
+              val trees: s.type = s
+              val symbols: symbolz.type = symbolz
+            }
+            val m = ordering.measure(Seq(p._1.toVariable))
             // anotate funDef with measure
+            annotate(funDef, m)
             ???
           case None =>
             // cannot continue analysing

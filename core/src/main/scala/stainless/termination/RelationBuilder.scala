@@ -5,10 +5,8 @@ package termination
 
 import scala.collection.mutable.{Map => MutableMap, ListBuffer}
 
-trait RelationBuilder { self =>
+trait RelationBuilder extends CICFA { self =>
 
-  val program: Program { val trees: Trees }
-  val cfa: CICFA { val trees: program.trees.type }
   import program.trees._
   import program.symbols._
 
@@ -40,7 +38,7 @@ trait RelationBuilder { self =>
   }
 
   def getRelations(funDef: FunDef): Set[Relation] = {
-    val analysis = cfa.analyze(funDef.id)
+    val analysis = analyze(funDef.id)
 
     object collector extends transformers.TransformerWithPC with transformers.DefinitionTransformer {
       val s: program.trees.type = program.trees
