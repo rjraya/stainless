@@ -1,14 +1,14 @@
 package stainless
 package termination
+package measures
 
 trait MeasureAnnotator {
 
-  val s: Trees
-  val t: Trees
+  import termination.trees._
 
-  def annotate(funDef: s.FunDef, measure: s.Expr): s.FunDef = {
+  def annotate(funDef: FunDef, measure: Expr): FunDef = {
     funDef.copy(fullBody = 
-      s.exprOps.withMeasure(
+      exprOps.withMeasure(
         funDef.fullBody, 
         Some(measure.setPos(funDef))
       )

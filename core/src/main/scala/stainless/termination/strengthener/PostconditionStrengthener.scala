@@ -1,6 +1,6 @@
 /* Copyright 2009-2019 EPFL, Lausanne */
 
-package stainless
+/* package stainless
 package termination
 
 import scala.collection.mutable.{Set => MutableSet, Map => MutableMap}
@@ -90,3 +90,4 @@ trait PostconditionStrengthener extends TerminationPipeline { self =>
     ???
   }
 }
+ */

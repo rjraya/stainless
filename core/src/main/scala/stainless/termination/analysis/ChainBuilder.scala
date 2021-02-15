@@ -1,4 +1,4 @@
-/* Copyright 2009-2021 EPFL, Lausanne */
+/* /* Copyright 2009-2021 EPFL, Lausanne */
 
 package stainless
 package termination
@@ -88,4 +88,4 @@ trait ChainBuilder extends RelationBuilder { self =>
     val resChains = allChains.flatten
     loops -> resChains
   }
-}
+} */

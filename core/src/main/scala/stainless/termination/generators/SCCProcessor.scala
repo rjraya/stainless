@@ -1,12 +1,11 @@
 package stainless
 package termination
+package generators
 
-trait SCCProcessor extends TerminationPipeline {
+trait SCCProcessor extends TerminationPipeline { self => 
+  import termination.trees._
 
-  val s: Trees
-  val t: s.type
-
-  override def extract(fids: Seq[Problem], symbols: s.Symbols): (Seq[Problem], t.Symbols) = {
+  override def extract(fids: Seq[Problem], symbols: Symbols): (Seq[Problem], Symbols) = {
     val fds = fids.flatMap{p => p.map{id => symbols.getFunction(id)}}
     val funDefs = symbols.transitiveCallees(fds.toSet) ++ fds
     val pairs = symbols.allCalls.flatMap {
@@ -16,14 +15,18 @@ trait SCCProcessor extends TerminationPipeline {
     }
 
     val callGraph = pairs.groupBy(_._1).mapValues(_.map(_._2))
-    val allComponents: Seq[Set[s.FunDef]] = inox.utils.SCC.scc(callGraph)
+    val allComponents: Seq[Set[FunDef]] = inox.utils.SCC.scc(callGraph)
     val sortedComponents = 
       allComponents.sorted(symbols.CallGraphOrderings.componentOrdering.compare)
     val componentIds = sortedComponents.map{ _.map{ _.id } }
 
-    val transformer = new s.IdentitySymbolTransformer{}
 
-    (componentIds, transformer.transform(symbols))  
+    (componentIds, symbols)  
   }
 
+}
+
+object SCCProcessor { self =>
+  def apply(implicit ctx: inox.Context): TerminationPipeline = 
+    new { override val context = ctx } with SCCProcessor
 }

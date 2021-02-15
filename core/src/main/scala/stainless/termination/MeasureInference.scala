@@ -4,23 +4,27 @@ package stainless
 package termination
 
 trait MeasureInference extends extraction.ExtractionPipeline { self =>
-  val s: Trees
-  val t: Trees
+  val s: termination.trees.type
+  val t: termination.trees.type
 
-  def pipeline = ???
+  def pipeline: TerminationPipeline = {
+    generators.extractor
+  }
 
   def extract(symbols: s.Symbols): t.Symbols = {
-    val program = inox.Program(s)(symbols)
-
+    val funIds = symbols.functions.values.map(_.id).toSet
+    val (problems, newSymbols) = pipeline.extract(Seq(funIds), symbols)
+    println(problems)
+    println(newSymbols)
     ???
   }
   def invalidate(id: Identifier): Unit = ???
 }
 
 object MeasureInference { self =>
-  def apply(tr: Trees)(implicit ctx: inox.Context): extraction.ExtractionPipeline {
-    val s: tr.type
-    val t: tr.type
+  def apply(tr: termination.trees.type)(implicit ctx: inox.Context): extraction.ExtractionPipeline {
+    val s: termination.trees.type
+    val t: termination.trees.type
   } = new {
     override val s: tr.type = tr
     override val t: tr.type = tr
