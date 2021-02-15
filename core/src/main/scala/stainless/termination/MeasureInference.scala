@@ -7,7 +7,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
   val s: Trees
   val t: Trees
 
-  //def pipeline = recursionProcessor
+  def pipeline = ???
 
   def extract(symbols: s.Symbols): t.Symbols = {
     val program = inox.Program(s)(symbols)

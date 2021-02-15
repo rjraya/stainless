@@ -16,8 +16,10 @@ trait SCCProcessor extends TerminationPipeline {
     }
 
     val callGraph = pairs.groupBy(_._1).mapValues(_.map(_._2))
-    val allComponents = inox.utils.SCC.scc(callGraph)
-    val componentIds = allComponents.map{ _.map{ _.id } }
+    val allComponents: Seq[Set[s.FunDef]] = inox.utils.SCC.scc(callGraph)
+    val sortedComponents = 
+      allComponents.sorted(symbols.CallGraphOrderings.componentOrdering.compare)
+    val componentIds = sortedComponents.map{ _.map{ _.id } }
 
     val transformer = new s.IdentitySymbolTransformer{}
 

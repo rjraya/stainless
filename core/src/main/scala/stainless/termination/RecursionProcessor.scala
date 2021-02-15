@@ -33,22 +33,6 @@ trait RecursionProcessor extends TerminationPipeline
     }
   }
 
-  private object identity extends inox.transformers.SymbolTransformer {
-    override val s: self.s.type = self.s
-    override val t: self.t.type = self.t
-
-    private object transformer extends transformers.TreeTransformer {
-      val s: self.s.type = self.s
-      val t: self.t.type = self.t
-    }
-
-    override def transform(symbols: s.Symbols): t.Symbols = {
-      t.NoSymbols
-        .withSorts(symbols.sorts.values.toSeq.map(transformer.transform))
-        .withFunctions(symbols.functions.values.toSeq.map(transformer.transform))
-    }
-  }
-
   override def extract(fids: Problem, 
                        symbols: s.Symbols): (Problem, t.Symbols) = {
     if (fids.size > 1) { (fids, identity.transform(symbols)) } 
@@ -85,15 +69,24 @@ trait RecursionProcessor extends TerminationPipeline
               val trees: s.type = s
               val symbols: symbolz.type = symbolz
             }
-            val m = ordering.measure(Seq(p._1.toVariable))
-            // anotate funDef with measure
-            annotate(funDef, m)
-            ???
+            val annotated: s.FunDef = 
+              annotate(funDef,ordering.measure(Seq(p._1.toVariable)))
+                        
+            (Set(), updater.transform(annotated, symbols))
           case None =>
-            // cannot continue analysing
-            ???
+            (fids, identity.transform(symbols))
         }
       }
     }  
+  }
+
+  object identity extends IdentityTransformer {
+    val s: self.s.type = self.s
+    val t: self.t.type = self.t
+  }
+
+  object updater extends UpdateTransformer {
+    val s: self.s.type = self.s
+    val t: self.t.type = self.t
   }
 }
