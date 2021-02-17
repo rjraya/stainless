@@ -3,7 +3,7 @@ package termination
 
 import scala.annotation.tailrec
 
-trait RecursionProcessor extends IterativePipeline 
+trait RecursionProcessor extends MeasurePipeline
                             with measures.MeasureAnnotator { self => 
   import termination.trees._
 
@@ -31,24 +31,23 @@ trait RecursionProcessor extends IterativePipeline
     }
   }
 
-  override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
-    if (fids.size > 1) (fids, symbols) 
+  override def extract(fids: Problem, syms: Symbols): (Problem, Symbols) = { 
+    if (fids.size > 1) (fids, syms) 
     else {
       object analysis extends RelationBuilder { 
-        val symbolz = symbols
         val program: inox.Program{
           val trees: termination.trees.type; 
-          val symbols: symbolz.type
-        } = inox.Program(termination.trees)(symbolz)
-        val context = ???
+          val symbols: syms.type
+        } = inox.Program(termination.trees)(syms)
+        val context = self.context
       }
 
-      val funDef = symbols.getFunction(fids.head)
+      val funDef = syms.getFunction(fids.head)
       val recInvocations = analysis.getRelations(funDef).filter { 
-        case analysis.Relation(fd, _, fi, _) => fd == fi.tfd(symbols).fd
+        case analysis.Relation(fd, _, fi, _) => fd == fi.tfd(syms).fd
       }
 
-      if (recInvocations.isEmpty) { (fids, symbols) } 
+      if (recInvocations.isEmpty) { (fids, syms) } 
       else {
         val decreasedArgument = funDef.params.zipWithIndex.find {
           case (arg, index) =>
@@ -60,25 +59,23 @@ trait RecursionProcessor extends IterativePipeline
 
         decreasedArgument match {
           case Some(p) =>
-            val symbolz = symbols
-            object ordering extends SumOrdering {  
-              val trees: termination.trees.type = termination.trees
-              val symbols: symbolz.type = symbolz
-            }
+            val integerOrdering = measures._1
+            val measure = integerOrdering.measure(Seq(p._1.toVariable))
             val annotated: FunDef = 
-              annotate(funDef,ordering.measure(Seq(p._1.toVariable)))
-                        
-            (Set(), updater.transform(annotated, symbols))
+              annotate(funDef,measure)
+            (Set(), updater.transform(annotated, syms))
           case None =>
-            (fids, symbols)
+              (fids, syms)
         }
       }
     }  
-  }
-
-  object updater extends UpdateTransformer {
-    val s: termination.trees.type = termination.trees
-    val t: termination.trees.type = termination.trees
-  }
+  }  
 }
- 
+
+object RecursionProcessor { self =>
+  def apply(implicit ctx: inox.Context, m: Measures): MeasurePipeline = 
+    new { 
+      override val context = ctx 
+      override val measures = m
+    } with RecursionProcessor
+}

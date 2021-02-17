@@ -2,7 +2,7 @@ package stainless
 package termination
 
 trait OrderingRelation {
-  val trees: Trees
+  val trees: termination.trees.type
   import trees._
 
   val description: String
@@ -18,14 +18,10 @@ trait OrderingRelation {
 }
 
 trait SumOrdering extends OrderingRelation { self =>
-  val trees: Trees
+  val trees: termination.trees.type
   val symbols: trees.Symbols
+  val sizes: SizeFunctions
   import trees._
-
-  object sizes extends SizeFunctions {
-    val trees: self.trees.type = self.trees
-    val symbols: self.symbols.type = self.symbols
-  }
 
   val description = "comparing sum of argument sizes"
 

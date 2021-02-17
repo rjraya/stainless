@@ -17,3 +17,8 @@ trait UpdateTransformer { self =>
       .withFunctions(updated.values.toSeq.map(transformer.transform))
   }
 }
+
+object updater extends UpdateTransformer {
+  val s: termination.trees.type = termination.trees
+  val t: termination.trees.type = termination.trees
+}

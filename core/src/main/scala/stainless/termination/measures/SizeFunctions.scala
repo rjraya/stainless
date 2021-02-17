@@ -6,7 +6,7 @@ package termination
 import scala.collection.mutable.{Map => MutableMap, ListBuffer}
 
 trait SizeFunctions { 
-  val trees: Trees
+  val trees: termination.trees.type
   val symbols: trees.Symbols
   import trees._
   import symbols._

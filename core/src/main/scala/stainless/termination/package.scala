@@ -25,4 +25,6 @@ package object termination {
   case class FailedMeasureInference(fd: inox.ast.Trees#FunDef, msg: String)
     extends Exception(msg)
 
+  type Measures = (OrderingRelation, SizeFunctions)
+
 }
