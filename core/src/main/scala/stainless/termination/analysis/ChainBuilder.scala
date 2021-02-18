@@ -1,4 +1,4 @@
-/* /* Copyright 2009-2021 EPFL, Lausanne */
+/* Copyright 2009-2021 EPFL, Lausanne */
 
 package stainless
 package termination
@@ -8,7 +8,7 @@ import scala.collection.mutable.{Map => MutableMap}
 trait ChainBuilder extends RelationBuilder { self =>
 
   import program.trees._
-  import program.symbols._
+  import program.symbols._ 
   import program.trees.exprOps._
 
   case class Chain(relations: List[Relation]) {
@@ -88,4 +88,4 @@ trait ChainBuilder extends RelationBuilder { self =>
     val resChains = allChains.flatten
     loops -> resChains
   }
-} */
+} 

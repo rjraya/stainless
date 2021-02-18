@@ -34,14 +34,6 @@ trait RecursionProcessor extends MeasurePipeline
   override def extract(fids: Problem, syms: Symbols): (Problem, Symbols) = { 
     if (fids.size > 1) (fids, syms) 
     else {
-      object analysis extends RelationBuilder { 
-        val program: inox.Program{
-          val trees: termination.trees.type; 
-          val symbols: syms.type
-        } = inox.Program(termination.trees)(syms)
-        val context = self.context
-      }
-
       val funDef = syms.getFunction(fids.head)
       val recInvocations = analysis.getRelations(funDef).filter { 
         case analysis.Relation(fd, _, fi, _) => fd == fi.tfd(syms).fd
@@ -73,9 +65,12 @@ trait RecursionProcessor extends MeasurePipeline
 }
 
 object RecursionProcessor { self =>
-  def apply(implicit ctx: inox.Context, m: Measures): MeasurePipeline = 
+  def apply(implicit ctx: inox.Context, 
+            m: Measures,
+            a: Analysis): MeasurePipeline = 
     new { 
       override val context = ctx 
       override val measures = m
+      override val analysis = a
     } with RecursionProcessor
 }

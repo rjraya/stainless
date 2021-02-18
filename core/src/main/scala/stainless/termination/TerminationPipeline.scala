@@ -28,16 +28,12 @@ trait IterativePipeline extends TerminationPipeline { self =>
   def extract(fps: Problem, symbols: Symbols): (Problem, Symbols)
 
   override def extract(fps: Seq[Problem], symbols: Symbols): (Seq[Problem], Symbols) = {
-    println("on recursion extraction")
-    println(fps)
     fps match {
       case p :: ps => 
         val (nProblem, nSymbols) = extract(p,symbols)
         if (nProblem.isEmpty) extract(ps,nSymbols)
         else throw inox.FatalError("Could not solve termination problem") 
-      case _ => 
-        println("success!!!")
-        (fps, symbols)
+      case _ => (fps, symbols)
     }
   }
   
@@ -55,4 +51,5 @@ trait IterativePipeline extends TerminationPipeline { self =>
 
 trait MeasurePipeline extends IterativePipeline {
   val measures: Measures
+  val analysis: Analysis
 }
