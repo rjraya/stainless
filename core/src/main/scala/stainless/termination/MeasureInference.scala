@@ -13,7 +13,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     processors.extractor(m,a)
   def strengtheningPipeline = ???
 
-  def measures(syms: termination.trees.Symbols): Measures = {
+  def getMeasures(syms: termination.trees.Symbols): (Seq[OrderingRelation], SizeFunctions) = {
     object szes extends {
       val trees: termination.trees.type = termination.trees
       val symbols: termination.trees.Symbols = syms
@@ -24,11 +24,17 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
       val symbols: termination.trees.Symbols = syms
       val sizes: szes.type = szes
     } with SumOrdering
-    
-    (integerOrdering, szes)
+
+    object lexicographicOrdering extends {
+      val trees: termination.trees.type = termination.trees
+      val symbols: termination.trees.Symbols = syms
+      val sizes: szes.type = szes
+    } with LexicographicOrdering
+
+    (Seq(integerOrdering, lexicographicOrdering), szes)
   }
 
-  def analysis(syms: termination.trees.Symbols): Analysis = {
+  def analyzer(syms: termination.trees.Symbols): Analysis = {
     new CICFA with RelationBuilder with ChainBuilder { 
       val program: inox.Program{
         val trees: termination.trees.type; 
@@ -38,15 +44,40 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     }
   }
 
+  def processingScheduler(
+    measures: Seq[Measures], 
+    symbols: termination.trees.Symbols,
+    problems: Seq[Problem]
+  ): (Seq[Problem], termination.trees.Symbols, Seq[s.FunDef])= measures match {
+    case measure :: _ => 
+      val analysis = analyzer(symbols) 
+      val (remaining, modSyms) = 
+        processorsPipeline(measure,analysis).extract(problems,symbols)
+      if(remaining.isEmpty){ 
+        val sizeFunctions = measure._2.getFunctions(modSyms)
+        (Seq(), modSyms, sizeFunctions)
+      } else processingScheduler(measures.tail, modSyms, remaining)
+    case Nil => (problems, symbols, Seq())
+  }
+
   def extract(symbols: s.Symbols): t.Symbols = {
     val funIds = symbols.functions.values.map(_.id).toSet
     val (problems, genSyms) = generatorsPipeline.extract(Seq(funIds), symbols)
-    val (m,a) = (measures(symbols), analysis(symbols))
-    val (remaining, modSyms) = 
-      processorsPipeline(m,a).extract(problems,genSyms)
-    val sizeFuncs = m._2.getFunctions(modSyms)
-    val newSymbols = sizeFuncs.foldLeft(modSyms)( (acc, l) => updater.transform(l,acc) )
-    newSymbols
+    
+    val measures: Seq[Measures] = {
+      val (orders, szes) = getMeasures(symbols)
+      orders.map(e => (e,szes))
+    }
+
+    val (nProblems, nSymbols, szes) = 
+      processingScheduler(measures, genSyms, problems)
+    
+    (nProblems, szes) match {
+      case (Seq(), sfuns) => 
+        sfuns.foldLeft(nSymbols)( (acc, sfun) => updater.transform(sfun,acc) )
+      case _ =>   
+        throw inox.FatalError("Could not solve termination problem") 
+    }
   }
 
   def invalidate(id: Identifier): Unit = ()

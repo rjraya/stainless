@@ -27,4 +27,6 @@ package object termination {
 
   type Measures = (OrderingRelation, SizeFunctions)
   type Analysis = CICFA with RelationBuilder with ChainBuilder
+  type Problem = Set[Identifier]
+
 }

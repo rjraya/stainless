@@ -7,7 +7,6 @@ trait TerminationPipeline { self =>
   import termination.trees._
 
   implicit val context: inox.Context
-  type Problem = Set[Identifier]
 
   def extract(fps: Seq[Problem], symbols: Symbols): (Seq[Problem], Symbols)
 
@@ -15,7 +14,7 @@ trait TerminationPipeline { self =>
     new TerminationPipeline {
       override val context = ctx
 
-      override def extract(fids: Seq[self.Problem], symbols: Symbols): (Seq[that.Problem], Symbols) = {
+      override def extract(fids: Seq[Problem], symbols: Symbols): (Seq[Problem], Symbols) = {
         val (tFunIds, tSymbols) = self.extract(fids, symbols)
         that.extract(tFunIds, tSymbols)
       }
@@ -32,11 +31,7 @@ trait IterativePipeline extends TerminationPipeline { self =>
       case p :: ps => 
         val (nProblem, nSymbols) = extract(p,symbols)
         if (nProblem.isEmpty) extract(ps,nSymbols)
-        else {
-          println(nProblem)
-          println(nSymbols)
-          throw inox.FatalError("Could not solve termination problem") 
-        }
+        else (p :: ps, nSymbols) 
       case _ => (fps, symbols)
     }
   }
@@ -45,7 +40,7 @@ trait IterativePipeline extends TerminationPipeline { self =>
     new IterativePipeline {
       override val context = ctx
 
-      override def extract(fids: self.Problem, symbols: Symbols): (that.Problem, Symbols) = {
+      override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
         val (tFunIds, tSymbols) = self.extract(fids, symbols)
         that.extract(tFunIds, tSymbols)
       }
