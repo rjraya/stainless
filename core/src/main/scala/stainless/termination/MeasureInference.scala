@@ -11,6 +11,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     generators.extractor
   def processorsPipeline(m: Measures, a: Analysis): IterativePipeline = 
     processors.extractor(m,a)
+  def strengtheningPipeline = ???
 
   def measures(syms: termination.trees.Symbols): Measures = {
     object szes extends {
@@ -28,7 +29,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
   }
 
   def analysis(syms: termination.trees.Symbols): Analysis = {
-    new RelationBuilder with ChainBuilder { 
+    new CICFA with RelationBuilder with ChainBuilder { 
       val program: inox.Program{
         val trees: termination.trees.type; 
         val symbols: syms.type

@@ -4,6 +4,7 @@ package termination
 import scala.annotation.tailrec
 
 trait RecursionProcessor extends MeasurePipeline
+                            with AnalysisPipeline
                             with measures.MeasureAnnotator { self => 
   import termination.trees._
 
@@ -53,8 +54,7 @@ trait RecursionProcessor extends MeasurePipeline
           case Some(p) =>
             val integerOrdering = measures._1
             val measure = integerOrdering.measure(Seq(p._1.toVariable))
-            val annotated: FunDef = 
-              annotate(funDef,measure)
+            val annotated: FunDef = annotate(funDef,measure)
             (Set(), updater.transform(annotated, syms))
           case None =>
               (fids, syms)

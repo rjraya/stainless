@@ -40,6 +40,7 @@ trait RelationBuilder extends CICFA { self =>
   def getRelations(funDef: FunDef): Set[Relation] = {
     val analysis = analyze(funDef.id)
 
+    // TODO: transform into a traverser which yields the relations list.
     object collector extends transformers.TransformerWithPC with transformers.DefinitionTransformer {
       val s: program.trees.type = program.trees
       val t: program.trees.type = program.trees

@@ -15,5 +15,19 @@ trait MeasureAnnotator {
     )
   }
 
+  // if given a measure of the form (induced,rest) where
+  // induced is potentially a tuple, flatten will compute
+  // the measure (induced.flatten,rest)
+  //
+  // in principle we consider only one nesting depth
+  def flatten(induced: Expr, rest: Seq[Expr], syms: Symbols): Expr = {
+    val unwrapped: Seq[Expr] = induced.getType(syms) match {
+      case TupleType(_) => unwrapTuple(induced, true)(syms)
+      case _            => Seq(induced)
+    }
+    tupleWrap(unwrapped ++ rest)
+  }
+
+
 }
 

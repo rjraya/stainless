@@ -26,5 +26,5 @@ package object termination {
     extends Exception(msg)
 
   type Measures = (OrderingRelation, SizeFunctions)
-  type Analysis = RelationBuilder with ChainBuilder
+  type Analysis = CICFA with RelationBuilder with ChainBuilder
 }

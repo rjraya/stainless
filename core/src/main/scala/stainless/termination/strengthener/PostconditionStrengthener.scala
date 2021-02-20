@@ -1,22 +1,18 @@
 /* Copyright 2009-2019 EPFL, Lausanne */
 
-/* package stainless
+package stainless
 package termination
 
 import scala.collection.mutable.{Set => MutableSet, Map => MutableMap}
 import scala.language.existentials
 
-trait PostconditionStrengthener extends TerminationPipeline { self =>
+trait PostconditionStrengthener extends MeasurePipeline { self =>
+  import termination.trees._
 
-  val s: Trees // stainless.trees.type
-  val t: Trees // stainless.trees.type
+  private val strengthenedPost: MutableMap[Identifier, Option[Lambda]] = MutableMap.empty
 
-  val ctx: inox.Context
-
-  private val strengthenedPost: MutableMap[Identifier, Option[s.Lambda]] = MutableMap.empty
-
-  private object postStrengthener extends s.IdentitySymbolTransformer {
-    override def transform(syms: s.Symbols): t.Symbols =
+  private object postStrengthener extends IdentitySymbolTransformer {
+    override def transform(syms: Symbols): Symbols =
       syms.withFunctions(syms.functions.toSeq.map {
         case (id, fd) =>
           strengthenedPost.get(id) match {
@@ -26,18 +22,17 @@ trait PostconditionStrengthener extends TerminationPipeline { self =>
       })
   }
 
-  private def strengthen(fd: s.FunDef, symbols: s.Symbols, cmp: (Seq[s.Expr], Seq[s.Expr]) => s.Expr): Boolean = {
-    import s._
-    import symbols._
+  private def strengthen(fd: FunDef, syms: Symbols, cmp: (Seq[Expr], Seq[Expr]) => Expr): Boolean = {
+    import syms._
     
     val postcondition = {
-      val res = s.ValDef.fresh("res", fd.returnType)
+      val res = ValDef.fresh("res", fd.returnType)
       val post = fd.postcondition match {
         case Some(post) => application(post, Seq(res.toVariable))
-        case _          => s.BooleanLiteral(true)
+        case _          => BooleanLiteral(true)
       }
       val sizePost = cmp(Seq(res.toVariable), fd.params.map(_.toVariable))
-      s.Lambda(Seq(res), and(post, sizePost))
+      Lambda(Seq(res), and(post, sizePost))
     }
 
     val formula = implies(fd.precOrTrue, application(postcondition, Seq(fd.body.get)))
@@ -48,14 +43,19 @@ trait PostconditionStrengthener extends TerminationPipeline { self =>
       }
     }
 
-    val newSymbols = strengthener.transform(symbols)
-    val newProgram = inox.Program(s)(newSymbols)
-    val api: inox.solvers.SimpleSolverAPI = ???
-      // inox.solvers.SimpleSolverAPI(solvers.SolverFactory.apply(newProgram, ctx))
+    val sizes = measures._2.getFunctions(syms)
+    val newSyms: Symbols = sizes.foldLeft(syms)( 
+      (symb, sze) => updater.transform(sze, symb) 
+    )
+    val program: inox.Program{
+        val trees: termination.trees.type; 
+        val symbols: trees.Symbols
+      } = inox.Program(termination.trees)(newSyms)
+    val api = extraction.extractionSemantics.getSemantics(program).getSolver(context).toAPI 
 
     // @nv: variablesOf(formula) should be non-empty as we may proceed to invalid strenghtening otherwise
     if (exprOps.variablesOf(formula).nonEmpty &&
-        api.solveVALID(???/* formula */).contains(true)) {
+        api.solveVALID(formula).contains(true)) {
       strengthenedPost(fd.id) = Some(postcondition)
       true
     } else {
@@ -63,16 +63,12 @@ trait PostconditionStrengthener extends TerminationPipeline { self =>
     }
   }
   
-  override def extract(fids: Problem, symbols: s.Symbols): (Problem, t.Symbols) = {
+  override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
     val funDefs = fids.map( id => symbols.getFunction(id) )
-    val callees: Set[s.FunDef] = funDefs.flatMap(fd => symbols.transitiveCallees(fd))
-    val sortedCallees: Seq[s.FunDef] = callees.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering.compare)
+    val callees: Set[FunDef] = funDefs.flatMap(fd => symbols.transitiveCallees(fd))
+    val sortedCallees: Seq[FunDef] = callees.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering.compare)
 
-    val symbolz = symbols
-    object ordering extends SumOrdering {  
-      val trees: s.type = s
-      val symbols: symbolz.type = symbolz
-    }
+    val ordering = measures._1
     
     // We don't add postconditions to the entire SCC 
     for (fd <- sortedCallees if !strengthenedPost.isDefinedAt(fd.id)) {
@@ -84,10 +80,15 @@ trait PostconditionStrengthener extends TerminationPipeline { self =>
         if (weakConstraintHolds) strengthen(fd, symbols, ordering.lessThan) else false
     }
 
-
-    // call to strengthen
-    // (fids, symbols)
-    ???
+    (fids, postStrengthener.transform(symbols))
   }
 }
- */
+
+object PostconditionStrengthener { self =>
+  def apply(implicit ctx: inox.Context, 
+            m: Measures): MeasurePipeline = 
+    new { 
+      override val context = ctx 
+      override val measures = m
+    } with PostconditionStrengthener
+}

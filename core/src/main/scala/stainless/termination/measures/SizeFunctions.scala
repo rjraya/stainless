@@ -13,8 +13,8 @@ trait SizeFunctions {
   import dsl._
 
   private val functions: ListBuffer[FunDef] = new ListBuffer[FunDef]
-
-  def getFunctions(symbols: Symbols) = synchronized {
+ 
+  def getFunctions(symbols: Symbols): ListBuffer[FunDef] = synchronized {
     val sortIds = symbols.sorts.values.map { sort =>
       fullSizeFun(sort)(symbols).id
     }.toSet

@@ -32,7 +32,11 @@ trait IterativePipeline extends TerminationPipeline { self =>
       case p :: ps => 
         val (nProblem, nSymbols) = extract(p,symbols)
         if (nProblem.isEmpty) extract(ps,nSymbols)
-        else throw inox.FatalError("Could not solve termination problem") 
+        else {
+          println(nProblem)
+          println(nSymbols)
+          throw inox.FatalError("Could not solve termination problem") 
+        }
       case _ => (fps, symbols)
     }
   }
@@ -51,5 +55,8 @@ trait IterativePipeline extends TerminationPipeline { self =>
 
 trait MeasurePipeline extends IterativePipeline {
   val measures: Measures
+}
+
+trait AnalysisPipeline extends IterativePipeline {
   val analysis: Analysis
 }
