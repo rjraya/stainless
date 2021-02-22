@@ -16,6 +16,13 @@ trait UpdateTransformer { self =>
       .withSorts(symbols.sorts.values.toSeq.map(transformer.transform))
       .withFunctions(updated.values.toSeq.map(transformer.transform))
   }
+
+  def transform(fds: Seq[s.FunDef], symbols: s.Symbols): t.Symbols = {
+    val updated = symbols.functions ++ fds.map(fd => fd.id -> fd)
+    t.NoSymbols
+      .withSorts(symbols.sorts.values.toSeq.map(transformer.transform))
+      .withFunctions(updated.values.toSeq.map(transformer.transform))
+  }
 }
 
 object updater extends UpdateTransformer {

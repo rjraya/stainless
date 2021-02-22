@@ -34,13 +34,16 @@ trait RecursionProcessor extends MeasurePipeline
 
   override def extract(fids: Problem, syms: Symbols): (Problem, Symbols) = { 
     println("running recursion processor")
+    println(syms)
     if (fids.size > 1) (fids, syms) 
     else {
       val funDef = syms.getFunction(fids.head)
+            println("before lookup")
       val recInvocations = analysis.getRelations(funDef).filter { 
         case analysis.Relation(fd, _, fi, _) => fd == fi.tfd(syms).fd
       }
-      
+                    println("after lookup")
+
       if (recInvocations.isEmpty) { (fids, syms) } 
       else {
         val decreasedArgument = funDef.params.zipWithIndex.find {

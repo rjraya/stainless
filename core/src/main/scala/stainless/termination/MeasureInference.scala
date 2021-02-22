@@ -66,16 +66,15 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     symbols: termination.trees.Symbols,
     problems: Seq[Problem]
   ): termination.trees.Symbols = {
-    val analysis = analyzer(symbols) 
     def strengthenWithMeasure(problem: Problem, measure: Measures): Option[s.Symbols] = {
-      val pipeline = 
-        strengtheningPipeline(measure) andThen
-        processorsPipeline(measure,analysis)
-      val (remaining, modSyms) = 
-        pipeline.extract(problem,symbols)
+      val strength = strengtheningPipeline(measure)
+      val (_, nSymbols) = strength.extract(problem,symbols) 
+      val analysis = analyzer(nSymbols) 
+      val processors = processorsPipeline(measure,analysis)
+      val (remaining, modSyms) = processors.extract(problem,symbols)
       if(remaining.isEmpty){ 
         val sfuns = measure._2.getFunctions(modSyms)
-        Some(addSizeFunctions(sfuns, modSyms))
+        Some(updater.transform(sfuns, modSyms))
       } else {
         None
       }
@@ -100,28 +99,14 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     }
   }
 
-  def addSizeFunctions(functions: Seq[s.FunDef], symbols: s.Symbols) = {
-    functions.foldLeft(symbols)((acc, f) => updater.transform(f,acc))
-  }
-
   def extract(symbols: s.Symbols): t.Symbols = {
     val funIds = symbols.functions.values.map(_.id).toSet
     val (problems, genSyms) = generatorsPipeline.extract(Seq(funIds), symbols)
-    
     val measures: Seq[Measures] = {
       val (orders, szes) = getMeasures(symbols)
       orders.map(e => (e,szes))
     }
-/*
-    val (nProblems, nSymbols, szes) = 
-      processingScheduler(measures, genSyms, problems)
-  
-    (nProblems, szes) match {
-      case (Seq(), sfuns) => 
-        addSizeFunctions(sfuns, nSymbols)
-      case _ =>  */   
-      strengtheningScheduler(measures, genSyms, problems)
-    //}
+    strengtheningScheduler(measures, genSyms, problems)
   }
 
   def invalidate(id: Identifier): Unit = ()
