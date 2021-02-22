@@ -31,7 +31,7 @@ trait IterativePipeline extends TerminationPipeline { self =>
       case p :: ps => 
         val (nProblem, nSymbols) = extract(p,symbols)
         if (nProblem.isEmpty) extract(ps,nSymbols)
-        else (p :: ps, nSymbols) 
+        else (p :: ps, symbols) 
       case _ => (fps, symbols)
     }
   }

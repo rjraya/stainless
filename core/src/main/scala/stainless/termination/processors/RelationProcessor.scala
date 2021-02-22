@@ -8,12 +8,15 @@ import scala.language.existentials
 
 import inox.utils._ 
 
+import scala.concurrent.duration._
+
 trait RelationProcessor extends MeasurePipeline 
                         with AnalysisPipeline
                         with measures.MeasureAnnotator {
   import termination.trees._
 
   override def extract(fids: Problem, syms: Symbols): (Problem, Symbols) = { 
+    println("running relation processor")
     val funDefs = fids.map( id => syms.getFunction(id) ) 
     val formulas = funDefs.map { funDef =>
       funDef -> analysis.getRelations(funDef).collect {
@@ -39,13 +42,16 @@ trait RelationProcessor extends MeasurePipeline
         val trees: termination.trees.type; 
         val symbols: trees.Symbols
       } = inox.Program(termination.trees)(newSyms)
-    val api = extraction.extractionSemantics.getSemantics(program).getSolver(context).toAPI 
+    val api = extraction.extractionSemantics
+                        .getSemantics(program)
+                        .getSolver(context)
+                        .withTimeout(2.5.seconds)
+                        .toAPI 
 
     val decreasing = formulas.map {
       case (fd, formulas) =>
         val solved = formulas.map {
           case (fid, (gt, ge)) =>
-            //println(gt)
             if (api.solveVALID(gt).contains(true)) Success
             else if (api.solveVALID(ge).contains(true)) Dep(Set(fid))
             else Failure

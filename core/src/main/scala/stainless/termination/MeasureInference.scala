@@ -11,7 +11,8 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     generators.extractor
   def processorsPipeline(m: Measures, a: Analysis): IterativePipeline = 
     processors.extractor(m,a)
-  def strengtheningPipeline = ???
+  def strengtheningPipeline(m: Measures) =
+    strengthener.extractor(m) 
 
   def getMeasures(syms: termination.trees.Symbols): (Seq[OrderingRelation], SizeFunctions) = {
     object szes extends {
@@ -60,6 +61,49 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     case Nil => (problems, symbols, Seq())
   }
 
+  def strengtheningScheduler(
+    measures: Seq[Measures], 
+    symbols: termination.trees.Symbols,
+    problems: Seq[Problem]
+  ): termination.trees.Symbols = {
+    val analysis = analyzer(symbols) 
+    def strengthenWithMeasure(problem: Problem, measure: Measures): Option[s.Symbols] = {
+      val pipeline = 
+        strengtheningPipeline(measure) andThen
+        processorsPipeline(measure,analysis)
+      val (remaining, modSyms) = 
+        pipeline.extract(problem,symbols)
+      if(remaining.isEmpty){ 
+        val sfuns = measure._2.getFunctions(modSyms)
+        Some(addSizeFunctions(sfuns, modSyms))
+      } else {
+        None
+      }
+    }
+    def strengthenProblem(problem: Problem, measures: Seq[Measures]): Option[s.Symbols] = measures match {
+      case m :: ms => strengthenWithMeasure(problem, m) match {
+        case Some(syms) => Some(syms)
+        case None => strengthenProblem(problem, ms)
+      }
+      case Nil => None
+    }
+
+    problems match {
+      case p :: ps => 
+        strengthenProblem(p, measures) match {
+          case Some(nSyms) => 
+            strengtheningScheduler(measures,nSyms,ps)
+          case None => 
+            throw inox.FatalError("Could not solve termination problem") 
+        }   
+      case Nil => symbols
+    }
+  }
+
+  def addSizeFunctions(functions: Seq[s.FunDef], symbols: s.Symbols) = {
+    functions.foldLeft(symbols)((acc, f) => updater.transform(f,acc))
+  }
+
   def extract(symbols: s.Symbols): t.Symbols = {
     val funIds = symbols.functions.values.map(_.id).toSet
     val (problems, genSyms) = generatorsPipeline.extract(Seq(funIds), symbols)
@@ -68,16 +112,16 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
       val (orders, szes) = getMeasures(symbols)
       orders.map(e => (e,szes))
     }
-
+/*
     val (nProblems, nSymbols, szes) = 
       processingScheduler(measures, genSyms, problems)
-    
+  
     (nProblems, szes) match {
       case (Seq(), sfuns) => 
-        sfuns.foldLeft(nSymbols)( (acc, sfun) => updater.transform(sfun,acc) )
-      case _ =>   
-        throw inox.FatalError("Could not solve termination problem") 
-    }
+        addSizeFunctions(sfuns, nSymbols)
+      case _ =>  */   
+      strengtheningScheduler(measures, genSyms, problems)
+    //}
   }
 
   def invalidate(id: Identifier): Unit = ()

@@ -6,6 +6,8 @@ package termination
 import scala.collection.mutable.{Set => MutableSet, Map => MutableMap}
 import scala.language.existentials
 
+import scala.concurrent.duration._
+
 trait PostconditionStrengthener extends MeasurePipeline { self =>
   import termination.trees._
 
@@ -24,7 +26,7 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
 
   private def strengthen(fd: FunDef, syms: Symbols, cmp: (Seq[Expr], Seq[Expr]) => Expr): Boolean = {
     import syms._
-    
+    println("strengthening " + fd.id)
     val postcondition = {
       val res = ValDef.fresh("res", fd.returnType)
       val post = fd.postcondition match {
@@ -51,8 +53,11 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
         val trees: termination.trees.type; 
         val symbols: trees.Symbols
       } = inox.Program(termination.trees)(newSyms)
-    val api = extraction.extractionSemantics.getSemantics(program).getSolver(context).toAPI 
-
+    val api = extraction.extractionSemantics
+                        .getSemantics(program)
+                        .getSolver(context)
+                        .withTimeout(2.5.seconds)
+                        .toAPI 
     // @nv: variablesOf(formula) should be non-empty as we may proceed to invalid strenghtening otherwise
     if (exprOps.variablesOf(formula).nonEmpty &&
         api.solveVALID(formula).contains(true)) {
@@ -64,6 +69,7 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
   }
   
   override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
+    println("running post-condition strengthener")
     val funDefs = fids.map( id => symbols.getFunction(id) )
     val callees: Set[FunDef] = funDefs.flatMap(fd => symbols.transitiveCallees(fd))
     val sortedCallees: Seq[FunDef] = callees.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering.compare)
@@ -79,8 +85,10 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
       val strongConstraintHolds = 
         if (weakConstraintHolds) strengthen(fd, symbols, ordering.lessThan) else false
     }
-
-    (fids, postStrengthener.transform(symbols))
+    println("end postcondition strengthener")
+    val res = (fids, postStrengthener.transform(symbols))
+    symbols.functions.map{ case (name,fun) => println(fun) }
+    res
   }
 }
 
