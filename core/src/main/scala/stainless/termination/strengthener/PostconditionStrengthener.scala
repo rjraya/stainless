@@ -17,8 +17,8 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
     override def transform(syms: Symbols): Symbols =
       syms.withFunctions(syms.functions.toSeq.map {
         case (id, fd) =>
-          println("function " + fd.id)
-          println("is strengthen with postcondition " + strengthenedPost.get(id))
+          //println("function " + fd.id)
+          //println("is strengthen with postcondition " + strengthenedPost.get(id))
           strengthenedPost.get(id) match {
             case Some(post @ Some(_)) => fd.copy(fullBody = s.exprOps.withPostcondition(fd.fullBody, post))
             case _                    => fd
@@ -28,7 +28,7 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
 
   private def strengthen(fd: FunDef, syms: Symbols, cmp: (Seq[Expr], Seq[Expr]) => Expr): Boolean = {
     import syms._
-    println("strengthening " + fd.id)
+    //println("strengthening " + fd.id)
     val postcondition = {
       val res = ValDef.fresh("res", fd.returnType)
       val post = fd.postcondition match {
@@ -38,9 +38,10 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
       val sizePost = cmp(Seq(res.toVariable), fd.params.map(_.toVariable))
       Lambda(Seq(res), and(post, sizePost))
     }
-    println("postcondition " + postcondition)
+    //println("postcondition " + postcondition)
+    //println(fd.body)
     val formula = implies(fd.precOrTrue, application(postcondition, Seq(fd.body.get)))
-    println("formula to prove " + formula)
+    //println("formula to prove " + formula)
     val strengthener = new IdentitySymbolTransformer {
       override def transform(syms: Symbols): Symbols = super.transform(syms).withFunctions {
         Seq(fd.copy(fullBody = exprOps.withPostcondition(fd.fullBody, Some(postcondition))))
@@ -61,11 +62,11 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
     // @nv: variablesOf(formula) should be non-empty as we may proceed to invalid strenghtening otherwise
     if (exprOps.variablesOf(formula).nonEmpty &&
         api.solveVALID(formula).contains(true)) {
-      println("post-condition annotated")    
+      //println("post-condition annotated")    
       strengthenedPost(fd.id) = Some(postcondition)
       true
     } else {
-      println("post-condition not annotated")
+      //println("post-condition not annotated")
       false
     }
   }
@@ -76,10 +77,10 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
     val callees: Set[FunDef] = funDefs.flatMap(fd => symbols.transitiveCallees(fd))
     val sortedCallees: Seq[FunDef] = callees.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering.compare)
     val ordering = measures._1
-    val sizes = measures._2.getFunctions(symbols)
     
     // We don't add postconditions to the entire SCC 
-    for (fd <- sortedCallees if !strengthenedPost.isDefinedAt(fd.id)) {
+    for (fd <- sortedCallees if !strengthenedPost.isDefinedAt(fd.id) &&
+                                fd.body(symbols).isDefined) {
       strengthenedPost(fd.id) = None
       // test if size is smaller or equal to input
       val weakConstraintHolds = strengthen(fd, symbols, ordering.lessEquals)
@@ -87,9 +88,11 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
       val strongConstraintHolds = 
         if (weakConstraintHolds) strengthen(fd, symbols, ordering.lessThan) else false
     }
-    println("end postcondition strengthener")
+    //println("end postcondition strengthener")
+    //println("sizes added to postcondition strengthener")
+    val sizes = measures._2.getFunctions(symbols)
     val res = (fids, postStrengthener.transform(updater.transform(sizes,symbols)))
-    symbols.functions.map{ case (name,fun) => println(fun) }
+    //symbols.functions.map{ case (name,fun) => println(fun) }
     res
   }
 }

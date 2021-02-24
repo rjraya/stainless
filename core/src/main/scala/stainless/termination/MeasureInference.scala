@@ -11,8 +11,8 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     generators.extractor
   def processorsPipeline(m: Measures, a: Analysis): IterativePipeline = 
     processors.extractor(m,a)
-  def strengtheningPipeline(m: Measures) =
-    strengthener.extractor(m) 
+  def strengtheningPipeline(m: Measures, a: Analysis) =
+    strengthener.extractor(m,a) 
 
   def getMeasures(syms: termination.trees.Symbols): (Seq[OrderingRelation], SizeFunctions) = {
     object szes extends {
@@ -67,11 +67,16 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     problems: Seq[Problem]
   ): termination.trees.Symbols = {
     def strengthenWithMeasure(problem: Problem, measure: Measures): Option[s.Symbols] = {
-      val strength = strengtheningPipeline(measure)
+      val preAnalysis = analyzer(symbols)
+      val strength = strengtheningPipeline(measure, preAnalysis)
+      //println("original symbols")
+      //println(symbols)
       val (_, nSymbols) = strength.extract(problem,symbols) 
       val analysis = analyzer(nSymbols) 
+      println("after strengthening")
+      println(nSymbols)
       val processors = processorsPipeline(measure,analysis)
-      val (remaining, modSyms) = processors.extract(problem,symbols)
+      val (remaining, modSyms) = processors.extract(problem,nSymbols)
       if(remaining.isEmpty){ 
         val sfuns = measure._2.getFunctions(modSyms)
         Some(updater.transform(sfuns, modSyms))
