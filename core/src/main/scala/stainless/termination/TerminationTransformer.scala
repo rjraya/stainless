@@ -23,6 +23,17 @@ trait UpdateTransformer { self =>
       .withSorts(symbols.sorts.values.toSeq.map(transformer.transform))
       .withFunctions(updated.values.toSeq.map(transformer.transform))
   }
+
+  def updateFuns(fds: Seq[s.FunDef], symbols: s.Symbols): t.Symbols = {
+    val newIds = fds.map{ _.id }
+    val remaining = symbols.functions.filter{ p => !newIds.contains(p._1) }
+    val newFuns = fds.map{ fd => (fd.id, fd) }
+    val newMap = remaining ++ newFuns
+    t.NoSymbols
+      .withSorts(symbols.sorts.values.toSeq.map(transformer.transform))
+      .withFunctions(newMap.values.toSeq.map(transformer.transform))
+    
+  }
 }
 
 object updater extends UpdateTransformer {

@@ -8,7 +8,8 @@ import scala.language.existentials
 
 import scala.concurrent.duration._
 
-trait PostconditionStrengthener extends MeasurePipeline { self =>
+trait PostconditionStrengthener extends IterativePipeline
+                                with MeasurePipeline { self =>
   import termination.trees._
 
   private val strengthenedPost: MutableMap[Identifier, Option[Lambda]] = MutableMap.empty
@@ -73,6 +74,9 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
   
   override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
     println("running post-condition strengthener")
+    println(symbols.functions.values.map(_.id.asString(
+      new PrinterOptions(printUniqueIds = true)
+    )))
     val funDefs = fids.map( id => symbols.getFunction(id) )
     val callees: Set[FunDef] = funDefs.flatMap(fd => symbols.transitiveCallees(fd))
     val sortedCallees: Seq[FunDef] = callees.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering.compare)
@@ -88,10 +92,13 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
       val strongConstraintHolds = 
         if (weakConstraintHolds) strengthen(fd, symbols, ordering.lessThan) else false
     }
-    //println("end postcondition strengthener")
-    //println("sizes added to postcondition strengthener")
+    
     val sizes = measures._2.getFunctions(symbols)
-    val res = (fids, postStrengthener.transform(updater.transform(sizes,symbols)))
+    println("sizes added to postcondition strengthener")
+    println(sizes.map(_.id.asString(
+      new PrinterOptions(printUniqueIds = true)
+    )))
+    val res = (fids, postStrengthener.transform(updater.updateFuns(sizes,symbols)))
     //symbols.functions.map{ case (name,fun) => println(fun) }
     res
   }
@@ -99,7 +106,7 @@ trait PostconditionStrengthener extends MeasurePipeline { self =>
 
 object PostconditionStrengthener { self =>
   def apply(implicit ctx: inox.Context, 
-            m: Measures): MeasurePipeline = 
+            m: Measures): IterativePipeline = 
     new { 
       override val context = ctx 
       override val measures = m

@@ -48,10 +48,10 @@ trait IterativePipeline extends TerminationPipeline { self =>
 
 }
 
-trait MeasurePipeline extends IterativePipeline {
+trait MeasurePipeline {
   val measures: Measures
 }
 
-trait AnalysisPipeline extends IterativePipeline {
+trait AnalysisPipeline {
   val analysis: Analysis
 }

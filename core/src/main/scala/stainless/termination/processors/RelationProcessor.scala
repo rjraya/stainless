@@ -10,7 +10,8 @@ import inox.utils._
 
 import scala.concurrent.duration._
 
-trait RelationProcessor extends MeasurePipeline 
+trait RelationProcessor extends IterativePipeline
+                        with MeasurePipeline 
                         with AnalysisPipeline
                         with measures.MeasureAnnotator {
   import termination.trees._
@@ -109,7 +110,7 @@ trait RelationProcessor extends MeasurePipeline
 object RelationProcessor { self =>
   def apply(implicit ctx: inox.Context, 
             m: Measures,
-            a: Analysis): MeasurePipeline = 
+            a: Analysis): IterativePipeline = 
     new {  
       override val context = ctx 
       override val measures = m

@@ -3,7 +3,8 @@ package termination
 
 import scala.annotation.tailrec
 
-trait RecursionProcessor extends MeasurePipeline
+trait RecursionProcessor extends IterativePipeline
+                            with MeasurePipeline
                             with AnalysisPipeline
                             with measures.MeasureAnnotator { self => 
   import termination.trees._
@@ -34,7 +35,10 @@ trait RecursionProcessor extends MeasurePipeline
 
   override def extract(fids: Problem, syms: Symbols): (Problem, Symbols) = { 
     println("running recursion processor")
-    println(syms)
+    println(syms.functions.values.map(_.id.asString(
+      new PrinterOptions(printUniqueIds = true)
+    )))
+    println(syms.functions.values)
     if (fids.size > 1) (fids, syms) 
     else {
       val funDef = syms.getFunction(fids.head)
@@ -69,7 +73,7 @@ trait RecursionProcessor extends MeasurePipeline
 object RecursionProcessor { self =>
   def apply(implicit ctx: inox.Context, 
             m: Measures,
-            a: Analysis): MeasurePipeline = 
+            a: Analysis): IterativePipeline = 
     new { 
       override val context = ctx 
       override val measures = m

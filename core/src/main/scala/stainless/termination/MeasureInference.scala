@@ -67,6 +67,8 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     problems: Seq[Problem]
   ): termination.trees.Symbols = {
     def strengthenWithMeasure(problem: Problem, measure: Measures): Option[s.Symbols] = {
+      println("initial symbols")
+      println(symbols.functions.values)
       val preAnalysis = analyzer(symbols)
       val strength = strengtheningPipeline(measure, preAnalysis)
       //println("original symbols")
@@ -108,7 +110,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     val funIds = symbols.functions.values.map(_.id).toSet
     val (problems, genSyms) = generatorsPipeline.extract(Seq(funIds), symbols)
     val measures: Seq[Measures] = {
-      val (orders, szes) = getMeasures(symbols)
+      val (orders, szes) = getMeasures(genSyms)
       orders.map(e => (e,szes))
     }
     strengtheningScheduler(measures, genSyms, problems)

@@ -230,11 +230,9 @@ trait ApplicationStrengthener extends IterativePipeline
   override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
     import symbols._
     println("running application strengthener")
-    println("with original symbols")
-    println(symbols.asString(
-      new PrinterOptions(printUniqueIds = true, 
-                         printTypes = true, 
-                         symbols = Some(symbols))))
+    println(symbols.functions.values.map(_.id.asString(
+      new PrinterOptions(printUniqueIds = true)
+    )))
     val funDefs: Set[FunDef] = fids.map( id => symbols.getFunction(id) )
     val transitiveFunDefs = funDefs ++ funDefs.flatMap(f => symbols.transitiveCallees(f))
     val sortedFunDefs = transitiveFunDefs.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering)
@@ -253,16 +251,12 @@ trait ApplicationStrengthener extends IterativePipeline
       strengthenedApp += fd 
     }
 
-    val annotatedFuns = strengthenedApp.map{ fd => annotateStrength(fd, symbols, ordering) }
-    //println("annotatedFuns")
-    //println(annotatedFuns)
-    val updatedSymbols = annotatedFuns.foldLeft(symbols){ (syms,fd) => updater.transform(fd,syms) }
+    val annotatedFuns = strengthenedApp.map{ fd => annotateStrength(fd, symbols, ordering) }.toSeq
+    val newSizes = measures._2.getFunctions(symbols).toSeq
+    val updatedSymbols = updater.updateFuns(annotatedFuns++newSizes,symbols)
     val annotatedSymbols = annotateSymbols(updatedSymbols,ordering)
     println("annotatedSymbols")
-    println(annotatedSymbols.asString(
-      new PrinterOptions(printUniqueIds = true, 
-                         printTypes = true, 
-                         symbols = Some(annotatedSymbols))))
+    println(annotatedSymbols)
     (fids, annotatedSymbols)
   }
 }
@@ -270,7 +264,7 @@ trait ApplicationStrengthener extends IterativePipeline
 object ApplicationStrengthener { self =>
   def apply(implicit ctx: inox.Context, 
             m: Measures, 
-            a: Analysis): MeasurePipeline = 
+            a: Analysis): IterativePipeline = 
     new { 
       override val context = ctx 
       override val measures = m

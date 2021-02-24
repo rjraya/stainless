@@ -915,11 +915,13 @@ trait TypeChecker {
 
   def vcFromContext(l: Seq[Variable], e: Expr): Expr = {
     l.foldRight(e) { case (v, acc) =>
-      v match {
+      v.tpe match {
         case LetEquality(e1: Variable, e2) =>
           let(e1.toVal, e2, acc)
         case Truth(t) =>
           implies(t, acc)
+        case RefinementType(vd, pred) =>
+          implies(renameVar(pred, vd.id, v.id), acc)
         case _ => acc
       }
     }
@@ -929,6 +931,7 @@ trait TypeChecker {
     v.tpe match {
       case LetEquality(_, _) => true
       case Truth(_) => true
+      case RefinementType(_, _) => true
       case _ => false
     }
   }
