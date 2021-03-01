@@ -97,7 +97,10 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
       val (orders, szes) = getMeasures(genSyms)
       orders.map(e => (e,szes))
     }
-    scheduler(measures, genSyms, problems.reverse)
+    val res = scheduler(measures, genSyms, problems.reverse)
+    println("result")
+    println(res)
+    res
   }
 
   def invalidate(id: Identifier): Unit = ()
