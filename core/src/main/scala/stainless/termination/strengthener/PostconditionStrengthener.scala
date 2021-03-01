@@ -73,10 +73,10 @@ trait PostconditionStrengthener extends IterativePipeline
   }
   
   override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
-    println("running post-condition strengthener")
+    /* println("running post-condition strengthener")
     println(symbols.functions.values.map(_.id.asString(
       new PrinterOptions(printUniqueIds = true)
-    )))
+    ))) */
     val funDefs = fids.map( id => symbols.getFunction(id) )
     val callees: Set[FunDef] = funDefs.flatMap(fd => symbols.transitiveCallees(fd))
     val sortedCallees: Seq[FunDef] = callees.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering.compare)
@@ -94,10 +94,10 @@ trait PostconditionStrengthener extends IterativePipeline
     }
     
     val sizes = measures._2.getFunctions(symbols)
-    println("sizes added to postcondition strengthener")
+    /* println("sizes added to postcondition strengthener")
     println(sizes.map(_.id.asString(
       new PrinterOptions(printUniqueIds = true)
-    )))
+    ))) */
     val res = (fids, postStrengthener.transform(updater.updateFuns(sizes,symbols)))
     //symbols.functions.map{ case (name,fun) => println(fun) }
     res

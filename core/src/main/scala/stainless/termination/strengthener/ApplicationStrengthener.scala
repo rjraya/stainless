@@ -29,9 +29,6 @@ trait ApplicationStrengthener extends IterativePipeline
       case _                      => None
     }
 
-  private val toUpdate: MutableMap[Identifier, (Type, Int)] = MutableMap.empty
-
-
   // constraint v -> 
   private def bodyDecrease(fd: FunDef, 
                            fdArgs: Seq[Variable],
@@ -133,50 +130,84 @@ trait ApplicationStrengthener extends IterativePipeline
     }
   }
 
+  private val instances: MutableSet[FunDef] = MutableSet.empty
+
+  def instantiateFun(fi: FunctionInvocation, syms: Symbols):   =  {
+    val called = syms.getFunction(fi.id)
+    val tparams = called.tparams.map{ case TypeParameterDef(id,flags) => id }
+    if(tparams.isEmpty) called.id
+    else {
+      val typedFd = fi.tfd(syms)
+      val name = FreshIdentifier(called.id + fi.tps.mkString(""))
+      val newBody = exprOps.postMap {
+        case FunctionInvocation(fi.id, _, args) => 
+          println("modified")
+          Some(FunctionInvocation(name, Seq(), args))
+        case _ => 
+          None
+      } (typedFd.fullBody)
+
+      val typed = new FunDef(name,
+                 Seq(),
+                 typedFd.params,
+                 typedFd.returnType,
+                 newBody, 
+                 typedFd.flags)
+      /*
+      instances += inst
+      inst.id*/
+    }     
+  }
+
+  private val toUpdate: MutableMap[Identifier, (Type, Int)] = MutableMap.empty
+
   def annotateStrength(fd: FunDef, syms: Symbols, ordering: OrderingRelation): FunDef = {
     object transformer extends {
       val s: termination.trees.type = termination.trees;
       val t: termination.trees.type = termination.trees;
       val symbols: termination.trees.Symbols = syms
     } with transformers.TransformerWithPC
-      with    transformers.DefinitionTransformer {
+      with transformers.DefinitionTransformer {
       type Env = Path
       val initEnv = Path.empty
       val pp = Path
 
       override def transform(e: Expr, path: Path): Expr = e match {
-        case fi @ FunctionInvocation(_, _, args) =>
-          println("annotating function invocation " + fi.id + " called from " + fd.id)
-	        println(appConstraint)
+        case fi @ FunctionInvocation(fid, _, args) =>
+          val called = symbols.getFunction(fi.id)
+          val calledIds = called.params.map(_.id)
           val analyzed = analysis.analyze(fd.id) 
-          /* creating new arguments */
-          val newArgs = (symbols.getFunction(fi.id).params.map(_.id).zipWithIndex zip args).map {
+          
+          val newArgs = (calledIds.zipWithIndex zip args).map {
             case ((id,index), l @ Lambda(largs, body)) if analyzed.isApplied(l) =>
-              val cnstr = self.applicationConstraint(fi.id, id, largs, args, ordering)
-              cnstr match {
+              self.applicationConstraint(fid, id, largs, args, ordering) match {
                 case Some(constr) => 
-                  /* create a new lambda */
-                  println("creating a new lambda!!!!!")
                   val newLArgs = largs.map{ larg => 
                     val refineArg = ValDef.fresh("z", larg.tpe)
-                    val cnstr1 = exprOps.replace(Map(larg.toVariable -> refineArg.toVariable),constr)
-                    val tpe1 = RefinementType(refineArg, cnstr1)
+                    val tpe1 = RefinementType(
+                      refineArg,
+                      exprOps.replace(Map(larg.toVariable -> refineArg.toVariable),constr)
+                    )
 		                toUpdate += fi.id -> (tpe1, index)
                     larg.copy(tpe = tpe1)
                   }
-                  val recBody = transform(body, path withBounds largs)
-
-                  val largsDefs = largs.map(_.toVariable)
-                  val newLArgsDefs = newLArgs.map(_.toVariable)
-                  val subst = largsDefs.zip(newLArgsDefs).toMap
-                  val newBody = exprOps.replaceFromSymbols(subst, recBody)                  
+                  val newBody = exprOps.replaceFromSymbols(
+                    largs.map(_.toVariable).zip(newLArgs.map(_.toVariable)).toMap, 
+                    transform(body, path withBounds largs)
+                  )                  
                   Lambda(newLArgs, newBody)
                 case None => l
               }
             case (_, arg) => transform(arg, path)
           }
 
-          fi.copy(args = newArgs)
+          val strengthen = 
+            calledIds.exists{ id => 
+              appConstraint.get(fid -> id) == Some(StrongDecreasing) ||
+              appConstraint.get(fid -> id) == Some(WeakDecreasing) }
+          val newFid = if(strengthen) instantiateFun(fi,syms) else fi.id
+          
+          fi.copy(id = newFid, args = newArgs)
         case _ => super.transform(e, path)
       }
     }
@@ -196,6 +227,10 @@ trait ApplicationStrengthener extends IterativePipeline
           val param = f.params(index) 
           val largs = domTypes.map{ t => ValDef.fresh("z", t) }
           val cnstr = self.applicationConstraint(f.id, param.id, largs, f.params.map(_.toVariable), ordering)
+          /* println("constraint " + cnstr + 
+                  " annotated in function " + f.id + 
+                  " params where " + f.params.map(_.toVariable) + 
+                  " lambda args where " + largs) */
           cnstr match {
             case Some(constraint) => 
               val newDomTypes = largs.map{ larg => RefinementType(larg, constraint) }
@@ -229,20 +264,22 @@ trait ApplicationStrengthener extends IterativePipeline
 
   override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
     import symbols._
-    println("running application strengthener")
+    /* println("running application strengthener")
     println(symbols.functions.values.map(_.id.asString(
       new PrinterOptions(printUniqueIds = true)
-    )))
+    ))) */
     val funDefs: Set[FunDef] = fids.map( id => symbols.getFunction(id) )
     val transitiveFunDefs = funDefs ++ funDefs.flatMap(f => symbols.transitiveCallees(f))
     val sortedFunDefs = transitiveFunDefs.toSeq.sorted(symbols.CallGraphOrderings.functionOrdering)
 
+    val ordering = measures._1
     val sizes = measures._2.getFunctions(symbols)
-    val newSyms: Symbols = sizes.foldLeft(symbols)((symb, sze) => updater.transform(sze, symb))
+
+    val newSyms: Symbols = updater.updateFuns(sizes, symbols)
     val program: inox.Program{ val trees: termination.trees.type; val symbols: trees.Symbols} 
       = inox.Program(termination.trees)(newSyms)
     val api = extraction.extractionSemantics.getSemantics(program).getSolver(context).toAPI 
-    val ordering = measures._1
+    
 
     for (fd <- sortedFunDefs if fd.body.isDefined && !strengthenedApp(fd)) {
       val fdArgs: Seq[Variable] = fd.params.map(_.toVariable)    
@@ -251,12 +288,12 @@ trait ApplicationStrengthener extends IterativePipeline
       strengthenedApp += fd 
     }
 
-    val annotatedFuns = strengthenedApp.map{ fd => annotateStrength(fd, symbols, ordering) }.toSeq
+    val annotatedFuns = strengthenedApp.map(annotateStrength(_,symbols,ordering)).toSeq
     val newSizes = measures._2.getFunctions(symbols).toSeq
     val updatedSymbols = updater.updateFuns(annotatedFuns++newSizes,symbols)
     val annotatedSymbols = annotateSymbols(updatedSymbols,ordering)
-    println("annotatedSymbols")
-    println(annotatedSymbols)
+    /* println("annotatedSymbols")
+    println(annotatedSymbols) */
     (fids, annotatedSymbols)
   }
 }

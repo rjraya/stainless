@@ -17,7 +17,7 @@ trait RelationProcessor extends IterativePipeline
   import termination.trees._
 
   override def extract(fids: Problem, syms: Symbols): (Problem, Symbols) = { 
-    println("running relation processor")
+    println("running relation processor") 
     val funDefs = fids.map( id => syms.getFunction(id) ) 
     val formulas = funDefs.map { funDef =>
       funDef -> analysis.getRelations(funDef).collect {

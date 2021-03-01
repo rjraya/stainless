@@ -9,8 +9,8 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
 
   def generatorsPipeline: TerminationPipeline = 
     generators.extractor
-  def processorsPipeline(m: Measures, a: Analysis): IterativePipeline = 
-    processors.extractor(m,a)
+  def processorsPipeline(m: Measures, a: Analysis, syms: s.Symbols): IterativePipeline = 
+    processors.extractor(m,a,syms)
   def strengtheningPipeline(m: Measures, a: Analysis) =
     strengthener.extractor(m,a) 
 
@@ -45,40 +45,17 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     }
   }
 
-  def processingScheduler(
-    measures: Seq[Measures], 
-    symbols: termination.trees.Symbols,
-    problems: Seq[Problem]
-  ): (Seq[Problem], termination.trees.Symbols, Seq[s.FunDef])= measures match {
-    case measure :: _ => 
-      val analysis = analyzer(symbols) 
-      val (remaining, modSyms) = 
-        processorsPipeline(measure,analysis).extract(problems,symbols)
-      if(remaining.isEmpty){ 
-        val sizeFunctions = measure._2.getFunctions(modSyms)
-        (Seq(), modSyms, sizeFunctions)
-      } else processingScheduler(measures.tail, modSyms, remaining)
-    case Nil => (problems, symbols, Seq())
-  }
+  def schedulerWithMeasure(
+    problem: Problem, 
+    measure: Measures, 
+    syms: s.Symbols
+  ): Option[s.Symbols] = {
+      val (_, nSymbols) = 
+        strengtheningPipeline(measure, analyzer(syms)).extract(problem,syms)  
+      //val nSymbols = syms
 
-  def strengtheningScheduler(
-    measures: Seq[Measures], 
-    symbols: termination.trees.Symbols,
-    problems: Seq[Problem]
-  ): termination.trees.Symbols = {
-    def strengthenWithMeasure(problem: Problem, measure: Measures): Option[s.Symbols] = {
-      println("initial symbols")
-      println(symbols.functions.values)
-      val preAnalysis = analyzer(symbols)
-      val strength = strengtheningPipeline(measure, preAnalysis)
-      //println("original symbols")
-      //println(symbols)
-      val (_, nSymbols) = strength.extract(problem,symbols) 
-      val analysis = analyzer(nSymbols) 
-      println("after strengthening")
-      println(nSymbols)
-      val processors = processorsPipeline(measure,analysis)
-      val (remaining, modSyms) = processors.extract(problem,nSymbols)
+      val (remaining, modSyms) = 
+        processorsPipeline(measure,analyzer(nSymbols),nSymbols).extract(problem,nSymbols)
       if(remaining.isEmpty){ 
         val sfuns = measure._2.getFunctions(modSyms)
         Some(updater.transform(sfuns, modSyms))
@@ -86,34 +63,41 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
         None
       }
     }
-    def strengthenProblem(problem: Problem, measures: Seq[Measures]): Option[s.Symbols] = measures match {
-      case m :: ms => strengthenWithMeasure(problem, m) match {
-        case Some(syms) => Some(syms)
-        case None => strengthenProblem(problem, ms)
-      }
-      case Nil => None
-    }
 
-    problems match {
-      case p :: ps => 
-        strengthenProblem(p, measures) match {
-          case Some(nSyms) => 
-            strengtheningScheduler(measures,nSyms,ps)
-          case None => 
-            throw inox.FatalError("Could not solve termination problem") 
-        }   
-      case Nil => symbols
+  def problemScheduler(
+    problem: Problem, 
+    measures: Seq[Measures], 
+    syms: termination.trees.Symbols
+  ): Option[termination.trees.Symbols] =       
+    measures.iterator
+            .map(schedulerWithMeasure(problem, _,syms))
+            .collectFirst{ case Some(nSyms) => nSyms } 
+  
+  def scheduler(
+    measures: Seq[Measures], 
+    symbols: termination.trees.Symbols,
+    problems: Seq[Problem]
+  ): termination.trees.Symbols = {
+    problems.foldLeft(symbols){ (osyms, p) => 
+      problemScheduler(p, measures, osyms) match {
+        case Some(nSyms) => nSyms
+        case None => throw inox.FatalError("Could not solve termination problem") 
+      }
     }
   }
 
   def extract(symbols: s.Symbols): t.Symbols = {
     val funIds = symbols.functions.values.map(_.id).toSet
     val (problems, genSyms) = generatorsPipeline.extract(Seq(funIds), symbols)
+    println("generated symbols")
+    println(genSyms)
+    println("generated problems")
+    println(problems)
     val measures: Seq[Measures] = {
       val (orders, szes) = getMeasures(genSyms)
       orders.map(e => (e,szes))
     }
-    strengtheningScheduler(measures, genSyms, problems)
+    scheduler(measures, genSyms, problems.reverse)
   }
 
   def invalidate(id: Identifier): Unit = ()

@@ -28,6 +28,12 @@ trait MeasureAnnotator {
     tupleWrap(unwrapped ++ rest)
   }
 
-
+  /** Transforms a sequence of bindings extracted from a path in a sequence of lets.
+    * This is useful in the measure annotation of the Chain and Decreases processors. */
+  def bindingsToLets(bindings: Seq[(ValDef, Expr)], expr: Expr): Expr = {
+    bindings.foldRight(expr) { case ((vd, vl), acc) =>
+      Let(vd, vl, acc)
+    }
+  }
 }
 
