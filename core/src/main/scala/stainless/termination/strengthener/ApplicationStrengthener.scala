@@ -37,7 +37,9 @@ trait ApplicationStrengthener extends IterativePipeline
                            api: inox.solvers.SimpleSolverAPI { val program: inox.Program{ val trees: termination.trees.type; val symbols: trees.Symbols} }
                           ): Map[Variable, SizeConstraint] = {
     val applications = symbols.collectWithPC(fd.fullBody) {
-      case (Application(v: Variable, args), path) => (path, v, args)
+      case (Application(v: Variable, args), path) => 
+        println("detected application of " + v + " to " + args + " under path " + path)
+        (path, v, args)
     }.distinct
     val fdArgs = fd.params.map(_.toVariable)
     val allFormulas = 
@@ -57,6 +59,8 @@ trait ApplicationStrengthener extends IterativePipeline
           } else WeakDecreasing
         } else NoConstraint
       }
+    println(formulaMap)
+    println(constraints)
     constraints
   }
 

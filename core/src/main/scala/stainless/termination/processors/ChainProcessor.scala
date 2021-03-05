@@ -46,6 +46,7 @@ trait ChainProcessor extends IterativePipeline
 
     def solveIter(i: Int,allChains: Set[analysis.Chain],
                   cs: Set[analysis.Chain],base: FunDef): (Set[analysis.Chain], Option[Expr => Expr]) = {
+      println("iteration " + i)
       if(i < 0) (cs,None)
       else {
         val e1s = cs.toSeq.map { chain =>
@@ -117,49 +118,52 @@ trait ChainProcessor extends IterativePipeline
   }
 
   def annotateChain(cs: Seq[analysis.Chain],base: FunDef,recons: Expr => Expr): Seq[FunDef] = {
-    println("annotate chains")
-    println(cs)
-    println("with base")
-    println(base.id) 
-    println("annotation map")
-    println(annotationMap)
+    
+    // add parameters of base to all functions in chain 
+    /* val funDefs = cs.flatMap(_.fds).filter(_.id == base.id)
+    val baseParams = base.params
+    val newFds = funDefs.map(fd => fd.copy(params = fd.params ++ baseParams.map(_.freshen)))
+ */
     val ordering = measures._1
     def measure(expr: Seq[Expr]) =
       ordering.measure(Seq(recons(tupleWrap(expr))))
     def tupleMeasure(i: Int, expr: Expr, j: Int, k: Int) =
       tupleWrap(Seq(IntegerLiteral(i), expr, IntegerLiteral(j), IntegerLiteral(k)))
+    
     // annotate base
     val args = measure(base.params.map(_.toVariable))
     val M = cs.map{ c => c.size }.max
     val baseMeasure = tupleMeasure(0,args,0,M-1)
     annotationMap += (base -> Seq((BooleanLiteral(true),baseMeasure)))
 
-    println("base measure")
-    println(baseMeasure)
     // we assume the chains cs start at base
     for (c <- cs; member <- c.fds if member.id != base.id) {
       val n = c.size
       val i = domIndex(c,member,0)
-      val (domRpath,_) = analysis.Chain(c.relations.take(i)).loop
-      val (imgRpath,args1) = analysis.Chain(c.relations.drop(i)).loop
-      val margs1 = bindingsToLets(imgRpath.bindings, measure(args1))
-      val cond1 = and(domRpath.toClause, imgRpath.toClause)
-      val measure1 = tupleMeasure(0,margs1,(1-i)%n,M-1)
+      println("domindex " + c + " is " + i)
+      val (imgRpath,_) = analysis.Chain(c.relations.take(i)).loop
+      val (domRpath,args1) = analysis.Chain(c.relations.drop(i)).loop
+      println("i " + i)
+      println("imgRpath")
+      println(imgRpath.asString(new PrinterOptions(printUniqueIds = true)))
+      println("domRpath")
+      println(domRpath.asString(new PrinterOptions(printUniqueIds = true)))
+      println("args1")
+      args1.map(arg => println(arg.asString(new PrinterOptions(printUniqueIds = true))))
+
+      val margs1 = bindingsToLets(domRpath.bindings, measure(args1))
+      val cond1 = and(imgRpath.toClause, domRpath.toClause)
+      val measure1 = tupleMeasure(0,margs1,i,M-1)
+      println("measure dom and img " + measure1)
       val cond2 = domRpath.toClause
-      val measure2 = tupleMeasure((1-i)%n,margs1,0,M-1)
+      val measure2 = tupleMeasure(i,IntegerLiteral(0),0,M-1)
       val cond3 = imgRpath.toClause
-      val measure3 = tupleMeasure(0,IntegerLiteral(0),0,M-i)
-      val newE = Seq((cond1,measure1),(cond2,measure2),(cond3,measure3))
-      println("new bindings for " + member.id)
-      println(newE)
+      val measure3 = tupleMeasure(0,IntegerLiteral(0),0,M-(i+1))
+      val newE = Seq((cond3,measure3),(cond2,measure2),(cond1,measure1))
       annotationMap += (member -> newE)
-      println("annotation map")
-      println(annotationMap)
     }
 
     val default = tupleMeasure(0,IntegerLiteral(0),0,0)
-    println("annotationMap")
-    println(annotationMap)
     for((fd,bindings) <- annotationMap.toSeq) yield {
       val measure = bindings.foldLeft(default){ case (acc,(path,expr)) =>
         IfExpr(path,expr,acc)
