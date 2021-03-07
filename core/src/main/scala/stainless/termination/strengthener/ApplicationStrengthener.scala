@@ -134,64 +134,29 @@ trait ApplicationStrengthener extends IterativePipeline
     }
   }
 
-  def instantiateFun(fi: FunctionInvocation, symbols: Symbols, ordering: OrderingRelation): FunDef   =  {
-    println("instantiate fun")
-    val called = symbols.getFunction(fi.id)
-    val tFd = fi.tfd(symbols)
-    val name = FreshIdentifier(called.id + fi.tps.mkString(""))
-    val newBody = exprOps.postMap {
-        case FunctionInvocation(fi.id, _, args) => 
-          Some(FunctionInvocation(name, Seq(), args))
-        case _ => 
-          None
-      } (tFd.fullBody)
-    val fd = new FunDef(name,Seq(),tFd.params,tFd.returnType,newBody,tFd.flags ++ Seq(Synthetic))
-    val freshFd = exprOps.freshenSignature(fd)
-    val freshBody = exprOps.freshenLocals(freshFd.fullBody)
-    val res = freshFd.copy(fullBody = freshBody)
-    //println(res)
-    res
-  }
-
-  def refineFun(fi: FunctionInvocation, instFd: FunDef, symbols: Symbols, ordering: OrderingRelation): FunDef = {
-    println("refine fun")
-    val called = symbols.getFunction(fi.id)
-    val calledIds = called.params.map(_.id)
-    val params = instFd.params
-    val newParams: Seq[ValDef] = 
-      (calledIds zip params.map(p => (p, p.getType(symbols)))).map {
-        case (id, (param,ts@FunctionType(domTypes,retType))) =>
+  def refineFun(fd: FunDef, symbols: Symbols) = {
+    val ordering = measures._1
+    val newParams = fd.params.map{ param =>
+      param.getType(symbols) match {
+        case t@FunctionType(domTypes,retType) =>
           val largs = domTypes.map{ t => ValDef.fresh("z", t) }
-          self.applicationConstraint(fi.id, id, largs, params.map(_.toVariable), ordering) match {
+          self.applicationConstraint(fd.id, param.id, largs, fd.params.map(_.toVariable), ordering) match {
             case Some(constr) => 
               val newDomTypes = largs.map{ larg => RefinementType(larg, constr) }
               param.copy(tpe = FunctionType(newDomTypes,retType))
             case None => param
-          }
-        case (_, (param, typ)) => param
+          }          
+        case _ => param
       }
-
-    val newFd = instFd.body(symbols) match {
-      case Some(body) => 
-        val newBody = exprOps.replaceFromSymbols(
-          (params.map(_.toVariable) zip newParams.map(_.toVariable)).toMap, 
-          body)
-        instFd.copy(params = newParams, fullBody = newBody)      
-      case None => 
-        instFd.copy(params = newParams)      
     }
-
-    instances += newFd
-    //println(newFd)
-    newFd
+   
+    fd.copy(params = newParams)
   }
 
-  private val instances: ListBuffer[FunDef] = new ListBuffer[FunDef]
-
-  def refineArgs(fi: FunctionInvocation, fd: FunDef, symbols: Symbols, ordering: OrderingRelation): Seq[Expr] = {
+  def refineInv(fi: FunctionInvocation, symbols: Symbols): FunctionInvocation = {
+    val ordering = measures._1
     val called = symbols.getFunction(fi.id)
-    val calledIds = called.params.map(_.id)
-    val newArgs = (calledIds zip fi.args).map {
+    val newArgs = (called.params.map(_.id) zip fi.args).map {
       case (id, l @ Lambda(largs, body)) =>
         self.applicationConstraint(fi.id, id, largs, fi.args, ordering) match {
           case Some(constr) => 
@@ -210,11 +175,15 @@ trait ApplicationStrengthener extends IterativePipeline
         }
       case (_, arg) => arg
     } 
-    println(newArgs)
-    newArgs
+    
+    fi.copy(args = newArgs)
   }
 
-  def annotateStrength(fd: FunDef, syms: Symbols, ordering: OrderingRelation): FunDef = {
+  private val refinedIds: ListBuffer[Identifier] = new ListBuffer[Identifier]
+
+  def annotateStrength(fd: FunDef, syms: Symbols, ordering: OrderingRelation): Seq[FunDef] = {
+    val refinedFuns = new ListBuffer[FunDef]
+    
     object transformer extends {
       val s: termination.trees.type = termination.trees;
       val t: termination.trees.type = termination.trees;
@@ -229,45 +198,29 @@ trait ApplicationStrengthener extends IterativePipeline
         case fi @ FunctionInvocation(fid,_, args) =>
 
           val called = symbols.getFunction(fi.id)
-          val calledIds = called.params.map(_.id)
-          val recTrans = args.map(arg => transform(arg,path))
-          val newFi = FunctionInvocation(fid,fi.tps, recTrans)
-          val newArgs = refineArgs(newFi,fd,symbols, ordering)
-
           val strengthen = 
-            calledIds.exists{ id => 
+            called.params.map(_.id).exists{ id => 
               appConstraint.get(fid -> id) == Some(StrongDecreasing) ||
               appConstraint.get(fid -> id) == Some(WeakDecreasing) }
-          println(appConstraint)
-          println("strengthen " + strengthen)  
-          println("calledIds " + calledIds)
-          println("fid " + fid)       
-          val explicitTParams = 
-            fi.tps.filter{ p => !p.isInstanceOf[TypeParameter] }.nonEmpty
-          println("explicitTParams " + explicitTParams)
-          val isSynthetic = called.flags contains Synthetic
-          println(isSynthetic)
-          val newFid = if(strengthen && explicitTParams && !isSynthetic){
-            println("strengthen")
-            val instFd = instantiateFun(fi, syms, ordering)
-            println("instantiated fun")
-            println(instFd) 
-            val newSymbols = updater.updateFuns(Seq(instFd),symbols)
-            val refFd = refineFun(fi, instFd, newSymbols, ordering).id
-            println("refined function")
-            println(refFd)
-            refFd
-          } else fi.id
+          val newArgs = args.map(arg => transform(arg,path))   
 
-          val newTArgs = if(strengthen && explicitTParams && !isSynthetic) Seq() else fi.tps
-          
-          fi.copy(id = newFid, tps = newTArgs, args = newArgs)
+          if(strengthen){
+            if(!(refinedIds contains called)){
+              // refine the function
+              refinedIds += called.id
+              refinedFuns += refineFun(called, syms)
+            } 
+            // refine the call
+            refineInv(fi, syms)
+          } else {
+            fi.copy(args = newArgs)
+          }
         case _ => super.transform(e, path)
       }
     }
 
     println("strengthening " + fd.id)
-    transformer.transform(fd)
+    Seq(transformer.transform(fd)) ++ refinedFuns.toSeq
   }
 
   override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
@@ -296,13 +249,17 @@ trait ApplicationStrengthener extends IterativePipeline
       strengthenedApp += fd 
     }
 
-    val annotatedFuns = strengthenedApp.map(annotateStrength(_,symbols,ordering)).toSeq
+    val annotatedSyms = 
+      strengthenedApp.foldLeft(symbols){
+        case (syms,fdS) =>          
+          updater.updateFuns(annotateStrength(fdS,syms,ordering), syms)
+      }
+      strengthenedApp.map(annotateStrength(_,symbols,ordering)).toSeq
     val newSizes = measures._2.getFunctions(symbols).toSeq
-    val newInstances = instances
-    val updatedSymbols = updater.updateFuns(annotatedFuns++newSizes++newInstances,symbols)
-    /* println("updatedSymbols")
+    val updatedSymbols = updater.updateFuns(newSizes,annotatedSyms)
+    println("updatedSymbols")
     println(updatedSymbols.functions.values.map(_.asString(
-      new PrinterOptions(printUniqueIds = true)))) */ 
+      new PrinterOptions(printUniqueIds = true)))) 
     (fids, updatedSymbols)
   }
 }

@@ -17,7 +17,9 @@ trait RelationProcessor extends IterativePipeline
   import termination.trees._
 
   override def extract(fids: Problem, syms: Symbols): (Problem, Symbols) = { 
-    println("running relation processor") 
+    println("running relation processor with " + fids) 
+    if(fids.isEmpty) return (fids, syms)
+    
     val funDefs = fids.map( id => syms.getFunction(id) ) 
     val formulas = funDefs.map { funDef =>
       funDef -> analysis.getRelations(funDef).collect {
@@ -39,6 +41,11 @@ trait RelationProcessor extends IterativePipeline
     val newSyms: Symbols = sizes.foldLeft(syms)( 
       (symb, sze) => updater.transform(sze, symb) 
     )
+    println("symbols queried to solver")
+    newSyms.sorts.values.map(s => println(s))
+    println(newSyms.functions.values.map(_.asString(
+      new PrinterOptions(printUniqueIds = true)
+    )))
     val program: inox.Program{
         val trees: termination.trees.type; 
         val symbols: trees.Symbols
@@ -48,7 +55,7 @@ trait RelationProcessor extends IterativePipeline
                         .getSolver(context)
                         .withTimeout(2.5.seconds)
                         .toAPI 
-
+    println("1")
     val decreasing = formulas.map {
       case (fd, formulas) =>
         val solved = formulas.map {
@@ -67,7 +74,7 @@ trait RelationProcessor extends IterativePipeline
           }
         fd -> result
     }
-
+    println("2")
     val (terminating, nonTerminating) = {
       val ok = decreasing.collect { case (fd, Success) => fd -> IntegerLiteral(0) }
       val nok = decreasing.collect { case (fd, Dep(fds)) => fd -> fds }.toList
@@ -85,10 +92,13 @@ trait RelationProcessor extends IterativePipeline
 
       (allOk, allNok.map(_._1).toSet ++ decreasing.collect { case (fd, Failure) => fd })
     }
-
+    println("3")
     assert(terminating.map(_._1) ++ nonTerminating == funDefs)
 
     if (nonTerminating.isEmpty) {
+      println("success of relation processor")
+      println(terminating)
+      println(fids)
       val newSyms = terminating.foldLeft(syms){ (updatedSyms, tf) =>
         val measure = exprOps.measureOf(tf._1.fullBody) match {
           case Some(measure) => measure
@@ -96,11 +106,17 @@ trait RelationProcessor extends IterativePipeline
             val induced = measures._1.measure(tf._1.params.map { _.toVariable })
             flatten(induced, Seq(tf._2), syms)
         }
+        println("measure")
+        println(measure)
         val annotated: FunDef = annotate(tf._1,measure)
-        updater.transform(annotated, updatedSyms)
+        updater.updateFuns(Seq(annotated), updatedSyms)
       }
+      println("new syms")
+      newSyms.functions.values.map(_.asString(new PrinterOptions(printUniqueIds = true))).map(f => 
+        println(f))
       (Set(), newSyms)
     } else {
+      println("failure of relation processor")
       (fids, syms)
     }
   }

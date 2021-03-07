@@ -56,15 +56,26 @@ trait RelationBuilder extends CICFA { self =>
       override def transform(e: Expr, path: Path): Expr = e match {
         case fi @ FunctionInvocation(_, _, args) =>
           relations += Relation(funDef, path, fi, inLambda)
-          println("studying relation " + fi)
+
           fi.copy(args = (getFunction(fi.id).params.map(_.id) zip args).map {
-            case (id, l @ Lambda(largs, body)) if analysis.isApplied(l) =>
+            case (id, l @ Lambda(largs, body)) /* if analysis.isApplied(l) */ =>
+              println("in an applied lambda with arg " + l)
               val old = inLambda
               inLambda = true
-              val res = Lambda(largs, transform(body, path withBounds largs))
+              val constr = largs match {
+                  case vd@ValDef(lname, RefinementType(avd, refT), f) :: t => 
+                    val newVar = Variable(lname, RefinementType(avd, refT), f)
+                    exprOps.replace(Map((avd.toVariable,newVar)), refT)
+                  case _ => 
+                    BooleanLiteral(true)
+                }
+
+              println("constr is " + constr)
+              val res = Lambda(largs, transform(body, path withBounds largs withCond constr))
               inLambda = old
               res
-            case (_, arg) => transform(arg, path)
+            case (_, arg) => 
+              transform(arg, path)
           })
 
         case l: Lambda =>
@@ -84,6 +95,8 @@ trait RelationBuilder extends CICFA { self =>
     }
 
     collector.transform(funDef)
+    println("relations of "+ funDef.id)
+    collector.relations.map(r => println(r))
     collector.relations.toSet
   }
 }

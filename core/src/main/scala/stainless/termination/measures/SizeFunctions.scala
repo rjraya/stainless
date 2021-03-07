@@ -206,8 +206,23 @@ trait SizeFunctions {
       case bv @ BVType(_, _) =>
         FunctionInvocation(bvAbs2Integer(bv).id, Seq(), Seq(expr))
 
+      case tp @ TypeParameter(_,_) => 
+        val id = polSize(new TypeParameterDef(tp)).id
+        FunctionInvocation(id, Seq(tp), Seq(expr))
+
       case _ =>
         IntegerLiteral(0)
     }
   }
+
+  /* Polymorphic size method */
+  def polSize(td: TypeParameterDef): FunDef = synchronized {
+    val param = ValDef.fresh("z", td.tp)   
+    val nat = ValDef.fresh("l", IntegerType())
+    val retType = RefinementType(nat,E(nat) > E(BigInt(0)))
+    val body = E(BigInt(0))
+    val fd = new FunDef(FreshIdentifier("polSize"),Seq(td),Seq(param), retType, body, Seq(Synthetic))
+    functions += fd
+    fd
+  } 
 }

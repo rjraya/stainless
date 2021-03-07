@@ -89,19 +89,19 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
   def extract(symbols: s.Symbols): t.Symbols = {
     val funIds = symbols.functions.values.map(_.id).toSet
     val (problems, genSyms) = generatorsPipeline.extract(Seq(funIds), symbols)
-    println("generated symbols")
+    /* println("generated symbols")
     println(genSyms.functions.values.map(
       _.asString    
     ))
     println("generated problems")
-    println(problems)
+    println(problems) */
     val measures: Seq[Measures] = {
       val (orders, szes) = getMeasures(genSyms)
       orders.map(e => (e,szes))
     }
     val res = scheduler(measures, genSyms, problems.reverse)
     println("result")
-    println(res)
+    res.functions.values.map(_.asString).map(println)
     res
   }
 
