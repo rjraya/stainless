@@ -34,33 +34,32 @@ trait ApplicationStrengthener extends IterativePipeline
                            fdArgs: Seq[Variable],
                            symbols: Symbols,
                            ordering: OrderingRelation,
-                           api: inox.solvers.SimpleSolverAPI { val program: inox.Program{ val trees: termination.trees.type; val symbols: trees.Symbols} }
                           ): Map[Variable, SizeConstraint] = {
     val applications = symbols.collectWithPC(fd.fullBody) {
-      case (Application(v: Variable, args), path) => 
-        println("detected application of " + v + " to " + args + " under path " + path)
-        (path, v, args)
+      case (Application(v: Variable, args), path) => (path, v, args)
     }.distinct
     val fdArgs = fd.params.map(_.toVariable)
+
     val allFormulas = 
       for ((path, v, appArgs) <- applications) yield {
         val soft = path implies ordering.lessEquals(appArgs, fdArgs)
         val hard = path implies ordering.lessThan(appArgs, fdArgs)
         v -> ((soft, hard))
       }
+    val api = getAPI(symbols)
 
     val formulaMap = allFormulas.groupBy(_._1).mapValues(_.map(_._2).unzip).toMap
 
     val constraints = 
       for ((v, (weakFormulas, strongFormulas)) <- formulaMap) yield v -> {
-        if (api.solveVALID(termination.trees.andJoin(weakFormulas.toSeq)).contains(true)) {
+        if (api.solveVALID(andJoin(weakFormulas.toSeq)).contains(true)) {
           if (api.solveVALID(andJoin(strongFormulas.toSeq)).contains(true)) {
             StrongDecreasing
           } else WeakDecreasing
         } else NoConstraint
       }
-    println(formulaMap)
-    println(constraints)
+    /* println(formulaMap)
+    println(constraints) */
     constraints
   }
 
@@ -70,8 +69,8 @@ trait ApplicationStrengthener extends IterativePipeline
                           fdArgs: Seq[Variable],
                           constraints: Map[Variable, SizeConstraint], 
                           ordering: OrderingRelation,
-                          api: inox.solvers.SimpleSolverAPI { val program: inox.Program{ val trees: termination.trees.type; val symbols: trees.Symbols} },
                           symbols: Symbols): Unit = {
+    
     val fdHOArgs = fdArgs.filter(_.tpe.isInstanceOf[FunctionType]).toSet
     val invocations = symbols.collectWithPC(fd.fullBody) {
       case (fi @ FunctionInvocation(_, _, args), path)
@@ -87,12 +86,12 @@ trait ApplicationStrengthener extends IterativePipeline
 
     val outers = invocationMap.mapValues(_.filter(_._1._1 != fd))
     for (v <- fdHOArgs) {
-      appConstraint(fd.id -> v.id) = constraint(v, outers.getOrElse(v, Seq.empty), constraints, fdArgs, ordering, symbols, api)
+      appConstraint(fd.id -> v.id) = constraint(v, outers.getOrElse(v, Seq.empty), constraints, fdArgs, ordering, symbols)
     }
 
     val selfs = invocationMap.mapValues(_.filter(_._1._1 == fd))
     for (v <- fdHOArgs) {
-      appConstraint(fd.id -> v.id) = constraint(v, selfs.getOrElse(v, Seq.empty), constraints, fdArgs, ordering, symbols, api)
+      appConstraint(fd.id -> v.id) = constraint(v, selfs.getOrElse(v, Seq.empty), constraints, fdArgs, ordering, symbols)
     }
   }
 
@@ -104,9 +103,10 @@ trait ApplicationStrengthener extends IterativePipeline
           fdArgs: Seq[Variable], 
           ordering: OrderingRelation,
           symbols: Symbols, 
-          api: inox.solvers.SimpleSolverAPI { val program: inox.Program{ val trees: termination.trees.type; val symbols: trees.Symbols} }
       ): SizeConstraint = {
     import symbols._
+    val api = getAPI(symbols)
+
     if (constraints.get(v) == Some(NoConstraint)) NoConstraint
     else if (passings.exists(p => appConstraint.get(p._1) == Some(NoConstraint))) NoConstraint
     else {
@@ -149,35 +149,43 @@ trait ApplicationStrengthener extends IterativePipeline
         case _ => param
       }
     }
+    val subst: Map[Variable,Expr] = 
+      fd.params.map(_.toVariable).zip(newParams.map(_.toVariable)).toMap
+    val newBody = exprOps.replaceFromSymbols(subst,fd.fullBody)
    
-    fd.copy(params = newParams)
+    fd.copy(params = newParams, fullBody = newBody)
   }
 
+  /*
+    because of polymorphic sizes, we need to copy the refinement induced 
+    in the called function to the invocation
+  */
   def refineInv(fi: FunctionInvocation, symbols: Symbols): FunctionInvocation = {
     val ordering = measures._1
     val called = symbols.getFunction(fi.id)
-    val newArgs = (called.params.map(_.id) zip fi.args).map {
-      case (id, l @ Lambda(largs, body)) =>
-        self.applicationConstraint(fi.id, id, largs, fi.args, ordering) match {
-          case Some(constr) => 
-            val newLArgs = largs.map{ larg => 
-              val refineArg = ValDef.fresh("z", larg.tpe)
-              val tpe1 = RefinementType(
-                refineArg,
-                exprOps.replace(Map(larg.toVariable -> refineArg.toVariable),constr)
-              )
-              larg.copy(tpe = tpe1)
-            }
-            val subst = (largs.map(_.toVariable) zip newLArgs.map(_.toVariable)).toMap
-            val newBody = exprOps.replaceFromSymbols(subst,body)   
-            Lambda(newLArgs, newBody)
-          case None => l
-        }
+
+    val subst: Map[Variable,Expr] = 
+      called.params.map(_.toVariable).zip(fi.args).toMap
+    val tySubst: Map[TypeParameter, Type] = 
+      called.tparams.map(_.tp).zip(fi.tps).toMap
+
+    val newArgs = (called.params zip fi.args).map {
+      case (ValDef(id,tp@FunctionType(doms,ret),flags), l @ Lambda(largs, body)) =>
+        val newLArgs = (doms zip largs).map{ case (dom,larg) => 
+          val instance = typeOps.instantiateType(dom, tySubst)
+          val argTp = typeOps.replaceFromSymbols(subst,instance)
+          larg.copy(tpe = argTp)
+        }  
+        val largsSubst: Map[Variable, Expr] =
+          largs.map(_.toVariable).zip(newLArgs.map(_.toVariable)).toMap 
+        val newBody = exprOps.replaceFromSymbols(largsSubst, body)
+        Lambda(newLArgs, newBody)
       case (_, arg) => arg
     } 
     
     fi.copy(args = newArgs)
   }
+
 
   private val refinedIds: ListBuffer[Identifier] = new ListBuffer[Identifier]
 
@@ -223,10 +231,18 @@ trait ApplicationStrengthener extends IterativePipeline
     Seq(transformer.transform(fd)) ++ refinedFuns.toSeq
   }
 
+  def getAPI(symbols: Symbols) = {
+    val sizes = measures._2.getFunctions(symbols)
+    val newSyms: Symbols = updater.updateFuns(sizes, symbols)
+    val program: inox.Program{ val trees: termination.trees.type; val symbols: trees.Symbols} 
+      = inox.Program(termination.trees)(newSyms)
+    extraction.extractionSemantics.getSemantics(program).getSolver(context).toAPI 
+  }
+
   override def extract(fids: Problem, symbols: Symbols): (Problem, Symbols) = {
     import symbols._
-    println("running application strengthener")/* 
-    println(symbols.functions.values.map(_.id.asString(
+    println("running application strengthener on " + fids)
+    /* println(symbols.functions.values.map(_.asString(
       new PrinterOptions(printUniqueIds = true)
     ))) */
     val funDefs: Set[FunDef] = fids.map( id => symbols.getFunction(id) )
@@ -235,31 +251,26 @@ trait ApplicationStrengthener extends IterativePipeline
 
     val ordering = measures._1
     val sizes = measures._2.getFunctions(symbols)
-
     val newSyms: Symbols = updater.updateFuns(sizes, symbols)
-    val program: inox.Program{ val trees: termination.trees.type; val symbols: trees.Symbols} 
-      = inox.Program(termination.trees)(newSyms)
-    val api = extraction.extractionSemantics.getSemantics(program).getSolver(context).toAPI 
-    
 
     for (fd <- sortedFunDefs if fd.body.isDefined && !strengthenedApp(fd)) {
       val fdArgs: Seq[Variable] = fd.params.map(_.toVariable)    
-      val constraints = bodyDecrease(fd, fdArgs,symbols,ordering,api)
-      higherOrderDecrease(fd,fdArgs,constraints,ordering,api,symbols)
+      val constraints = bodyDecrease(fd, fdArgs,newSyms,ordering)
+      higherOrderDecrease(fd,fdArgs,constraints,ordering,newSyms)
       strengthenedApp += fd 
     }
 
     val annotatedSyms = 
-      strengthenedApp.foldLeft(symbols){
+      strengthenedApp.foldLeft(newSyms){
         case (syms,fdS) =>          
           updater.updateFuns(annotateStrength(fdS,syms,ordering), syms)
       }
-      strengthenedApp.map(annotateStrength(_,symbols,ordering)).toSeq
-    val newSizes = measures._2.getFunctions(symbols).toSeq
+      strengthenedApp.map(annotateStrength(_,newSyms,ordering)).toSeq
+    val newSizes = measures._2.getFunctions(newSyms).toSeq
     val updatedSymbols = updater.updateFuns(newSizes,annotatedSyms)
-    println("updatedSymbols")
+    /* println("updatedSymbols")
     println(updatedSymbols.functions.values.map(_.asString(
-      new PrinterOptions(printUniqueIds = true)))) 
+      new PrinterOptions(printUniqueIds = true))))  */
     (fids, updatedSymbols)
   }
 }

@@ -3,7 +3,6 @@ package termination
 
 trait OrderingRelation {
   val trees: termination.trees.type
-  val symbols: trees.Symbols
   val sizes: SizeFunctions
   import trees._
 
@@ -21,13 +20,12 @@ trait OrderingRelation {
 
 trait SumOrdering extends OrderingRelation { self =>
   val trees: termination.trees.type
-  val symbols: trees.Symbols
   val sizes: SizeFunctions
   import trees._
 
   val description = "comparing sum of argument sizes"
 
-  private def size(args: Seq[Expr]) = sizes.fullSize(tupleWrap(args))
+  private def size(args: Seq[Expr]): Expr = sizes.fullSize(tupleWrap(args))
 
   def lessThan(args1: Seq[Expr], args2: Seq[Expr]): Expr = 
     LessThan(size(args1), size(args2))

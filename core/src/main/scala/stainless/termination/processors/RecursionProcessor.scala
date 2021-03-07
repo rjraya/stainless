@@ -42,12 +42,9 @@ trait RecursionProcessor extends IterativePipeline
     else {
       val funDef = syms.getFunction(fids.head)
       val recInvocations = analysis.getRelations(funDef).filter { 
-        case analysis.Relation(fd, _, fi, _) => 
-        
-          fd == fi.tfd(syms).fd
+        case analysis.Relation(fd, _, fi, _) => fd == fi.tfd(syms).fd
       }
-      println("recursive invocations of " + funDef.id)
-      println(recInvocations)
+
       if (recInvocations.isEmpty) { println("solved in recursion processor") ; (Set(), syms) } 
       else {
         val decreasedArgument = funDef.params.zipWithIndex.find {
@@ -60,11 +57,11 @@ trait RecursionProcessor extends IterativePipeline
 
         decreasedArgument match {
           case Some(p) =>
-	          println("annotating " + funDef.id + " in recursion processor")
             val integerOrdering = measures._1
             val measure = integerOrdering.measure(Seq(p._1.toVariable))
             val annotated: FunDef = annotate(funDef,measure)
-            (Set(), updater.transform(annotated, syms))
+            val sizes = measures._2.getFunctions(syms)
+            (Set(), updater.updateFuns(Seq(annotated) ++ sizes , syms))
           case None =>
               (fids, syms)
         }

@@ -22,13 +22,11 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     
     object integerOrdering extends {
       val trees: termination.trees.type = termination.trees
-      val symbols: termination.trees.Symbols = syms
       val sizes: szes.type = szes
     } with SumOrdering
 
     object lexicographicOrdering extends {
       val trees: termination.trees.type = termination.trees
-      val symbols: termination.trees.Symbols = syms
       val sizes: szes.type = szes
     } with LexicographicOrdering
 
@@ -50,6 +48,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     measure: Measures, 
     syms: s.Symbols
   ): Option[s.Symbols] = {
+      println("new problem iteration with measure " + measure._1.description)
       val (_, nSymbols) = 
         strengtheningPipeline(measure, analyzer(syms)).extract(problem,syms)  
       //val nSymbols = syms
@@ -58,7 +57,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
         processorsPipeline(measure,analyzer(nSymbols),nSymbols).extract(problem,nSymbols)
       if(remaining.isEmpty){ 
         val sfuns = measure._2.getFunctions(modSyms)
-        Some(updater.transform(sfuns, modSyms))
+        Some(updater.updateFuns(sfuns, modSyms))
       } else {
         None
       }
@@ -70,7 +69,7 @@ trait MeasureInference extends extraction.ExtractionPipeline { self =>
     syms: termination.trees.Symbols
   ): Option[termination.trees.Symbols] =       
     measures.iterator
-            .map(schedulerWithMeasure(problem, _,syms))
+            .map(schedulerWithMeasure(problem,_,syms))
             .collectFirst{ case Some(nSyms) => nSyms } 
   
   def scheduler(

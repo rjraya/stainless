@@ -211,18 +211,26 @@ trait SizeFunctions {
         FunctionInvocation(id, Seq(tp), Seq(expr))
 
       case _ =>
+        println("expr " + expr + " was assigned 0 " + expr.getType)
         IntegerLiteral(0)
     }
   }
 
+  private val polCache: MutableMap[Identifier, FunDef] = MutableMap.empty
+
   /* Polymorphic size method */
   def polSize(td: TypeParameterDef): FunDef = synchronized {
-    val param = ValDef.fresh("z", td.tp)   
-    val nat = ValDef.fresh("l", IntegerType())
-    val retType = RefinementType(nat,E(nat) > E(BigInt(0)))
-    val body = E(BigInt(0))
-    val fd = new FunDef(FreshIdentifier("polSize"),Seq(td),Seq(param), retType, body, Seq(Synthetic))
-    functions += fd
-    fd
+    if(polCache contains td.id) {
+      polCache(td.id)
+    } else {
+      val param = ValDef.fresh("z", td.tp)   
+      val nat = ValDef.fresh("l", IntegerType())
+      val retType = IntegerType()
+      val body = E(BigInt(0))
+      val fd = new FunDef(FreshIdentifier("polSize"),Seq(td),Seq(param), retType, body, Seq(Synthetic))
+      functions += fd
+      polCache += td.id -> fd
+      fd
+    }  
   } 
 }

@@ -59,7 +59,6 @@ trait RelationBuilder extends CICFA { self =>
 
           fi.copy(args = (getFunction(fi.id).params.map(_.id) zip args).map {
             case (id, l @ Lambda(largs, body)) /* if analysis.isApplied(l) */ =>
-              println("in an applied lambda with arg " + l)
               val old = inLambda
               inLambda = true
               val constr = largs match {
@@ -70,7 +69,6 @@ trait RelationBuilder extends CICFA { self =>
                     BooleanLiteral(true)
                 }
 
-              println("constr is " + constr)
               val res = Lambda(largs, transform(body, path withBounds largs withCond constr))
               inLambda = old
               res
@@ -95,8 +93,6 @@ trait RelationBuilder extends CICFA { self =>
     }
 
     collector.transform(funDef)
-    println("relations of "+ funDef.id)
-    collector.relations.map(r => println(r))
     collector.relations.toSet
   }
 }
